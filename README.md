@@ -1,15 +1,21 @@
+# Glazier -- automating building CouchDB on Windows
+
+This is a set of scripts designed to help automate as much as practicable the build of CouchDB on Windows
+
 # Build Environment
-building Erlang & CouchDB on Windows requires a custom build environment, which is very sensitive to path order amongst the three different compilers used to build wxWidgets, erlang, javascript, and couchdb. We use a symlink to /src/ to help keep this simple, and use default install locations for each tool.
-
-## VC++
-* install VS2008 Express C++, excluding optional MSSSQL & Silverlight, from http://msdn.microsoft.com/en-gb/vstudio/ -> http://download.microsoft.com/download/E/8/E/E8EEB394-7F42-4963-A2D8-29559B738298/VS2008ExpressWithSP1ENUX1504728.iso
-*  we will put everything in a folder/tree called src & link to it elsewhere with env vars and softlinks as needed
-
+* Building Erlang & CouchDB on Windows requires a custom build environment, which is very sensitive to path order amongst the three different compilers used to build wxWidgets, erlang, javascript, and couchdb
+* This is further complicated by different install locations on 32 vs 64 bit windows versions, and which Microsoft C compiler and Windows SDKs are installed.
+* To simplify this we use symlinks liberally.
+* we will put everything in a folder/tree called src & link to it elsewhere with env vars and softlinks as needed
 		mkdir c:\src
 		setx SRC=c:\src
 
+## Microsoft Visual C++
+* Erlang and CouchDB can be built using the free VS2008 Express C++ edition from http://msdn.microsoft.com/en-gb/vstudio/
+* install [msvc++] excluding optional MSSSQL & Silverlight
+
 ## Cygwin
-install cygwin from http://www.cygwin.com/ using defaults & in addition:
+install [cygwin] using defaults & in addition:
 
 * accessibility, admin, archive, audio, base, database: default
 * devel: ALL
@@ -275,8 +281,7 @@ TODO // URLs don't go to right AMIs
 [curl-bits]: http://curl.haxx.se/download/curl-7.19.5-win32-ssl.zip
 [libcurl-bits] http://curl.haxx.se/download/libcurl-7.19.3-win32-ssl-msvc.zip
 [wxwidgets_bits]: http://voxel.dl.sourceforge.net/project/wxwindows/2.8.11/wxMSW-2.8.11-Setup.exe
-[gizmo_drive]: http://arainia.com/software/gizmo/gizmo-277-setup.exe
-[erlang_R14a]: http://www.erlang.org/download/otp_src_R14A.tar.gz
+[erlang_R14A]: http://www.erlang.org/download/otp_src_R14A.tar.gz
 [erlang_R13B04]: http://www.erlang.org/download/otp_src_R13B04.tar.gz
 [openssl_bits]: http://www.slproweb.com/download/Win32OpenSSL-1_0_0a.exe
 [seamonkey_bits]: http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/2.0.6/source/seamonkey-2.0.6.source.tar.bz2
@@ -286,6 +291,7 @@ TODO // URLs don't go to right AMIs
 [notepadplus_bits]: http://voxel.dl.sourceforge.net/project/notepad-plus/notepad%2B%2B%20releases%20binary/npp%205.7%20bin/npp.5.7.Installer.exe
 [win7sdk_32bit]: http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDK_EN_DVD.iso
 [win7sdk_64bit]: http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDKX_EN_DVD.iso
+[msvc++]: http://download.microsoft.com/download/E/8/E/E8EEB394-7F42-4963-A2D8-29559B738298/VS2008ExpressWithSP1ENUX1504728.iso
 [vcredist]: http://download.microsoft.com/download/d/1/0/d10d210e-e0ad-4010-b547-bc5e395ef691/vcredist_x86.exe
 [nsis_bits]: http://voxel.dl.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
 [bitvise_sshd_bits]: http://dl.bitvise.com/WinSSHD5-Inst.exe
@@ -296,6 +302,7 @@ TODO // URLs don't go to right AMIs
 [libcurl-src]: http://curl.haxx.se/download/curl-7.21.1.tar.gz
 [zlib-src]: http://zlib.net/zlib-1.2.5.tar.gz
 [zlib-bits]: http://zlib.net/zlib125-dll.zip
+[cygwin]: http://www.cygwin.com/setup.exe
 
 ================================================================================
 win7 std - default environment

@@ -34,17 +34,17 @@ set ROOT=%~d0
 echo found root volume: %ROOT%
 echo setting up new environment
 set SRC=%ROOT%\src
-set BIN=%ROOT%\install\bin
-set BITS=%ROOT%\install\bits
-set PATHS=%BIN%;%BIN%\uxtools;%BIN%\pstools;%BIN%\openssl;
+set BIN=%ROOT%\glazier\bin
+set BITS=%ROOT%\glazier\bits
+set CORE=%BIN%;%BIN%\uxtools;%BIN%\pstools;%BIN%\openssl;
 
 setx ROOT %ROOT% > NUL:
 setx SRC %SRC% > NUL:
 setx BIN %BIN% > NUL:
 setx BITS %BITS% > NUL:
-setx PATHS %PATHS% > NUL:
+setx CORE %CORE% > NUL:
 
-path=%path%;%PATHS%
+path=%path%;%CORE%
 pushd %BITS%
 
 echo give you some helpful icons

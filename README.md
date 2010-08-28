@@ -5,17 +5,17 @@ This is a set of scripts designed to help automate as much as practicable the bu
 # Build Environment
 * Building Erlang & CouchDB on Windows requires a custom build environment, which is very sensitive to path order amongst the three different compilers used to build wxWidgets, erlang, javascript, and couchdb
 * This is further complicated by different install locations on 32 vs 64 bit windows versions, and which Microsoft C compiler and Windows SDKs are installed.
-* To simplify this we use symlinks liberally.
-* we will put everything in a folder/tree called src & link to it elsewhere with env vars and softlinks as needed
+* To simplify this we use symlinks liberally
+
 		mkdir c:\src
 		setx SRC=c:\src
 
 ## Microsoft Visual C++
-* Erlang and CouchDB can be built using the free VS2008 Express C++ edition from http://msdn.microsoft.com/en-gb/vstudio/
-* install [msvc++] excluding optional MSSSQL & Silverlight
+* Erlang and CouchDB can be built using the free VS2008 Express C++ edition from [MSDN](http://msdn.microsoft.com/en-gb/vstudio/)
+* install using the DVD ISO [msvc++] excluding optional MSSSQL & Silverlight
 
 ## Cygwin
-install [cygwin] using defaults & in addition:
+The full Cygwin install comprises several GiB of data. Run [cygwin]'s setup.exe using defaults with the following additional modules:
 
 * accessibility, admin, archive, audio, base, database: default
 * devel: ALL
@@ -27,16 +27,12 @@ install [cygwin] using defaults & in addition:
 		ln -s /cygdrive/c/src /src
 
 ## WXWIDGETS
-* download [wxwidgets_bits] from [WxWidgets][http://wxwidgets.org/] & untar using cygwin into /src/
+* download [wxwidgets_bits] from [WxWidgets website](http://wxwidgets.org/) & untar using cygwin into /src/
+
 		mkdir -p /opt/local/pgm/
 		ln -s /src/wxWidgets-2.8.11 /opt/local/pgm/wxWidgets-2.8.11
 
-* Enable wxUSE_GLCANVAS, wxUSE_POSTSCRIPT and wxUSE_GRAPHICS_CONTEXT in c:\src\wxWidgets-2.8.11\include\wx\msw\setup.h
-
-### Reference URLs
-* [WxWidgets Source][http://svn.wxwidgets.org/svn/wx/wxWidgets/branches/WX_2_8_BRANCH/docs/msw/install.txt]
-* [MSVC++ WxWidgets][http://wiki.wxwidgets.org/Microsoft_Visual_C%2B%2B_Guide]
-* [WxWidgets compilation advice][http://rhyous.com/2009/12/16/how-to-compile-a-wxwidgets-application-in-visual-studio-2008/]
+* Enable wxUSE\_GLCANVAS, wxUSE\_POSTSCRIPT and wxUSE\_GRAPHICS_CONTEXT in c:\src\wxWidgets-2.8.11\include\wx\msw\setup.h
 
 ### wx.dsw
 * open & convert C:\src\wxWidgets-2.8.11\build\msw\wx.dsw to C:\src\wxWidgets-2.8.11\build\msw\wx.sln
@@ -52,65 +48,72 @@ TODO: can we do this somehow from prompt e.g. vcbuild /rebuild contrib\vstudio\v
 * open & convert C:\src\wxWidgets-2.8.11\contrib\build\stc\stc.dsw to C:\src\wxWidgets-2.8.11\contrib\build\stc\stc.sln
 *  right-click on stc in solution explorer pane (not "Solution 'stc' at the top of the tree)
 * Under the C/C++ -> General tree, make sure add the following include directories:
-    ..\..\..\include
-    ..\..\..\lib\vc_lib\mswd
+
+        ..\..\..\include
+        ..\..\..\lib\vc_lib\mswd
+
 * Under Librarian -> General add additional library directories:
-    ..\..\..\lib\vc_lib
+
+        ..\..\..\lib\vc_lib
+
 * Build all unicode release (and unicode debug) packages via build -> batch build
 
 TODO: can we do this somehow from prompt e.g. vcbuild /rebuild contrib\vstudio\vc9\zlibvc.sln "Release|Win32"
-	
-### NOTES
-http://github.com/erlang/otp/blob/dev/INSTALL-WIN32.md
-http://www.zerothlaw.org/joomla/index.php?option=com_jd-wiki&Itemid=26&id=wxwidgets:wxwidgets_with_visual_studio_express
 
-## Erlang
-* run "C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\vcvarsall.bat" on 64bit systems, or "C:\Program Files\Microsoft Visual Studio 9.0\VC\vcvarsall.bat" on 32bit systems
-* then c:\src\bin\relax.cmd
-    ln -s /cygdrive/c/src /src
-	cd /src
+### Reference URLs
+* [WxWidgets Source](http://svn.wxwidgets.org/svn/wx/wxWidgets/branches/WX_2_8_BRANCH/docs/msw/install.txt)
+* [MSVC++ WxWidgets](http://wiki.wxwidgets.org/Microsoft_Visual_C%2B%2B_Guide)
+* [WxWidgets compilation advice](http://rhyous.com/2009/12/16/how-to-compile-a-wxwidgets-application-in-visual-studio-2008/)
+* notes on building [Erlang](http://github.com/erlang/otp/blob/dev/INSTALL-WIN32.md)
+* [wxWidgets](http://www.zerothlaw.org/joomla/index.php?option=com_jd-wiki&Itemid=26&id=wxwidgets:wxwidgets_with_visual_studio_express) guidance
+
+## Building Erlang
+* after installing VC++ 2008 Express, and most other Visual Studio solutions, `call "%vs90comntools%\..\..\vc\vcvarsall.bat" x86
+` will automatically find the correct path, and set up our 32-bit build environment correctly, independently if you have installed on 32 or 64bit windows. Alternatively you can run "C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\vcvarsall.bat" on 64bit systems, or "C:\Program Files\Microsoft Visual Studio 9.0\VC\vcvarsall.bat" on 32bit systems
+* then run
+	c:\glazier\bin\relax.cmd
 * download R13B04 or R14A from http://www.erlang.org/download/
 * under cygwin cd /src and untar
 
 
 ## Tk/Tcl
 * optional component
+
 		cd $ERL_TOP && tar xvzf /src/bits/tcltk85_win32_bin.tar.gz
+
 * or skip the whole damn lot this way
+
 		echo "skipping gs" > lib/gs/SKIP
-* on R14A I needed: - but perhaps not if MSSQL is/was isntalled
-		echo "skipping odbc" > lib/odbc/SKIP
 
-## ENVIRONMENT & BUILD
-* copy *.cmd *.sh .vcvars9rc /src/
-	ln -s /cygdrive/c/OpenSSL/ /src/openssl
-	ln -s /cygdrive/c/Program\ Files\ \(x86\)/NSIS /src/nsis
-	
-sanity check against http://github.com/erlang/otp/blob/dev/INSTALL-WIN32.md
+## Setup Erlang Environment and Tools
+* Now we setup the environment to use our symlinked tools
+* install OpenSSL, NSIS installer,
+    
+	    ln -s /cygdrive/c/OpenSSL/ /src/openssl
+	    ln -s /cygdrive/c/Program\ Files\ \(x86\)/NSIS /src/nsis
+	    
+* sanity check against [http://github.com/erlang/otp/blob/dev/INSTALL-WIN32.md]()
 
-start c:\src\relax.cmd
-		cd /src/otp_src_R13B04/
-		/src/vcshell.sh
-		eval `./otp_build env_win32`
-		# check that which cl which link return the MS ones, if not then move all /usr/ path components to end 
+* start `c:\glazier\relax.cmd`
+* check that `which cl; which link; which mc` return the MS ones, if not then sort them manually
+* build Erlang using `/src/glazier/bin/erl_config.sh` and `/src/glazier/bin/erl_build.sh`, or manually as follows
+
 		./otp_build autoconf
 		./otp_build configure
 		./otp_build boot -a
 		./otp_build release -a
 		./otp_build installer_win32
-
-	# a one-liner	eval `./otp_build env_win32` && ./otp_build autoconf && ./otp_build configure && ./otp_build boot -a && ./otp_build release -a && ./otp_build installer_win32;
-		
-		# to install this build immediately
-		./release/win32/otp_win32_%OTP-REL% /S
+		# to setup erlang to run from this new source build immediately run:
+		./release/win32/Install.exe -s
 
 # CouchDB
-requirements:
-* Erlang OTP (>=R12B5)       (http://erlang.org/)
-* ICU                        (http://icu.sourceforge.net/)
-* OpenSSL                    (http://www.openssl.org/)
-* Mozilla SpiderMonkey (1.8) (http://www.mozilla.org/js/spidermonkey/)
-* libcurl                    (http://curl.haxx.se/libcurl/)
+minimum requirements
+
+* Erlang OTP R13B04 or R14A
+* ICU 4.2 only                      (http://icu.sourceforge.net/)
+* OpenSSL  1.0.0a               (http://www.openssl.org/)
+* Mozilla SpiderMonkey 1.8 from SeaMonkey 2.0.6
+* libcurl 7.21.1                    (http://curl.haxx.se/libcurl/)
 
 ## Javascript
 
@@ -128,21 +131,21 @@ https://developer.mozilla.org/En/SpiderMonkey/Build_Documentation
 * install the moz build system from here
 * get [mozbuild]
 * there are a few junction.exe reqd - d:/mozilla-build to c:/mozilla-build
+* get [seamonkey_bits] and unpack into c:\src\seamonkey\comm-1.9.1\mozilla\js\src
+* run c:\mozilla-build\start-msvc9.bat
 
-// ignore: junction c:\src\js_src c:\src\seamonkey\comm-1.9.1\mozilla\js\src
-run c:\mozilla-build\start-msvc9.bat
-cd /c/src/js_src
-autoconf-2.13
-./configure
-make
+		cd /c/src/seamonkey/comm-1.9.1/mozilla/js/src
+		autoconf-2.13
+		./configure
+		make
 
 * to install from -current do:
-cd /d/src/seamonkey-current
-hg clone http://hg.mozilla.org/mozilla-central
-cd mozilla-central/ .... /js/src
-autoconf-2.13
-./configure
-make 
+		cd /d/src/seamonkey-current
+		hg clone http://hg.mozilla.org/mozilla-central
+		cd mozilla-central/ .... /js/src
+		autoconf-2.13
+		./configure
+		make 
 
 ## Inno Installer
 from http://www.jrsoftware.org/download.php/ispack-unicode.exe
@@ -150,24 +153,21 @@ download and install ispack-5.3.10-unicode.exe, including all additional compone
 to c:\src\inno5 & ensure its in the path
 
 ## LibCURL
-		you need to have libcurl.lib in the ./configure path (CURL_LIBS="$withval/lib/libcurl")
-		most downloadable libcurls have sasl or other unwanted libs
-		we need this for couch_js.exe to function
-		and for curl for enduser testing
-		untar http://curl.haxx.se/docs/install.html
-				
+* you need to have libcurl.lib in the ./configure path (CURL_LIBS="$withval/lib/libcurl")
+* most downloadable libcurls have sasl or other unwanted libs
+* we need this for couch_js.exe to function
+* and for curl for enduser testing
+* untar http://curl.haxx.se/docs/install.html
+		
 		set OPENSSL_PATH=d:\src\openssl
 		set INCLUDE=%INCLUDE%;%OPENSSL_PATH%\include\openssl;
 		set LIBPATH=%LIBPATH%;%OPENSSL_PATH%\lib;
 		set LIB=%LIB%;%OPENSSL_PATH%\lib;
-		couldn't get this to work so instead did:
 		nmake vc-ssl
-		.....
-		instead i built curl/vc6curl.sln
+		couldn't get this to work so instead i built curl/vc6curl.sln
 		check curl.exe & see what libs it needs - these should be openssl only
 		check that /src/curl-7.21.1/lib/libcurl.lib exists
-		
-		
+
 ## OpenSSL
 
 * already installed into C:/OpenSSL/ for compilation
@@ -177,7 +177,7 @@ to c:\src\inno5 & ensure its in the path
 		wget http://download.icu-project.org/files/icu4c/4.4.1/icu4c-4_4_1-Win32-msvc9.zip
 		wget http://download.icu-project.org/files/icu4c/4.2/icu4c-4_2-Win32-msvc9.zip
 		cd src
-		unzip icu4c-4_4_1-Win32-msvc9.zip
+		unzip icu4c-4_2-Win32-msvc9.zip
 
 ## Make & Build
 	    ./configure \
@@ -191,19 +191,16 @@ to c:\src\inno5 & ensure its in the path
 		--prefix=$ERL_TOP/release/win32
 
 ## using seamonkey 2.0.6
-
-./configure \
---prefix=$ERL_TOP/release/win32 \
---with-win32-icu-binaries=/src/icu \
---with-erlang=$ERL_TOP/release/win32/usr/include \
---with-win32-curl=/src/curl-7.19.5 \
---with-openssl-bin-dir=/src/openssl/bin \
---with-msvc-redist-dir=/src/vcredist \
---with-js-lib=/src/mozilla/js/src \
---with-js-include=/src/mozilla/js/src/dist/include/js
-### --with-js-lib=/src/mozilla/js/src/dist/lib \
-### --with-js-include=/src/mozilla/js/src/dist/include/js
-### made changes after looking at make seamonkey and where libraries and DLLs got created
+		
+		./configure \
+		--prefix=$ERL_TOP/release/win32 \
+		--with-win32-icu-binaries=/src/icu \
+		--with-erlang=$ERL_TOP/release/win32/usr/include \
+		--with-win32-curl=/src/curl-7.19.5 \
+		--with-openssl-bin-dir=/src/openssl/bin \
+		--with-msvc-redist-dir=/src/vcredist \
+		--with-js-lib=/src/mozilla/js/src \
+		--with-js-include=/src/mozilla/js/src/dist/include/js
 
 
 

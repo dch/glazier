@@ -27,25 +27,26 @@ install [cygwin] using defaults & in addition:
 		ln -s /cygdrive/c/src /src
 
 ## WXWIDGETS
-* download [wxwidgets_bits] from XXX & untar using cygwin into /src/
+* download [wxwidgets_bits] from [WxWidgets][http://wxwidgets.org/] & untar using cygwin into /src/
 		mkdir -p /opt/local/pgm/
-		ln -s /cygdrive/d/src/wxWidgets-2.8.11 /opt/local/pgm/wxWidgets-2.8.11
+		ln -s /src/wxWidgets-2.8.11 /opt/local/pgm/wxWidgets-2.8.11
 
 * Enable wxUSE_GLCANVAS, wxUSE_POSTSCRIPT and wxUSE_GRAPHICS_CONTEXT in c:\src\wxWidgets-2.8.11\include\wx\msw\setup.h
 
-* key urls
-	http://svn.wxwidgets.org/svn/wx/wxWidgets/branches/WX_2_8_BRANCH/docs/msw/install.txt
-	http://wiki.wxwidgets.org/Microsoft_Visual_C%2B%2B_Guide
-	http://rhyous.com/2009/12/16/how-to-compile-a-wxwidgets-application-in-visual-studio-2008/
+### Reference URLs
+* [WxWidgets Source][http://svn.wxwidgets.org/svn/wx/wxWidgets/branches/WX_2_8_BRANCH/docs/msw/install.txt]
+* [MSVC++ WxWidgets][http://wiki.wxwidgets.org/Microsoft_Visual_C%2B%2B_Guide]
+* [WxWidgets compilation advice][http://rhyous.com/2009/12/16/how-to-compile-a-wxwidgets-application-in-visual-studio-2008/]
 
 ### wx.dsw
 * open & convert C:\src\wxWidgets-2.8.11\build\msw\wx.dsw to C:\src\wxWidgets-2.8.11\build\msw\wx.sln
-* if you have a multicore process you can do a batch build. set up the dependencies for wx.dsw to achieve the below build order
+* if you have a multicore process you can do a batch build
+* set up the dependencies for wx.dsw to achieve the below build order
 jpeg, png, tiff, zlib, regex, expat, base, net, odbc, core,
  gl, html, media, qa, adv, dbgrid, xrc, aui, richtext, xml
 * Build all unicode release (and unicode debug) packages via build -> batch build
 
-or try this somehow: vcbuild /rebuild contrib\vstudio\vc9\zlibvc.sln "Release|Win32"
+TODO: can we do this somehow from prompt e.g. vcbuild /rebuild contrib\vstudio\vc9\zlibvc.sln "Release|Win32"
 	
 ### stc.dsw
 * open & convert C:\src\wxWidgets-2.8.11\contrib\build\stc\stc.dsw to C:\src\wxWidgets-2.8.11\contrib\build\stc\stc.sln
@@ -57,7 +58,9 @@ or try this somehow: vcbuild /rebuild contrib\vstudio\vc9\zlibvc.sln "Release|Wi
     ..\..\..\lib\vc_lib
 * Build all unicode release (and unicode debug) packages via build -> batch build
 
-NOTES
+TODO: can we do this somehow from prompt e.g. vcbuild /rebuild contrib\vstudio\vc9\zlibvc.sln "Release|Win32"
+	
+### NOTES
 http://github.com/erlang/otp/blob/dev/INSTALL-WIN32.md
 http://www.zerothlaw.org/joomla/index.php?option=com_jd-wiki&Itemid=26&id=wxwidgets:wxwidgets_with_visual_studio_express
 
@@ -273,36 +276,34 @@ TODO // URLs don't go to right AMIs
 * turn on XP or vista compatibility mode
 * try running from a SYSWOW64 cmd.exe instead of usual one
 
-
+[7zip_bits]: http://voxel.dl.sourceforge.net/project/sevenzip/7-Zip/4.65/7za465.zip
 [AWS Windows Servers]: http://developer.amazonwebservices.com/connect/kbcategory.jspa?categoryID=201
 [AWS console]: https://console.aws.amazon.com/ec2/home#c=EC2&s=Instances
-
-[curl]: http://curl.haxx.se/download.html
+[DEP]: http://support.microsoft.com/kb/875352
+[SEHOP]: http://support.microsoft.com/kb/956607
+[bitvise_sshd_bits]: http://dl.bitvise.com/WinSSHD5-Inst.exe
 [curl-bits]: http://curl.haxx.se/download/curl-7.19.5-win32-ssl.zip
-[libcurl-bits] http://curl.haxx.se/download/libcurl-7.19.3-win32-ssl-msvc.zip
-[wxwidgets_bits]: http://voxel.dl.sourceforge.net/project/wxwindows/2.8.11/wxMSW-2.8.11-Setup.exe
-[erlang_R14A]: http://www.erlang.org/download/otp_src_R14A.tar.gz
+[curl]: http://curl.haxx.se/download.html
+[cygwin]: http://www.cygwin.com/setup.exe
 [erlang_R13B04]: http://www.erlang.org/download/otp_src_R13B04.tar.gz
-[openssl_bits]: http://www.slproweb.com/download/Win32OpenSSL-1_0_0a.exe
-[seamonkey_bits]: http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/2.0.6/source/seamonkey-2.0.6.source.tar.bz2
-[icu_bits_new]: http://download.icu-project.org/files/icu4c/4.4.1/icu4c-4_4_1-Win32-msvc9.zip
+[erlang_R14A]: http://www.erlang.org/download/otp_src_R14A.tar.gz
 [icu_bits_curr]: http://download.icu-project.org/files/icu4c/4.2/icu4c-4_2-Win32-msvc9.zip
+[icu_bits_new]: http://download.icu-project.org/files/icu4c/4.4.1/icu4c-4_4_1-Win32-msvc9.zip
 [inno_bits]: http://www.jrsoftware.org/download.php/ispack-unicode.exe
+[libcurl-bits] http://curl.haxx.se/download/libcurl-7.19.3-win32-ssl-msvc.zip
+[libcurl-src]: http://curl.haxx.se/download/curl-7.21.1.tar.gz
+[msvc++]: http://download.microsoft.com/download/E/8/E/E8EEB394-7F42-4963-A2D8-29559B738298/VS2008ExpressWithSP1ENUX1504728.iso
 [notepadplus_bits]: http://voxel.dl.sourceforge.net/project/notepad-plus/notepad%2B%2B%20releases%20binary/npp%205.7%20bin/npp.5.7.Installer.exe
+[nsis_bits]: http://voxel.dl.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
+[openssl_bits]: http://www.slproweb.com/download/Win32OpenSSL-1_0_0a.exe
+[ramdisk]: http://www.ltr-data.se/files/imdiskinst.exe
+[seamonkey_bits]: http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/2.0.6/source/seamonkey-2.0.6.source.tar.bz2
+[vcredist]: http://download.microsoft.com/download/d/1/0/d10d210e-e0ad-4010-b547-bc5e395ef691/vcredist_x86.exe
 [win7sdk_32bit]: http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDK_EN_DVD.iso
 [win7sdk_64bit]: http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDKX_EN_DVD.iso
-[msvc++]: http://download.microsoft.com/download/E/8/E/E8EEB394-7F42-4963-A2D8-29559B738298/VS2008ExpressWithSP1ENUX1504728.iso
-[vcredist]: http://download.microsoft.com/download/d/1/0/d10d210e-e0ad-4010-b547-bc5e395ef691/vcredist_x86.exe
-[nsis_bits]: http://voxel.dl.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
-[bitvise_sshd_bits]: http://dl.bitvise.com/WinSSHD5-Inst.exe
-[7zip_bits]: http://voxel.dl.sourceforge.net/project/sevenzip/7-Zip/4.65/7za465.zip
-[SEHOP]: http://support.microsoft.com/kb/956607
-[DEP]: http://support.microsoft.com/kb/875352
-[ramdisk]: http://www.ltr-data.se/files/imdiskinst.exe
-[libcurl-src]: http://curl.haxx.se/download/curl-7.21.1.tar.gz
-[zlib-src]: http://zlib.net/zlib-1.2.5.tar.gz
+[wxwidgets_bits]: http://voxel.dl.sourceforge.net/project/wxwindows/2.8.11/wxMSW-2.8.11-Setup.exe
 [zlib-bits]: http://zlib.net/zlib125-dll.zip
-[cygwin]: http://www.cygwin.com/setup.exe
+[zlib-src]: http://zlib.net/zlib-1.2.5.tar.gz
 
 ================================================================================
 win7 std - default environment

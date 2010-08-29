@@ -37,6 +37,8 @@ mklink /j d:\src\SDKs "C:\Program Files\Microsoft SDKs" > NUL: 2>&1
 set OPENSSL_PATH=d:\src\openssl
 set CURL_PATH=d:\src\curl-7.21.1
 set ICU_PATH=d:\src\icu-4.2
+
+:: TODO something additional needed to get COUCH_ICU_DRIVER.DLL built
 set COUCH_DRIVER_PATH=D:\src\apache-couchdb-1.0.1_otp_5.8\src\couchdb\priv\.libs
 
 set INCLUDE=%INCLUDE%;%OPENSSL_PATH%\include\openssl;%CURL_PATH%\include\curl;%ICU_PATH%\include;

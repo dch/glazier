@@ -36,14 +36,11 @@ mklink /j d:\src\SDKs "C:\Program Files\Microsoft SDKs" > NUL: 2>&1
 :: add ICU, cURL and OpenSSL libraries for C compilers to find later on in CouchDB and Erlang
 set OPENSSL_PATH=d:\src\openssl
 set CURL_PATH=d:\src\curl-7.21.1
-set ICU_PATH=d:\src\icu-4.2
-
-:: TODO something additional needed to get COUCH_ICU_DRIVER.DLL built
-set COUCH_DRIVER_PATH=D:\src\apache-couchdb-1.0.1_otp_5.8\src\couchdb\priv\.libs
+set ICU_PATH=d:\src\icu-4.2.1
 
 set INCLUDE=%INCLUDE%;%OPENSSL_PATH%\include\openssl;%CURL_PATH%\include\curl;%ICU_PATH%\include;
-set LIBPATH=%LIBPATH%;%OPENSSL_PATH%\lib;%CURL_PATH%\lib;%ICU_PATH%\lib;%COUCH_DRIVER_PATH%
-set LIB=%LIB%;%OPENSSL_PATH%\lib;%CURL_PATH%\lib;%ICU_PATH%\lib;%COUCH_DRIVER_PATH%
+set LIBPATH=%LIBPATH%;%OPENSSL_PATH%\lib;%CURL_PATH%\lib;%ICU_PATH%\lib;
+set LIB=%LIB%;%OPENSSL_PATH%\lib;%CURL_PATH%\lib;%ICU_PATH%\lib;
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::check which version of erlang setup we want
@@ -61,12 +58,14 @@ goto eof
 :R14A
 set ERL_TOP=/src/otp_src_R14A
 set ERL_VER=5.8
+set OTP_VER=R14A
 goto unix_shell
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :R13B04
 set ERL_TOP=/src/otp_src_R13B04
 set ERL_VER=5.7.5
+set OTP_VER=R13B04
 goto unix_shell
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

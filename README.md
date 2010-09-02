@@ -243,7 +243,7 @@ TODO // URLs don't go to right AMIs
 * diskmgmt.msc -> find the newly attached volume & turn it online
 * a fix for [SEHOP] security feature causing cygwin & similar unix shell emulations to dump core
 
-        regedit d:\install\bundles\disable_sehop_kb956607.reg
+        regedit d:\glazier\bundles\disable_sehop_kb956607.reg
         net user administrator couchdb1.0.0
         net user couchdb 1dot0 /add
         net localgroup administrators couchdb /add
@@ -259,7 +259,7 @@ TODO // URLs don't go to right AMIs
 * import console_hkcu.reg
 * import 
 
-* open up d:\install\bin & copy all .lnk files to desktop
+* open up d:\glazier\bin & copy all .lnk files to desktop
 * install VC++ excluding silverlight, MSSQL, RSS feeds via D:\VS2008express_SP1_ENUX1504728\VCExpress\setup.exe
 * run D:\Windows7_SDK_amd64\Setup.exe and install all components (64bit)
 * run D:\Windows7_SDK_x86\Setup.exe and install all components (32bit)

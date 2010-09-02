@@ -16,8 +16,8 @@ echo
 # rebuild path from scratch as ./otp_build env_win32 gets it wrong
 # first up are erlang build helper scripts
 PATH=$ERL_TOP/release/win32/erts-$ERL_VER/bin:$ERL_TOP/erts/etc/win32/cygwin_tools/vc:$ERL_TOP/erts/etc/win32/cygwin_tools
-# then MSVC9 binaries using the new junction points
 
+# then MSVC9 binaries using the new junction points
 ###PATH=$PATH:/cygdrive/c/PROGRA~2/MICROS~1.0/Common7/IDE:/cygdrive/c/PROGRA~2/MICROS~1.0/VC/BIN:/cygdrive/c/PROGRA~2/MICROS~1.0/Common7/Tools:/cygdrive/c/PROGRA~2/MICROS~1.0/VC/VCPACK~1
 PATH=$PATH:/src/vs90/Common7/IDE:/src/vs90/VC/BIN:/src/vs90/Common7/Tools:/src/vs90/vc/vcPackages
 
@@ -48,13 +48,13 @@ RANLIB="true"
 OVERRIDE_CONFIG_CACHE="$ERL_TOP/erts/autoconf/win32.config.cache"
 OVERRIDE_CONFIG_CACHE_STATIC="$ERL_TOP/erts/autoconf/win32.config.cache.static"
 
-CC_SH_DEBUG_LOG=$TMP/cc_r$ERL_VER.log
-LD_SH_DEBUG_LOG=$TMP/ld_r$ERL_VER.log
-RC_SH_DEBUG_LOG=$TMP/rc_r$ERL_VER.log
-MD_SH_DEBUG_LOG=$TMP/md_r$ERL_VER.log
-MC_SH_DEBUG_LOG=$TMP/mc_r$ERL_VER.log
+CC_SH_DEBUG_LOG=$TMP/cc_r$OTP_VER.log
+LD_SH_DEBUG_LOG=$TMP/ld_r$OTP_VER.log
+RC_SH_DEBUG_LOG=$TMP/rc_r$OTP_VER.log
+MD_SH_DEBUG_LOG=$TMP/md_r$OTP_VER.log
+MC_SH_DEBUG_LOG=$TMP/mc_r$OTP_VER.log
 
-export OVERRIDE_TARGET CC CXX AR RANLIB OVERRIDE_CONFIG_CACHE_STATIC OVERRIDE_CONFIG_CACHE INCLUDE LIB LIBPATH PATH TMP CC_SH LD_SH RC_SH MD_SH MC_SH ERL_TOP ERL_VER SHELL
+export OVERRIDE_TARGET CC CXX AR RANLIB OVERRIDE_CONFIG_CACHE_STATIC OVERRIDE_CONFIG_CACHE INCLUDE LIB LIBPATH PATH TMP CC_SH LD_SH RC_SH MD_SH MC_SH ERL_TOP ERL_VER OTP_VER SHELL
 
 cd $ERL_TOP
 # this shouldn't change anything really
@@ -67,7 +67,7 @@ echo please check the toolkit paths:
 which mc; which lc; which cl; which link
 echo
 
-echo Ready to build Erlang and CouchDB using Erlang $ERL_VER in $ERL_TOP
-echo Relax.
+echo Ready to build Erlang and CouchDB using Erlang $ERL_VER OTP $OTP_VER in $ERL_TOP
+echo Time to Relax.
 
 bash -i

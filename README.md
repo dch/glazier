@@ -1,6 +1,16 @@
-# Glazier -- automating building CouchDB on Windows
+********************************************************************************
+#Glazier - automating building CouchDB on Windows
+********************************************************************************
 
-This is a set of scripts designed to help automate as much as practicable the build of CouchDB on Windows
+Glazier is a set of scripts designed to help automate as much as practicable the build of CouchDB on Windows, from XP/2003 to Windows 7 or Server 2008.
+
+## Current State
+
+* scripts don't yet produce a working CouchDB
+* installation of development environment is described but not automated
+* the build environment should be fully functional on both 32,64, desktop and server versions of windows from XP/2003 onwards
+* [get_compilers.cmd](http://github.com/dch/glazier/blob/master/bin/get_compilers.cmd) retrieves approx 6GiB of DVD ISOs for Microsoft's Visual Studio 2008 compiler, related SDKs and the smaller cygwin and mozilla build frameworks
+* [get_bits.cmd](http://github.com/dch/glazier/blob/master/bin/get_bits.cmd) retrieves source for erlang, couchdb, curl, 
 
 # Build Environment
 * Building Erlang & CouchDB on Windows requires a custom build environment, which is very sensitive to path order amongst the three different compilers used to build wxWidgets, erlang, javascript, and couchdb

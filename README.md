@@ -11,14 +11,13 @@ Glazier is a set of scripts designed to help automate as much as practicable the
 * the build environment should be fully functional on both 32,64, desktop and server versions of windows from XP/2003 onwards
 * downloads are not small - [glaze.cmd](http://github.com/dch/glazier/blob/master/bin/glaze.cmd) retrieves approx 6GiB of DVD ISOs for Microsoft's Visual Studio 2008 compiler, related SDKs and the smaller cygwin and mozilla build frameworks
 
-# Build Environment
+********************************************************************************
+# Installing the Build Environment
+********************************************************************************
+
 * Building Erlang & CouchDB on Windows requires a custom build environment, which is very sensitive to path order amongst the three different compilers used to build wxWidgets, erlang, javascript, and couchdb
+* Each component is built in differing environments and consolidated via Makefiles
 * This is further complicated by different install locations on 32 vs 64 bit windows versions, and which Microsoft C compiler and Windows SDKs are installed.
-
-## Microsoft Visual C++
-* Erlang and CouchDB can be built using the free VS2008 Express C++ edition from [MSDN](http://msdn.microsoft.com/en-gb/vstudio/)
-* install these to the default locations, using the DVD ISO [msvc++] excluding optional MSSSQL & Silverlight
-
 
 ## Cygwin
 The full Cygwin install comprises several GiB of data. Run [cygwin]'s setup.exe using defaults with the following additional modules at a minimum:
@@ -27,9 +26,39 @@ The full Cygwin install comprises several GiB of data. Run [cygwin]'s setup.exe 
 * editors: vim
 * utils: file
 
-After install, setup a symlink to where you plan to install related binaries, build erlang, and couchcb. I am using C:\relax
-
+After install, run the cygwin shell, and set up a symlink to where you plan to install related binaries, build erlang, and couchdb. I am using `C:\relax`
 		ln -s /cygdrive/c/relax /relax
+
+## Mozilla Build
+The mozilla build toolchain is needed solely for building our javascript engine.
+
+* download it from [mozbuild] and install per defaults
+
+## Microsoft Visual C++
+* Erlang and CouchDB can be built using the free VS2008 Express C++ edition from [MSDN](http://msdn.microsoft.com/en-gb/vstudio/)
+* install Visual C++ 9 only, to the default locations, using the DVD ISO [msvc++] excluding optional MSSSQL & Silverlight
+
+## Windows 7 SDK
+* The windows 7 SDK is required, as the free VS2008 install is missing the message compiler. Download one of the following version per your requirements & install
+* [win7sdk_32bit]
+* [win7sdk_64bit]
+
+
+********************************************************************************
+# Supporting Tools
+********************************************************************************
+
+Both CouchDB and Erlang have dependencies on other opensource tools.
+
+## OpenSSL
+
+* use the 32-bit version even if you are using a 64-bit OS
+* download [openssl_bits] and install to C:\OpenSSL
+* under your cygwin prompt, make a symlink `ln -s /cygdrive/c/openssl /relax/openssl`
+
+********************************************************************************
+# Building pre-requisites for Erlang
+********************************************************************************
 
 ## wxWidgets
 * two components are used for building Erlang's graphical shell, `werl.exe` on windows
@@ -468,7 +497,7 @@ Three compiler tools are required to build wxWidgets, Erlang, Javascript, and fi
 
 
 ********************************************************************************
-# links
+# Download Links [in source view]
 ********************************************************************************
 
 [7zip_bits]:		http://downloads.sourceforge.net/sevenzip/7z465.exe
@@ -490,6 +519,7 @@ Three compiler tools are required to build wxWidgets, Erlang, Javascript, and fi
 [libcurl_bits]:		http://curl.haxx.se/download/libcurl-7.19.3-win32-ssl-msvc.zip
 [libcurl-src]:		http://curl.haxx.se/download/curl-7.21.1.tar.gz
 [msvc++]:		http://download.microsoft.com/download/E/8/E/E8EEB394-7F42-4963-A2D8-29559B738298/VS2008ExpressWithSP1ENUX1504728.iso
+[mozbuild]:		http://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/MozillaBuildSetup-Latest.exe
 [notepadplus_bits]:	http://download.sourceforge.net/project/notepad-plus/notepad%2B%2B%20releases%20binary/npp%205.7%20bin/npp.5.7.Installer.exe
 [nsis_bits]:		http://download.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
 [openssl_bits]:		http://www.slproweb.com/download/Win32OpenSSL-1_0_0a.exe

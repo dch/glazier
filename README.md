@@ -6,10 +6,11 @@ Glazier is a set of scripts designed to help automate as much as practicable the
 
 ## Current State
 
-* installation of development environment is described but not automated
-* steps covered below should produce a working CouchDB build & installation
+* steps below should produce a working CouchDB build & self-installing .exe
 * the build environment should be fully functional on both 32,64, desktop and server versions of windows from XP/2003 onwards
-* downloads are not small - [glaze.cmd](http://github.com/dch/glazier/blob/master/bin/glaze.cmd) retrieves approx 6GiB of DVD ISOs for Microsoft's Visual Studio 2008 compiler, related SDKs and the smaller cygwin and mozilla build frameworks
+* fetching binaries is described and automated
+* installation of development environment is described and automated
+* downloads are not small - [get_bits.cmd](http://github.com/dch/glazier/blob/master/bin/get_bits.cmd) retrieves approx 7GiB of DVD ISOs for Microsoft's Visual Studio 2008 compiler, related SDKs, the smaller cygwin and mozilla build frameworks, source and misc tools
 
 ********************************************************************************
 # Installing the Build Environment
@@ -26,7 +27,8 @@ The full Cygwin install comprises several GiB of data. Run [cygwin]'s setup.exe 
 * editors: vim
 * utils: file
 
-After install, run the cygwin shell, and set up a symlink to where you plan to install related binaries, build erlang, and couchdb. I am using `C:\relax`
+After install, run the cygwin shell, and set up a symlink to where you plan to install related binaries, build erlang, and couchdb. I am using `C:\relax` so:
+
 		ln -s /cygdrive/c/relax /relax
 
 ## Mozilla Build
@@ -53,8 +55,30 @@ Both CouchDB and Erlang have dependencies on other opensource tools.
 ## OpenSSL
 
 * use the 32-bit version even if you are using a 64-bit OS
-* download [openssl_bits] and install to C:\OpenSSL
-* under your cygwin prompt, make a symlink `ln -s /cygdrive/c/openssl /relax/openssl`
+* download [openssl_bits] and install to `c:\relax\openssl`
+
+## Innosoft Installer
+
+* download the installer [inno_bits] and install to `c:\relax\inno5`
+
+## NSIS Installer
+
+* download the installer [nsis_bits] and install to `c:\relax\nsis`
+
+## set up links
+
+* to keep our paths clean later, and largely independent of the compiler installs if you have pre-existing ones, start a new cmd.exe prompt with a fresh environment
+* this should have both VS90ComnTools and ProgramFiles environment vars defined from the previous install of Visual Studio
+* setup the following hard links (junction points), using either the included mklink tool (Windows 7 and later), or [junction](http://live.sysinternals.com/junction.exe) from sysinternals:
+
+        junction c:\relax\openssl c:\openssl
+        junction c:\relax\vs90 "%VS90COMNTOOLS%\..\.."
+        junction c:\relax\SDKs "%programfiles%\Microsoft SDKs\Windows"
+
+or using mklink.exe
+
+        mklink /j c:\relax\openssl c:\openssl
+    
 
 ********************************************************************************
 # Building pre-requisites for Erlang
@@ -62,38 +86,34 @@ Both CouchDB and Erlang have dependencies on other opensource tools.
 
 ## wxWidgets
 * two components are used for building Erlang's graphical shell, `werl.exe` on windows
-* download [wxwidgets_bits] from [WxWidgets website](http://wxwidgets.org/) & untar using cygwin into /relax/
-* the Erlang build expects to see wxWidgets in /opt/local/pgm by default
+* download [wxwidgets_bits] from [WxWidgets website](http://wxwidgets.org/) & unzip using cygwin into /relax/
+* the Erlang build expects to see wxWidgets in /opt/local/pgm/wxWidgets-2.8.11 by default
 
-		mkdir -p /opt/local/pgm/
-		ln -s /relax/wxWidgets-2.8.11 /opt/local/pgm/wxWidgets-2.8.11
+        mkdir -p /opt/local/pgm/
+        ln -s /relax/wxMSW-2.8.11 /opt/local/pgm/wxWidgets-2.8.11
 
-* Edit `c:\relax\wxWidgets-2.8.11\include\wx\msw\setup.h` and enable  wxUSE\_GLCANVAS, wxUSE\_POSTSCRIPT and wxUSE\_GRAPHICS_CONTEXT
+* Using a suitable editor (vi in the cygwin suite, or install [notepadplus_bits] for windows users) and
+* Edit `c:\relax\wxMSW-2.8.11\include\wx\msw\setup.h` to enable wxUSE\_GLCANVAS, wxUSE\_POSTSCRIPT and wxUSE\_GRAPHICS_CONTEXT
 
 ### wx.dsw
-* open VSC++ & the project  `C:\relax\wxWidgets-2.8.11\build\msw\wx.dsw`, accepting the automatic conversion to the newer VC++ format
+* open VSC++ & the project  `C:\relax\wxMSW-2.8.11\build\msw\wx.dsw`, accepting the automatic conversion to the newer VC++ format and save as `\relax\wxMSW-2.8.11\build\msw\wx.sln`
 * right-click on the project, and set up the dependencies for wx.dsw to achieve the below build order
 jpeg, png, tiff, zlib, regex, expat, base, net, odbc, core,
  gl, html, media, qa, adv, dbgrid, xrc, aui, richtext, xml
-* Then build all unicode release (and unicode debug) packages via build -> batch build
+* Then build all unicode release (and unicode debug) packages:
 
-TODO: can we do this somehow from prompt e.g. vcbuild /rebuild contrib\vstudio\vc9\zlibvc.sln "Release|Win32"
-	
+        pushd c:\relax\wxMSW*\build\msw
+        start vcbuild /useenv /rebuild /platform:Win32 /M2 wx.sln "Unicode Release|Win32"
+        start vcbuild /useenv /rebuild /platform:Win32 /M2 wx.sln "Unicode Debug|Win32"
+
 ### stc.dsw
-* open VSC++ & convert `C:\relax\wxWidgets-2.8.11\contrib\build\stc\stc.dsw` to C:\src\wxWidgets-2.8.11\contrib\build\stc\stc.sln
-*  right-click on stc in solution explorer pane (not "Solution 'stc' at the top of the tree)
-* Under the C/C++ -> General tree, make sure add the following include directories:
+* open VSC++ & convert `C:\relax\wxMSW-2.8.11\contrib\build\stc\stc.dsw` to C:\relax\wxMSW-2.8.11\contrib\build\stc\stc.sln
 
-        ..\..\..\include
-        ..\..\..\lib\vc_lib\mswd
-
-* Under Librarian -> General add additional library directories:
-
-        ..\..\..\lib\vc_lib
-
-* Build all unicode release (and unicode debug) packages via build -> batch build
-
-TODO: can we do this somehow from prompt e.g. vcbuild /rebuild contrib\vstudio\vc9\zlibvc.sln "Release|Win32"
+        pushd c:\relax\wxMSW*\contrib\build\stc
+        set LIB=%LIB%;..\..\..\include..\..\..\lib\vc_lib\mswd
+        set LIBPATH=%LIBPATH%;..\..\..\lib\vc_lib
+        start vcbuild /useenv /rebuild /platform:Win32 /M2 stc.sln "Unicode Release|Win32"
+        start vcbuild /useenv /rebuild /platform:Win32 /M2 stc.sln "Unicode Debug|Win32"
 
 ### Reference URLs
 * [WxWidgets Source](http://svn.wxwidgets.org/svn/wx/wxWidgets/branches/WX_2_8_BRANCH/docs/msw/install.txt)
@@ -514,7 +534,7 @@ Three compiler tools are required to build wxWidgets, Erlang, Javascript, and fi
 [erlang_R14A]:		http://www.erlang.org/download/otp_src_R14A.tar.gz
 [icu_bits_curr]:	http://download.icu-project.org/files/icu4c/4.2/icu4c-4_2-Win32-msvc9.zip
 [icu_bits_new]:		http://download.icu-project.org/files/icu4c/4.4.1/icu4c-4_4_1-Win32-msvc9.zip
-[inno_bits]:		http://www.jrsoftware.org/download.php/ispack-unicode.exe
+[inno_bits]:		http://www.jrsoftware.org/download.php/is-unicode.exe
 [inno_help]:		http://www.jrsoftware.org/ishelp/
 [libcurl_bits]:		http://curl.haxx.se/download/libcurl-7.19.3-win32-ssl-msvc.zip
 [libcurl-src]:		http://curl.haxx.se/download/curl-7.21.1.tar.gz

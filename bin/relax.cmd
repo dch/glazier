@@ -1,6 +1,6 @@
 @echo off
 setlocal
-pushd %BITS%
+pushd %GLAZIER%\bin
 
 :: our goal is to get the path set up in this order
 :: erlang and couchdb build helper scripts
@@ -30,13 +30,15 @@ call "%vs90comntools%\..\..\vc\vcvarsall.bat" x86
 echo setting up reparse points of new volumes
 
 ::VS90ComnTools is the only variable set by the initial install of VC++ 9.0
-mklink /j d:\src\vs90 "%VS90COMNTOOLS%\..\.." > NUL: 2>&1
-mklink /j d:\src\SDKs "C:\Program Files\Microsoft SDKs" > NUL: 2>&1
+:: set up junction point to make finding stuff simpler
+:: the sysinternals tool works on all platforms incl XP & later
+%GLAZIER%\bits\junction.exe "%RELAX%\vs90" "%VS90COMNTOOLS%\..\.."  > NUL: 2>&1
+%GLAZIER%\bits\junction.exe "%RELAX%\SDKs" "%programfiles%\Microsoft SDKs\Windows"  > NUL: 2>&1
 
 :: add ICU, cURL and OpenSSL libraries for C compilers to find later on in CouchDB and Erlang
-set OPENSSL_PATH=d:\src\openssl
-set CURL_PATH=d:\src\curl-7.21.1
-set ICU_PATH=d:\src\icu-4.2.1
+set OPENSSL_PATH=%RELAX%\openssl
+set CURL_PATH=%RELAX%\curl-7.21.1
+set ICU_PATH=%RELAX%\icu
 
 set INCLUDE=%INCLUDE%;%OPENSSL_PATH%\include\openssl;%CURL_PATH%\include\curl;%ICU_PATH%\include;
 set LIBPATH=%LIBPATH%;%OPENSSL_PATH%\lib;%CURL_PATH%\lib;%ICU_PATH%\lib;
@@ -70,7 +72,7 @@ goto unix_shell
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :unix_shell
-%root%\cygwin\bin\bash /src/bin/relax.sh
+%systemdrive%\cygwin\bin\bash /relax/bin/relax.sh
 goto eof
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

@@ -19,7 +19,7 @@ PATH=$ERL_TOP/release/win32/erts-$ERL_VER/bin:$ERL_TOP/erts/etc/win32/cygwin_too
 
 # then MSVC9 binaries using the new junction points
 ###PATH=$PATH:/cygdrive/c/PROGRA~2/MICROS~1.0/Common7/IDE:/cygdrive/c/PROGRA~2/MICROS~1.0/VC/BIN:/cygdrive/c/PROGRA~2/MICROS~1.0/Common7/Tools:/cygdrive/c/PROGRA~2/MICROS~1.0/VC/VCPACK~1
-PATH=$PATH:/src/vs90/Common7/IDE:/src/vs90/VC/BIN:/src/vs90/Common7/Tools:/src/vs90/vc/vcPackages
+PATH=$PATH:/relax/vs90/Common7/IDE:/relax/vs90/VC/BIN:/relax/vs90/Common7/Tools:/relax/vs90/vc/vcPackages
 
 #### then .Net framework which we probably don't need at all
 ###PATH=$PATH:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/V20~1.507
@@ -27,11 +27,11 @@ PATH=$PATH:/src/vs90/Common7/IDE:/src/vs90/VC/BIN:/src/vs90/Common7/Tools:/src/v
 # then SDKs
 ###PATH=$PATH:/cygdrive/c/PROGRA~1/MICROS~1/Windows/v7.0/bin
 ###PATH=$PATH:/cygdrive/c/PROGRA~1/MICROS~1/Windows/v6.0A/bin
-PATH=$PATH:/src/SDKs/Windows/v7.0/bin
-PATH=$PATH:/src/SDKs/Windows/v6.0A/bin
+PATH=$PATH:/relax/SDKs/v7.0/bin
+PATH=$PATH:/relax/SDKs/v6.0A/bin
 
 # then erlang and couchdb build helper scripts
-PATH=$PATH:/src/openssl:/src/nsis:/src/inno5
+PATH=$PATH:/relax/openssl:/relax/nsis:/relax/inno5
 # then cygwin tools
 
 # then cygwin tools
@@ -63,7 +63,7 @@ cd $ERL_TOP
 echo current path:
 echo $PATH | sed 's/:/\n/g'
 echo
-echo please check the toolkit paths:
+echo please check the toolkit paths point to Microsoft versions:
 which mc; which lc; which cl; which link
 echo
 

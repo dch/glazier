@@ -5,7 +5,7 @@ cafe69114c20c90c47ad3caca05870d8 *curl-7.21.1.tar.gz
 539d6ea0a145ea8f257fca682478f9dd *GRMSDK_EN_DVD.iso
 1081c87025a5a507a55426ac59222b7a *GRMSDKX_EN_DVD.iso
 dd4b12ec5e405809522725fdae14277f *icu4c-4_2_1-Win32-msvc9.zip
-43ad44a3681b7ca020856c746ca73c44 *ispack-unicode.exe
+79fb77ae499c43cb8deeb9f4ab6021f3 *isetup-5.3.10-unicode.exe
 15ed342443781bd70d8a09f06a03d5d3 *MozillaBuildSetup-Latest.exe
 5e02441c7f3fa4da4f4928a2d42a07c3 *nsis-2.46-setup.exe
 ca6da4921e438891967900aa6a084341 *otp_src_R13B04.tar.gz
@@ -18,3 +18,5 @@ b936f0f378b9a35489353e878154e899 *vcredist_x86.exe
 f63275890a78ab0722b9728f670901e4 *Win32OpenSSL-1_0_0a.exe
 2d021270cc8630fd11f3219bcf1fb521 *wxWidgets-2.8.11_with_erl_fixes.zip
 ad14196b38470d927f438ab08e8f16b3 *wxMSW-2.8.11.zip
+7927ab2b518445db4e15ed9d67c1753e *npp.5.7.Installer.exe
+a12686c5e71180980b51bc44dbbed50c *junction.exe

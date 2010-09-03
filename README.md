@@ -121,33 +121,33 @@ jpeg, png, tiff, zlib, regex, expat, base, net, odbc, core,
 * [WxWidgets compilation advice](http://rhyous.com/2009/12/16/how-to-compile-a-wxwidgets-application-in-visual-studio-2008/)
 * [wxWidgets](http://www.zerothlaw.org/joomla/index.php?option=com_jd-wiki&Itemid=26&id=wxwidgets:wxwidgets_with_visual_studio_express) guidance
 
-## Building Erlang
-* after installing VC++ 2008 Express, and most other Visual Studio solutions, `call "%vs90comntools%\..\..\vc\vcvarsall.bat" x86
-` will automatically find the correct path, and set up our 32-bit build environment correctly, independently if you have installed on 32 or 64bit windows. Alternatively you can run "C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\vcvarsall.bat" on 64bit systems, or "C:\Program Files\Microsoft Visual Studio 9.0\VC\vcvarsall.bat" on 32bit systems
-* then run `c:\glazier\bin\relax.cmd`
-* download R13B04 or R14A from http://www.erlang.org/download/
-* under cygwin cd /src and untar
+********************************************************************************
+# Building Erlang
+********************************************************************************
 
+* after installing VC++ 2008 Express, and most other Visual Studio solutions, `call "%vs90comntools%\..\..\vc\vcvarsall.bat" x86
+` will automatically find the correct path, and set up our 32-bit build environment correctly, independently if you have installed on 32 or 64bit windows.
+* start a cygwin shell
+
+        ln -s /cygdrive/d/glazier/bin bin
+	ln -s /cygdrive/d/glazier/bits bits
+	tar xzf /relax/bits/otp_src_R14A.tar.gz &
+	tar xzf /relax/bits/otp_src_R13B04.tar.gz &
+
+* then run `d:\glazier\bin\relax.cmd`
 
 ## Tk/Tcl
 * optional component
 
-		cd $ERL_TOP && tar xvzf /src/bits/tcltk85_win32_bin.tar.gz
+        cd $ERL_TOP && tar xvzf /src/bits/tcltk85_win32_bin.tar.gz
+        # or simply
+        cd /relax/otp_src_R14A && tar xvzf /relax/bits/tcltk85_win32_bin.tar.gz
+        cd /relax/otp_src_R13B04 && tar xvzf /relax/bits/tcltk85_win32_bin.tar.gz
 
 * or skip the whole damn lot this way
 
 		echo "skipping gs" > lib/gs/SKIP
 
-## Setup Erlang Environment and Tools
-* Now we setup the environment to use our symlinked tools
-* install OpenSSL, NSIS installer,
-    
-	    ln -s /cygdrive/c/OpenSSL/ /src/openssl
-	    ln -s /cygdrive/c/Program\ Files\ \(x86\)/NSIS /src/nsis
-	    
-* sanity check against [http://github.com/erlang/otp/blob/dev/INSTALL-WIN32.md]()
-
-* start `c:\glazier\relax.cmd`
 * check that `which cl; which link; which mc` return the MS ones, if not then sort them manually
 * build Erlang using `/src/glazier/bin/erl_config.sh` and `/src/glazier/bin/erl_build.sh`, or manually as follows
 
@@ -159,10 +159,13 @@ jpeg, png, tiff, zlib, regex, expat, base, net, odbc, core,
 		# to setup erlang to run from this new source build immediately run:
 		./release/win32/Install.exe -s
 
+********************************************************************************
 # CouchDB
+********************************************************************************
+
 minimum requirements
 
-* Erlang OTP R13B04 or R14A
+* Erlang OTP R13B04 or R14A including source
 * ICU 4.2 only                      (http://icu.sourceforge.net/)
 * OpenSSL  1.0.0a               (http://www.openssl.org/)
 * Mozilla SpiderMonkey 1.8 from SeaMonkey 2.0.6

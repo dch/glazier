@@ -58,14 +58,14 @@ goto eof
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :R14A
-set ERL_TOP=/src/otp_src_R14A
+set ERL_TOP=/relax/otp_src_R14A
 set ERL_VER=5.8
 set OTP_VER=R14A
 goto unix_shell
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :R13B04
-set ERL_TOP=/src/otp_src_R13B04
+set ERL_TOP=/relax/otp_src_R13B04
 set ERL_VER=5.7.5
 set OTP_VER=R13B04
 goto unix_shell

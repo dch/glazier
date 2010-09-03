@@ -2,21 +2,22 @@
 # bits required to build erlang
 erlang_R13B04	otp_src_R13B04.tar.gz	http://www.erlang.org/download/otp_src_R13B04.tar.gz
 erlang_R14A	otp_src_R14A.tar.gz	http://www.erlang.org/download/otp_src_R14A.tar.gz
-nsis	nsis-2.46-setup.exe	http://voxel.dl.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
+nsis	nsis-2.46-setup.exe	http://download.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
 inno	ispack-unicode.exe	http://www.jrsoftware.org/download.php/ispack-unicode.exe
-wxwidgets	wxMSW-2.8.11-Setup.exe	http://voxel.dl.sourceforge.net/project/wxwindows/2.8.11/wxMSW-2.8.11-Setup.exe
+wxwidgets	wxMSW-2.8.11.zip	http://sourceforge.net/projects/wxwindows/files/2.8.11/wxMSW-2.8.11.zip
 erlang_tcl	tcltk85_win32_bin.tar.gz	http://www.erlang.org/download/tcltk85_win32_bin.tar.gz
 ################################################################################
 # bits required to build couch
-libicu	icu4c-4_2-Win32-msvc9.zip	http://download.icu-project.org/files/icu4c/4.2/icu4c-4_2-Win32-msvc9.zip
+libicu	icu4c-4_2_1-Win32-msvc9.zip	http://download.icu-project.org/files/icu4c/4.2.1/icu4c-4_2_1-Win32-msvc9.zip
 libcurl	curl-7.21.1.tar.gz	http://curl.haxx.se/download/curl-7.21.1.tar.gz
-nsis	nsis-2.46-setup.exe	http://voxel.dl.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
+nsis	nsis-2.46-setup.exe	http://download.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
 seamonkey	seamonkey-2.0.6.source.tar.bz2	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/2.0.6/source/seamonkey-2.0.6.source.tar.bz2
 ################################################################################
 # bits required for both
 vcredist	vcredist_x86.exe	http://download.microsoft.com/download/d/1/0/d10d210e-e0ad-4010-b547-bc5e395ef691/vcredist_x86.exe
 openssl	Win32OpenSSL-1_0_0a.exe	http://www.slproweb.com/download/Win32OpenSSL-1_0_0a.exe
-apache-couchdb-1.0.1	apache-couchdb-1.0.1.tar.gz	http://www.apache.org/dyn/closer.cgi?path=/couchdb/1.0.1/apache-couchdb-1.0.1.tar.gz
-apache-couchdb-0.11.2	apache-couchdb-0.11.2.tar.gz	http://www.apache.org/dyn/closer.cgi?path=/couchdb/0.11.2/apache-couchdb-0.11.2.tar.gz
-zlib-bits	zlib125-dll.zip	http://zlib.net/zlib125-dll.zip
-zlib-src	zlib-1.2.5.tar.gz	http://zlib.net/zlib-1.2.5.tar.gz
+## not auto redirect but original link is from http://www.apache.org/dyn/closer.cgi?path=/couchdb/1.0.1/apache-couchdb-1.0.1.tar.gz
+apache-couchdb-1.0.1	apache-couchdb-1.0.1.tar.gz	http://github.com/apache/couchdb/tarball/1.0.1
+apache-couchdb-0.11.2	apache-couchdb-0.11.2.tar.gz	http://github.com/apache/couchdb/tarball/0.11.2
+#zlib-bits	zlib125-dll.zip	http://zlib.net/zlib125-dll.zip
+#zlib-src	zlib-1.2.5.tar.gz	http://zlib.net/zlib-1.2.5.tar.gz

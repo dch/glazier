@@ -6,56 +6,52 @@ Glazier is a set of scripts designed to help automate as much as practicable the
 
 ## Current State
 
-* scripts don't yet produce a working CouchDB
 * installation of development environment is described but not automated
+* steps covered below should produce a working CouchDB build & installation
 * the build environment should be fully functional on both 32,64, desktop and server versions of windows from XP/2003 onwards
-* [get_compilers.cmd](http://github.com/dch/glazier/blob/master/bin/get_compilers.cmd) retrieves approx 6GiB of DVD ISOs for Microsoft's Visual Studio 2008 compiler, related SDKs and the smaller cygwin and mozilla build frameworks
-* [get_bits.cmd](http://github.com/dch/glazier/blob/master/bin/get_bits.cmd) retrieves source for erlang, couchdb, curl, 
+* downloads are not small - [glaze.cmd](http://github.com/dch/glazier/blob/master/bin/glaze.cmd) retrieves approx 6GiB of DVD ISOs for Microsoft's Visual Studio 2008 compiler, related SDKs and the smaller cygwin and mozilla build frameworks
 
 # Build Environment
 * Building Erlang & CouchDB on Windows requires a custom build environment, which is very sensitive to path order amongst the three different compilers used to build wxWidgets, erlang, javascript, and couchdb
 * This is further complicated by different install locations on 32 vs 64 bit windows versions, and which Microsoft C compiler and Windows SDKs are installed.
-* To simplify this we use symlinks liberally
-
-		mkdir c:\src
-		setx SRC=c:\src
 
 ## Microsoft Visual C++
 * Erlang and CouchDB can be built using the free VS2008 Express C++ edition from [MSDN](http://msdn.microsoft.com/en-gb/vstudio/)
-* install using the DVD ISO [msvc++] excluding optional MSSSQL & Silverlight
+* install these to the default locations, using the DVD ISO [msvc++] excluding optional MSSSQL & Silverlight
+
 
 ## Cygwin
-The full Cygwin install comprises several GiB of data. Run [cygwin]'s setup.exe using defaults with the following additional modules:
+The full Cygwin install comprises several GiB of data. Run [cygwin]'s setup.exe using defaults with the following additional modules at a minimum:
 
-* accessibility, admin, archive, audio, base, database: default
 * devel: ALL
-		autoconf, automake, gcc-, gcc4, openssl-devel, readline
-* doc: default
 * editors: vim
-* games, gnome, graphics, interpreters, KDE, libs,  mail, math, mingw, net, perl, publishing, python, security, shells, system, text, utils, web, X11: default
+* utils: file
 
-		ln -s /cygdrive/c/src /src
+After install, setup a symlink to where you plan to install related binaries, build erlang, and couchcb. I am using C:\relax
 
-## WXWIDGETS
-* download [wxwidgets_bits] from [WxWidgets website](http://wxwidgets.org/) & untar using cygwin into /src/
+		ln -s /cygdrive/c/relax /relax
+
+## wxWidgets
+* two components are used for building Erlang's graphical shell, `werl.exe` on windows
+* download [wxwidgets_bits] from [WxWidgets website](http://wxwidgets.org/) & untar using cygwin into /relax/
+* the Erlang build expects to see wxWidgets in /opt/local/pgm by default
 
 		mkdir -p /opt/local/pgm/
-		ln -s /src/wxWidgets-2.8.11 /opt/local/pgm/wxWidgets-2.8.11
+		ln -s /relax/wxWidgets-2.8.11 /opt/local/pgm/wxWidgets-2.8.11
 
-* Enable wxUSE\_GLCANVAS, wxUSE\_POSTSCRIPT and wxUSE\_GRAPHICS_CONTEXT in c:\src\wxWidgets-2.8.11\include\wx\msw\setup.h
+* Edit `c:\relax\wxWidgets-2.8.11\include\wx\msw\setup.h` and enable  wxUSE\_GLCANVAS, wxUSE\_POSTSCRIPT and wxUSE\_GRAPHICS_CONTEXT
 
 ### wx.dsw
-* open & convert C:\src\wxWidgets-2.8.11\build\msw\wx.dsw to C:\src\wxWidgets-2.8.11\build\msw\wx.sln
-* if you have a multicore process you can do a batch build
-* set up the dependencies for wx.dsw to achieve the below build order
+* open VSC++ & the project  `C:\relax\wxWidgets-2.8.11\build\msw\wx.dsw`, accepting the automatic conversion to the newer VC++ format
+* right-click on the project, and set up the dependencies for wx.dsw to achieve the below build order
 jpeg, png, tiff, zlib, regex, expat, base, net, odbc, core,
  gl, html, media, qa, adv, dbgrid, xrc, aui, richtext, xml
-* Build all unicode release (and unicode debug) packages via build -> batch build
+* Then build all unicode release (and unicode debug) packages via build -> batch build
 
 TODO: can we do this somehow from prompt e.g. vcbuild /rebuild contrib\vstudio\vc9\zlibvc.sln "Release|Win32"
 	
 ### stc.dsw
-* open & convert C:\src\wxWidgets-2.8.11\contrib\build\stc\stc.dsw to C:\src\wxWidgets-2.8.11\contrib\build\stc\stc.sln
+* open VSC++ & convert `C:\relax\wxWidgets-2.8.11\contrib\build\stc\stc.dsw` to C:\src\wxWidgets-2.8.11\contrib\build\stc\stc.sln
 *  right-click on stc in solution explorer pane (not "Solution 'stc' at the top of the tree)
 * Under the C/C++ -> General tree, make sure add the following include directories:
 
@@ -74,14 +70,12 @@ TODO: can we do this somehow from prompt e.g. vcbuild /rebuild contrib\vstudio\v
 * [WxWidgets Source](http://svn.wxwidgets.org/svn/wx/wxWidgets/branches/WX_2_8_BRANCH/docs/msw/install.txt)
 * [MSVC++ WxWidgets](http://wiki.wxwidgets.org/Microsoft_Visual_C%2B%2B_Guide)
 * [WxWidgets compilation advice](http://rhyous.com/2009/12/16/how-to-compile-a-wxwidgets-application-in-visual-studio-2008/)
-* notes on building [Erlang](http://github.com/erlang/otp/blob/dev/INSTALL-WIN32.md)
 * [wxWidgets](http://www.zerothlaw.org/joomla/index.php?option=com_jd-wiki&Itemid=26&id=wxwidgets:wxwidgets_with_visual_studio_express) guidance
 
 ## Building Erlang
 * after installing VC++ 2008 Express, and most other Visual Studio solutions, `call "%vs90comntools%\..\..\vc\vcvarsall.bat" x86
 ` will automatically find the correct path, and set up our 32-bit build environment correctly, independently if you have installed on 32 or 64bit windows. Alternatively you can run "C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\vcvarsall.bat" on 64bit systems, or "C:\Program Files\Microsoft Visual Studio 9.0\VC\vcvarsall.bat" on 32bit systems
-* then run
-	c:\glazier\bin\relax.cmd
+* then run `c:\glazier\bin\relax.cmd`
 * download R13B04 or R14A from http://www.erlang.org/download/
 * under cygwin cd /src and untar
 
@@ -215,7 +209,7 @@ to c:\src\inno5 & ensure its in the path
 
 
 CURL
-[curl] -> win32-openssl [curl-bits]
+[curl] -> win32-openssl [curl_bits]
 
 # Automated Test Bed for Builds
 The objective is to take the current manual steps, and have them automated for a successful build off a variety of representative Microsoft current OS using Amazon EC2 infrastructure.
@@ -283,159 +277,6 @@ TODO // URLs don't go to right AMIs
 * turn on XP or vista compatibility mode
 * try running from a SYSWOW64 cmd.exe instead of usual one
 
-[7zip_bits]: http://voxel.dl.sourceforge.net/project/sevenzip/7-Zip/4.65/7za465.zip
-[AWS Windows Servers]: http://developer.amazonwebservices.com/connect/kbcategory.jspa?categoryID=201
-[AWS console]: https://console.aws.amazon.com/ec2/home#c=EC2&s=Instances
-[DEP]: http://support.microsoft.com/kb/875352
-[SEHOP]: http://support.microsoft.com/kb/956607
-[bitvise_sshd_bits]: http://dl.bitvise.com/WinSSHD5-Inst.exe
-[curl-bits]: http://curl.haxx.se/download/curl-7.19.5-win32-ssl.zip
-[curl]: http://curl.haxx.se/download.html
-[cygwin]: http://www.cygwin.com/setup.exe
-[erlang_R13B04]: http://www.erlang.org/download/otp_src_R13B04.tar.gz
-[erlang_R14A]: http://www.erlang.org/download/otp_src_R14A.tar.gz
-[icu_bits_curr]: http://download.icu-project.org/files/icu4c/4.2/icu4c-4_2-Win32-msvc9.zip
-[icu_bits_new]: http://download.icu-project.org/files/icu4c/4.4.1/icu4c-4_4_1-Win32-msvc9.zip
-[inno_bits]: http://www.jrsoftware.org/download.php/ispack-unicode.exe
-[libcurl-bits] http://curl.haxx.se/download/libcurl-7.19.3-win32-ssl-msvc.zip
-[libcurl-src]: http://curl.haxx.se/download/curl-7.21.1.tar.gz
-[msvc++]: http://download.microsoft.com/download/E/8/E/E8EEB394-7F42-4963-A2D8-29559B738298/VS2008ExpressWithSP1ENUX1504728.iso
-[notepadplus_bits]: http://voxel.dl.sourceforge.net/project/notepad-plus/notepad%2B%2B%20releases%20binary/npp%205.7%20bin/npp.5.7.Installer.exe
-[nsis_bits]: http://voxel.dl.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
-[openssl_bits]: http://www.slproweb.com/download/Win32OpenSSL-1_0_0a.exe
-[ramdisk]: http://www.ltr-data.se/files/imdiskinst.exe
-[seamonkey_bits]: http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/2.0.6/source/seamonkey-2.0.6.source.tar.bz2
-[vcredist]: http://download.microsoft.com/download/d/1/0/d10d210e-e0ad-4010-b547-bc5e395ef691/vcredist_x86.exe
-[win7sdk_32bit]: http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDK_EN_DVD.iso
-[win7sdk_64bit]: http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDKX_EN_DVD.iso
-[wxwidgets_bits]: http://voxel.dl.sourceforge.net/project/wxwindows/2.8.11/wxMSW-2.8.11-Setup.exe
-[zlib-bits]: http://zlib.net/zlib125-dll.zip
-[zlib-src]: http://zlib.net/zlib-1.2.5.tar.gz
-
-================================================================================
-win7 std - default environment
-
-ALLUSERSPROFILE=C:\ProgramData
-APPDATA=C:\Users\couchdb\AppData\Roaming
-CLIENTNAME=continuity.muse
-CommonProgramFiles=C:\Program Files\Common Files
-CommonProgramFiles(x86)=C:\Program Files (x86)\Common Files
-CommonProgramW6432=C:\Program Files\Common Files
-COMPUTERNAME=BUILD
-ComSpec=C:\Windows\system32\cmd.exe
-FP_NO_HOST_CHECK=NO
-HOMEDRIVE=C:
-HOMEPATH=\Users\couchdb
-LOCALAPPDATA=C:\Users\couchdb\AppData\Local
-LOGONSERVER=\\BUILD
-NUMBER_OF_PROCESSORS=1
-OPENSSL_CONF=C:\OpenSSL\bin\openssl.cfg
-OS=Windows_NT
-Path=C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\
-PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
-PROCESSOR_ARCHITECTURE=AMD64
-PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 15 Stepping 6, GenuineIntel
-PROCESSOR_LEVEL=6
-PROCESSOR_REVISION=0f06
-ProgramData=C:\ProgramData
-ProgramFiles=C:\Program Files
-ProgramFiles(x86)=C:\Program Files (x86)
-ProgramW6432=C:\Program Files
-PROMPT=$P$G
-PSModulePath=C:\Windows\system32\WindowsPowerShell\v1.0\Modules\
-PUBLIC=C:\Users\Public
-SESSIONNAME=RDP-Tcp#0
-SystemDrive=C:
-SystemRoot=C:\Windows
-TEMP=C:\Users\couchdb\AppData\Local\Temp
-TMP=C:\Users\couchdb\AppData\Local\Temp
-USERDOMAIN=BUILD
-USERNAME=couchdb
-USERPROFILE=C:\Users\couchdb
-VS90COMNTOOLS=C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\Tools\
-windir=C:\Windows
-
-
-================================================================================
-win7 std - vs2008 environment
-ALLUSERSPROFILE=C:\ProgramData
-APPDATA=C:\Users\couchdb\AppData\Roaming
-CLIENTNAME=continuity.muse
-CommonProgramFiles=C:\Program Files\Common Files
-CommonProgramFiles(x86)=C:\Program Files (x86)\Common Files
-CommonProgramW6432=C:\Program Files\Common Files
-COMPUTERNAME=BUILD
-ComSpec=C:\Windows\system32\cmd.exe
-DevEnvDir=C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE
-FP_NO_HOST_CHECK=NO
-FrameworkDir=C:\Windows\Microsoft.NET\Framework
-FrameworkVersion=v2.0.50727
-HOMEDRIVE=C:
-HOMEPATH=\Users\couchdb
-INCLUDE=C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\ATLMFC\INCLUDE;C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\INCLUDE;C:\Program Files\Microsoft SDKs\Windows\v6.0A\include;
-LIB=C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\ATLMFC\LIB;C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\LIB;C:\Program Files\Microsoft SDKs\Windows\v6.0A\lib;
-LIBPATH=C:\Windows\Microsoft.NET\Framework\;C:\Windows\Microsoft.NET\Framework\v2.0.50727;C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\ATLMFC\LIB;C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\LIB;
-LOCALAPPDATA=C:\Users\couchdb\AppData\Local
-LOGONSERVER=\\BUILD
-NUMBER_OF_PROCESSORS=1
-OPENSSL_CONF=C:\OpenSSL\bin\openssl.cfg
-OS=Windows_NT
-Path=C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE;C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\BIN;C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\Tools;C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\Tools\bin;C:\Windows\Microsoft.NET\Framework\;C:\Windows\Microsoft.NET\Framework\\Microsoft .NET Framework 3.5 (Pre-Release Version);C:\Windows\Microsoft.NET\Framework\v2.0.50727;C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\VCPackages;C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\
-PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
-PROCESSOR_ARCHITECTURE=AMD64
-PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 15 Stepping 6, GenuineIntel
-PROCESSOR_LEVEL=6
-PROCESSOR_REVISION=0f06
-ProgramData=C:\ProgramData
-ProgramFiles=C:\Program Files
-ProgramFiles(x86)=C:\Program Files (x86)
-ProgramW6432=C:\Program Files
-PROMPT=$P$G
-PSModulePath=C:\Windows\system32\WindowsPowerShell\v1.0\Modules\
-PUBLIC=C:\Users\Public
-SESSIONNAME=RDP-Tcp#0
-SystemDrive=C:
-SystemRoot=C:\Windows
-TEMP=C:\Users\couchdb\AppData\Local\Temp
-TMP=C:\Users\couchdb\AppData\Local\Temp
-USERDOMAIN=BUILD
-USERNAME=couchdb
-USERPROFILE=C:\Users\couchdb
-VCINSTALLDIR=C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC
-VS90COMNTOOLS=C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\Tools\
-VSINSTALLDIR=C:\Program Files (x86)\Microsoft Visual Studio 9.0
-windir=C:\Windows
-WindowsSdkDir=C:\Program Files\Microsoft SDKs\Windows\v6.0A\
-
-================================================================================
-perfect path
-
-export PATH=$ERL_TOP/release/win32/erts-5.7.5/bin:\
-$ERL_TOP/erts/etc/win32/cygwin_tools/vc:\
-$ERL_TOP/erts/etc/win32/cygwin_tools:\
-/cygdrive/c/PROGRA~1/MICROS~1.0/Common7/IDE:\
-/cygdrive/c/PROGRA~1/MICROS~1.0/VC/BIN:\
-/cygdrive/c/PROGRA~1/MICROS~1.0/Common7/Tools:\
-/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/:\
-/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/V20~1.507:\
-/cygdrive/c/PROGRA~1/MICROS~1.0/VC/VCPACK~1:\
-/cygdrive/c/PROGRA~1/MICROS~3/Windows/v7.0/bin:\
-/src/openssl:\
-/src/nsis:\
-/src/inno5:\
-/usr/local/bin:\
-/usr/bin:\
-/bin:\
-/cygdrive/c/WINDOWS/system32:\
-/cygdrive/c/WINDOWS:\
-/cygdrive/c/WINDOWS/System32/Wbem
-
-export ERL_TOP=/src/otp_src_R13B04
-export PATH=$ERL_TOP/release/win32/erts-5.7.5/bin:$ERL_TOP/erts/etc/win32/cygwin_tools/vc:$ERL_TOP/erts/etc/win32/cygwin_tools:/cygdrive/c/PROGRA~1/MICROS~1.0/Common7/IDE:/cygdrive/c/PROGRA~1/MICROS~1.0/VC/BIN:/cygdrive/c/PROGRA~1/MICROS~1.0/Common7/Tools:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/V20~1.507:/cygdrive/c/PROGRA~1/MICROS~1.0/VC/VCPACK~1:/cygdrive/c/PROGRA~1/MICROS~3/Windows/v7.0/bin:/src/openssl:/src/nsis:/src/inno5:/usr/local/bin:/usr/bin:/bin:/cygdrive/c/WINDOWS/system32:/cygdrive/c/WINDOWS:/cygdrive/c/WINDOWS/System32/Wbem
-
-export ERL_TOP=/src/otp_src_R14A
-EXPORT PATH=$ERL_TOP/release/win32/erts-5.8/bin:$ERL_TOP/erts/etc/win32/cygwin_tools/vc:$ERL_TOP/erts/etc/win32/cygwin_tools:/cygdrive/c/PROGRA~1/MICROS~1.0/Common7/IDE:/cygdrive/c/PROGRA~1/MICROS~1.0/VC/BIN:/cygdrive/c/PROGRA~1/MICROS~1.0/Common7/Tools:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/V20~1.507:/cygdrive/c/PROGRA~1/MICROS~1.0/VC/VCPACK~1:/cygdrive/c/PROGRA~1/MICROS~3/Windows/v7.0/bin:/src/openssl:/src/nsis:/src/inno5:/usr/local/bin:/usr/bin:/bin:/cygdrive/c/WINDOWS/system32:/cygdrive/c/WINDOWS:/cygdrive/c/WINDOWS/System32/Wbem
-
 dIRTY NOTES
 ================================================================================
 fix missing path for disable alsr & run all .reg from local c: partition. try regini instead.
@@ -468,3 +309,197 @@ export PATH=$ERL_TOP/release/win32/erts-5.7.5/bin:$ERL_TOP/erts/etc/win32/cygwin
 
 * check path esp cl,mc,link which seems to be wrong & then get going
 ./otp_build all -a; ./otp_build install_win32
+
+********************************************************************************
+#Manual Build Procedure
+********************************************************************************
+
+This procedure has been tested on the following platforms successfully:
+- Windows XP SP2 32 bit
+- Windows 7 64 bit
+- Amazon Windows 2003 32-bit medium instance
+
+# Core Tools
+A number of opensource tools are used to unpack or retrieve files.
+
+* [7zip]
+# Set up Compilers
+Three compiler tools are required to build wxWidgets, Erlang, Javascript, and finally CouchDB.
+
+* download and install Microsoft Visual Studio 2008 Express, and install C++ only using the DVD ISO [msvc++] excluding optional MSSSQL & Silverlight
+
+***
+# Liences
+***
+
+* the core tools & scripts used in glazier are released or included as BSD-style licence
+* curl and the included openssl libraries are the only ones distributed with glazier
+* the silent installation of each component assumes your implicit acceptance of the rest
+* curl <http://curl.haxx.se/docs/copyright.html>
+* openssl <http://www.openssl.org/source/license.html>
+
+********************************************************************************
+# sample environments on different windows platforms
+********************************************************************************
+
+### win7 std - default environment
+    
+    ALLUSERSPROFILE=C:\ProgramData
+    APPDATA=C:\Users\couchdb\AppData\Roaming
+    CLIENTNAME=continuity.muse
+    CommonProgramFiles=C:\Program Files\Common Files
+    CommonProgramFiles(x86)=C:\Program Files (x86)\Common Files
+    CommonProgramW6432=C:\Program Files\Common Files
+    COMPUTERNAME=BUILD
+    ComSpec=C:\Windows\system32\cmd.exe
+    FP_NO_HOST_CHECK=NO
+    HOMEDRIVE=C:
+    HOMEPATH=\Users\couchdb
+    LOCALAPPDATA=C:\Users\couchdb\AppData\Local
+    LOGONSERVER=\\BUILD
+    NUMBER_OF_PROCESSORS=1
+    OPENSSL_CONF=C:\OpenSSL\bin\openssl.cfg
+    OS=Windows_NT
+    Path=C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\
+    PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
+    PROCESSOR_ARCHITECTURE=AMD64
+    PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 15 Stepping 6, GenuineIntel
+    PROCESSOR_LEVEL=6
+    PROCESSOR_REVISION=0f06
+    ProgramData=C:\ProgramData
+    ProgramFiles=C:\Program Files
+    ProgramFiles(x86)=C:\Program Files (x86)
+    ProgramW6432=C:\Program Files
+    PROMPT=$P$G
+    PSModulePath=C:\Windows\system32\WindowsPowerShell\v1.0\Modules\
+    PUBLIC=C:\Users\Public
+    SESSIONNAME=RDP-Tcp#0
+    SystemDrive=C:
+    SystemRoot=C:\Windows
+    TEMP=C:\Users\couchdb\AppData\Local\Temp
+    TMP=C:\Users\couchdb\AppData\Local\Temp
+    USERDOMAIN=BUILD
+    USERNAME=couchdb
+    USERPROFILE=C:\Users\couchdb
+    VS90COMNTOOLS=C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\Tools\
+    windir=C:\Windows
+
+********************************************************************************
+
+### win7 std - vs2008 environment
+    ALLUSERSPROFILE=C:\ProgramData
+    APPDATA=C:\Users\couchdb\AppData\Roaming
+    CLIENTNAME=continuity.muse
+    CommonProgramFiles=C:\Program Files\Common Files
+    CommonProgramFiles(x86)=C:\Program Files (x86)\Common Files
+    CommonProgramW6432=C:\Program Files\Common Files
+    COMPUTERNAME=BUILD
+    ComSpec=C:\Windows\system32\cmd.exe
+    DevEnvDir=C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE
+    FP_NO_HOST_CHECK=NO
+    FrameworkDir=C:\Windows\Microsoft.NET\Framework
+    FrameworkVersion=v2.0.50727
+    HOMEDRIVE=C:
+    HOMEPATH=\Users\couchdb
+    INCLUDE=C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\ATLMFC\INCLUDE;C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\INCLUDE;C:\Program Files\Microsoft SDKs\Windows\v6.0A\include;
+    LIB=C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\ATLMFC\LIB;C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\LIB;C:\Program Files\Microsoft SDKs\Windows\v6.0A\lib;
+    LIBPATH=C:\Windows\Microsoft.NET\Framework\;C:\Windows\Microsoft.NET\Framework\v2.0.50727;C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\ATLMFC\LIB;C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\LIB;
+    LOCALAPPDATA=C:\Users\couchdb\AppData\Local
+    LOGONSERVER=\\BUILD
+    NUMBER_OF_PROCESSORS=1
+    OPENSSL_CONF=C:\OpenSSL\bin\openssl.cfg
+    OS=Windows_NT
+    Path=C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE;C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\BIN;C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\Tools;C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\Tools\bin;C:\Windows\Microsoft.NET\Framework\;C:\Windows\Microsoft.NET\Framework\\Microsoft .NET Framework 3.5 (Pre-Release Version);C:\Windows\Microsoft.NET\Framework\v2.0.50727;C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\VCPackages;C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\
+    PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
+    PROCESSOR_ARCHITECTURE=AMD64
+    PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 15 Stepping 6, GenuineIntel
+    PROCESSOR_LEVEL=6
+    PROCESSOR_REVISION=0f06
+    ProgramData=C:\ProgramData
+    ProgramFiles=C:\Program Files
+    ProgramFiles(x86)=C:\Program Files (x86)
+    ProgramW6432=C:\Program Files
+    PROMPT=$P$G
+    PSModulePath=C:\Windows\system32\WindowsPowerShell\v1.0\Modules\
+    PUBLIC=C:\Users\Public
+    SESSIONNAME=RDP-Tcp#0
+    SystemDrive=C:
+    SystemRoot=C:\Windows
+    TEMP=C:\Users\couchdb\AppData\Local\Temp
+    TMP=C:\Users\couchdb\AppData\Local\Temp
+    USERDOMAIN=BUILD
+    USERNAME=couchdb
+    USERPROFILE=C:\Users\couchdb
+    VCINSTALLDIR=C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC
+    VS90COMNTOOLS=C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\Tools\
+    VSINSTALLDIR=C:\Program Files (x86)\Microsoft Visual Studio 9.0
+    windir=C:\Windows
+    WindowsSdkDir=C:\Program Files\Microsoft SDKs\Windows\v6.0A\
+
+********************************************************************************
+
+### a perfect path for erlang R13B04 after eval `./otp_build env_win32`
+    
+    export PATH=$ERL_TOP/release/win32/erts-5.7.5/bin:\
+    $ERL_TOP/erts/etc/win32/cygwin_tools/vc:\
+    $ERL_TOP/erts/etc/win32/cygwin_tools:\
+    /cygdrive/c/PROGRA~1/MICROS~1.0/Common7/IDE:\
+    /cygdrive/c/PROGRA~1/MICROS~1.0/VC/BIN:\
+    /cygdrive/c/PROGRA~1/MICROS~1.0/Common7/Tools:\
+    /cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/:\
+    /cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/V20~1.507:\
+    /cygdrive/c/PROGRA~1/MICROS~1.0/VC/VCPACK~1:\
+    /cygdrive/c/PROGRA~1/MICROS~3/Windows/v7.0/bin:\
+    /src/openssl:\
+    /src/nsis:\
+    /src/inno5:\
+    /usr/local/bin:\
+    /usr/bin:\
+    /bin:\
+    /cygdrive/c/WINDOWS/system32:\
+    /cygdrive/c/WINDOWS:\
+    /cygdrive/c/WINDOWS/System32/Wbem
+    
+    export ERL_TOP=/src/otp_src_R13B04
+    export PATH=$ERL_TOP/release/win32/erts-5.7.5/bin:$ERL_TOP/erts/etc/win32/cygwin_tools/vc:$ERL_TOP/erts/etc/win32/cygwin_tools:/cygdrive/c/PROGRA~1/MICROS~1.0/Common7/IDE:/cygdrive/c/PROGRA~1/MICROS~1.0/VC/BIN:/cygdrive/c/PROGRA~1/MICROS~1.0/Common7/Tools:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/V20~1.507:/cygdrive/c/PROGRA~1/MICROS~1.0/VC/VCPACK~1:/cygdrive/c/PROGRA~1/MICROS~3/Windows/v7.0/bin:/src/openssl:/src/nsis:/src/inno5:/usr/local/bin:/usr/bin:/bin:/cygdrive/c/WINDOWS/system32:/cygdrive/c/WINDOWS:/cygdrive/c/WINDOWS/System32/Wbem
+    
+    export ERL_TOP=/src/otp_src_R14A
+    EXPORT PATH=$ERL_TOP/release/win32/erts-5.8/bin:$ERL_TOP/erts/etc/win32/cygwin_tools/vc:$ERL_TOP/erts/etc/win32/cygwin_tools:/cygdrive/c/PROGRA~1/MICROS~1.0/Common7/IDE:/cygdrive/c/PROGRA~1/MICROS~1.0/VC/BIN:/cygdrive/c/PROGRA~1/MICROS~1.0/Common7/Tools:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/V20~1.507:/cygdrive/c/PROGRA~1/MICROS~1.0/VC/VCPACK~1:/cygdrive/c/PROGRA~1/MICROS~3/Windows/v7.0/bin:/src/openssl:/src/nsis:/src/inno5:/usr/local/bin:/usr/bin:/bin:/cygdrive/c/WINDOWS/system32:/cygdrive/c/WINDOWS:/cygdrive/c/WINDOWS/System32/Wbem
+
+
+********************************************************************************
+# links
+********************************************************************************
+
+[7zip_bits]:		http://downloads.sourceforge.net/sevenzip/7z465.exe
+[7zip_license]:		http://www.7-zip.org/license.txt
+[AWS console]:		https://console.aws.amazon.com/ec2/home#c=EC2&s=Instances
+[AWS Windows Servers]:	http://developer.amazonwebservices.com/connect/kbcategory.jspa?categoryID=201
+[bitvise_sshd_bits]:	http://dl.bitvise.com/WinSSHD5-Inst.exe
+[curl_bits]:		http://curl.haxx.se/download/curl-7.19.5-win32-ssl.ziP
+[curl]:			http://curl.haxx.se/download.html
+[curl_license]:		http://curl.haxx.se/docs/copyright.html
+[cygwin]:		http://www.cygwin.com/setup.exe
+[DEP]:			http://support.microsoft.com/kb/875352
+[erlang_R13B04]:	http://www.erlang.org/download/otp_src_R13B04.tar.gz
+[erlang_R14A]:		http://www.erlang.org/download/otp_src_R14A.tar.gz
+[icu_bits_curr]:	http://download.icu-project.org/files/icu4c/4.2/icu4c-4_2-Win32-msvc9.zip
+[icu_bits_new]:		http://download.icu-project.org/files/icu4c/4.4.1/icu4c-4_4_1-Win32-msvc9.zip
+[inno_bits]:		http://www.jrsoftware.org/download.php/ispack-unicode.exe
+[inno_help]:		http://www.jrsoftware.org/ishelp/
+[libcurl_bits]:		http://curl.haxx.se/download/libcurl-7.19.3-win32-ssl-msvc.zip
+[libcurl-src]:		http://curl.haxx.se/download/curl-7.21.1.tar.gz
+[msvc++]:		http://download.microsoft.com/download/E/8/E/E8EEB394-7F42-4963-A2D8-29559B738298/VS2008ExpressWithSP1ENUX1504728.iso
+[notepadplus_bits]:	http://download.sourceforge.net/project/notepad-plus/notepad%2B%2B%20releases%20binary/npp%205.7%20bin/npp.5.7.Installer.exe
+[nsis_bits]:		http://download.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
+[openssl_bits]:		http://www.slproweb.com/download/Win32OpenSSL-1_0_0a.exe
+[openssl_license]:	http://www.openssl.org/source/license.html
+[ramdisk]:		http://www.ltr-data.se/files/imdiskinst.exe
+[seamonkey_bits]:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/2.0.6/source/seamonkey-2.0.6.source.tar.bz2
+[SEHOP]:		http://support.microsoft.com/kb/956607
+[vcredist]:		http://download.microsoft.com/download/d/1/0/d10d210e-e0ad-4010-b547-bc5e395ef691/vcredist_x86.exe
+[win7sdk_32bit]:	http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDK_EN_DVD.iso
+[win7sdk_64bit]:	http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDKX_EN_DVD.iso
+[wxwidgets_bits]:	http://sourceforge.net/projects/wxwindows/files/2.8.11/wxMSW-2.8.11.zip
+[zlib-bits]:		http://zlib.net/zlib125-dll.zip
+[zlib-src]:		http://zlib.net/zlib-1.2.5.tar.gz

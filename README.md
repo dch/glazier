@@ -296,63 +296,6 @@ TODO // URLs don't go to right AMIs
 * import console_hkcu.reg
 * import 
 
-* open up d:\glazier\bin & copy all .lnk files to desktop
-* install VC++ excluding silverlight, MSSQL, RSS feeds via D:\VS2008express_SP1_ENUX1504728\VCExpress\setup.exe
-* run D:\Windows7_SDK_amd64\Setup.exe and install all components (64bit)
-* run D:\Windows7_SDK_x86\Setup.exe and install all components (32bit)
-* visit http://www.update.microsoft.com/microsoftupdate/v6/vistadefault.aspx?ln=en-us & install all updates/patches
-* open d:\src\bundles in explorer & run everything below
-* install mozilla tools d:\src\bundles\mozillabuildsetup-latest.exe
-* install npp
-* install inno5 via ispack including all additional packages
-* install nsis
-* install vcredist_x86
-* install openssl & binaries to openssl dir, ignore warnings about vcredist
-* install cygwin from local only (no download) selecting all modules to install. This is a limited set compared to full cygwin and saves about 1GiB of download crud + lost install time	
-
-## Build
-* open wxwidgets /build/msw/wx.sln, select batch build, all unicode modules
-* ditto for contrib/build/stc/stc.sln, select batch build, all unicode modules
-
-# Notes, Links and URLs (source view only)
-## Cygwin on EC2 Windows 2008 64 bit R1SP2
-* plenty of internet info about failures with no current solution
-* turn on XP or vista compatibility mode
-* try running from a SYSWOW64 cmd.exe instead of usual one
-
-dIRTY NOTES
-================================================================================
-fix missing path for disable alsr & run all .reg from local c: partition. try regini instead.
-after logoff goto eof
-
-i think all we really need (via snapshotted volume) is:
-
-start /wait D:\VS2008express_SP1_ENUX1504728\VCExpress\setup.exe
-start /wait D:\Windows7_SDK\Setup.exe
-setx CYGWIN nontsec
-
-and then to ensure that you can still compile javascript from source;
-junction c:\mozilla-build d:\mozilla-build
-
-echo vcredist and windows updates
-pause
-start /wait vcredist_x86.exe /q
-start /wait http://update.microsoft.com/microsoftupdate/v6
-
-& then final reboot of happiness
-
-
-# erlang
-* figure out how to resolve openssl hack can we do this by soft link on d: or does it need a copy to c: ?
-	ln -s /src/openssl /cygdrive/c/openssl
-* repair all icons
-* simple startup notes - vcvars then cygwin.bat then cd /src/otp... then eval `./otp_build env_win32`
-
-export PATH=$ERL_TOP/release/win32/erts-5.7.5/bin:$ERL_TOP/erts/etc/win32/cygwin_tools/vc:$ERL_TOP/erts/etc/win32/cygwin_tools:/cygdrive/c/PROGRA~1/MICROS~1.0/Common7/IDE:/cygdrive/c/PROGRA~1/MICROS~1.0/VC/BIN:/cygdrive/c/PROGRA~1/MICROS~1.0/Common7/Tools:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/V20~1.507:/cygdrive/c/PROGRA~1/MICROS~1.0/VC/VCPACK~1:/cygdrive/c/PROGRA~1/MICROS~3/Windows/v7.0/bin:/src/openssl:/src/nsis:/src/inno5:/usr/local/bin:/usr/bin:/bin:/cygdrive/c/WINDOWS/system32:/cygdrive/c/WINDOWS:/cygdrive/c/WINDOWS/System32/Wbem
-
-* check path esp cl,mc,link which seems to be wrong & then get going
-./otp_build all -a; ./otp_build install_win32
-
 ********************************************************************************
 #Manual Build Procedure
 ********************************************************************************
@@ -372,7 +315,7 @@ Three compiler tools are required to build wxWidgets, Erlang, Javascript, and fi
 * download and install Microsoft Visual Studio 2008 Express, and install C++ only using the DVD ISO [msvc++] excluding optional MSSSQL & Silverlight
 
 ***
-# Liences
+# Licenses
 ***
 
 * the core tools & scripts used in glazier are released or included as BSD-style licence
@@ -511,7 +454,7 @@ Three compiler tools are required to build wxWidgets, Erlang, Javascript, and fi
 
 
 ********************************************************************************
-# Download Links [in source view]
+# Download URLs - visible only in raw text view
 ********************************************************************************
 
 [7zip_bits]:		http://downloads.sourceforge.net/sevenzip/7z465.exe

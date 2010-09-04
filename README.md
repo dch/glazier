@@ -173,40 +173,32 @@ minimum requirements
 
 ## Javascript
 
-### SpiderMonkey
-useful links
-http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/2.0.6/source/seamonkey-2.0.6.source.tar.bz2
-https://developer.mozilla.org/En/Developer_Guide/Build_Instructions/Windows_Prerequisites
-https://developer.mozilla.org/En/SpiderMonkey/Build_Documentation
+The Javascript engine used by CouchDB is built from Seamonkey, using the mozilla build toolkit.
 
-* pre-reqs
-* install the windows 7 SDK
-* install VS2008 Express
-* SpiderMonkey is a red herring you need mozilla seamonkey instead unless you can build spidermonkey > 1.8.x from source which I can't
-* instead, download SeaMonkey 2.0.6 source and use this to build javascript
-* install the moz build system from here
-* get [mozbuild]
-* there are a few junction.exe reqd - d:/mozilla-build to c:/mozilla-build
-* get [seamonkey_bits] and unpack into c:\src\seamonkey\comm-1.9.1\mozilla\js\src
+* get [seamonkey_bits]
 * run c:\mozilla-build\start-msvc9.bat
-
-		cd /c/src/seamonkey/comm-1.9.1/mozilla/js/src
-		autoconf-2.13
-		./configure
-		make
+        
+        cd /c/relax && mkdir seamonkey-2.0.6
+        cd seamonkey-2.0.6
+        tar xjf /d/glazier/bits/seamonkey-2.0.6.source.tar.bz2
+        cd /c/relax/seamonkey-2.0.6/comm-1.9.1/mozilla/js/src
+        autoconf-2.13
+        ./configure
+        make
 
 * to install from -current do:
-		cd /d/src/seamonkey-current
-		hg clone http://hg.mozilla.org/mozilla-central
-		cd mozilla-central/ .... /js/src
-		autoconf-2.13
-		./configure
-		make 
+        cd /c/relax && mkdir seamonkey-current
+        cd seamonkey-current
+        hg clone http://hg.mozilla.org/mozilla-central
+        cd mozilla-central/......./comm-1.9.1/mozilla/js/src
+        autoconf-2.13
+        ./configure
+        make 
 
 ## Inno Installer
 from http://www.jrsoftware.org/download.php/ispack-unicode.exe
 download and install ispack-5.3.10-unicode.exe, including all additional components
-to c:\src\inno5 & ensure its in the path
+to c:\relax\inno5 & ensure its in the path
 
 ## LibCURL
 * you need to have libcurl.lib in the ./configure path (CURL_LIBS="$withval/lib/libcurl")
@@ -215,50 +207,51 @@ to c:\src\inno5 & ensure its in the path
 * and for curl for enduser testing
 * untar http://curl.haxx.se/docs/install.html
 		
-		set OPENSSL_PATH=d:\src\openssl
-		set INCLUDE=%INCLUDE%;%OPENSSL_PATH%\include\openssl;
-		set LIBPATH=%LIBPATH%;%OPENSSL_PATH%\lib;
-		set LIB=%LIB%;%OPENSSL_PATH%\lib;
-		nmake vc-ssl
-		couldn't get this to work so instead i built curl/vc6curl.sln
-		check curl.exe & see what libs it needs - these should be openssl only
-		check that /src/curl-7.21.1/lib/libcurl.lib exists
+#		set OPENSSL_PATH=%systemdrive%\openssl
+#		set INCLUDE=%INCLUDE%;%OPENSSL_PATH%\include\openssl;
+#		set LIBPATH=%LIBPATH%;%OPENSSL_PATH%\lib;
+#		set LIB=%LIB%;%OPENSSL_PATH%\lib;
+#		nmake vc-ssl
+#		couldn't get this to work so instead i built curl/vc6curl.sln
+#		check curl.exe & see what libs it needs - these should be openssl only
+#		check that /src/curl-7.21.1/lib/libcurl.lib exists
+pushd %RELAX%\curl-7*
+vcbuild /upgrade lib\libcurl.vcproj
+vcbuild /useenv /rebuild /platform:Win32 lib\libcurl.vcproj "Release|Win32"
+xcopy lib\Release\libcurl.lib lib\ /y /f
 
 ## OpenSSL
 
 * already installed into C:/OpenSSL/ for compilation
-		ln -s /cygdrive/c/OpenSSL /src/openssl
+
 ## ICU
 * binaries from http://site.icu-project.org/
 		wget http://download.icu-project.org/files/icu4c/4.4.1/icu4c-4_4_1-Win32-msvc9.zip
 		wget http://download.icu-project.org/files/icu4c/4.2/icu4c-4_2-Win32-msvc9.zip
-		cd src
-		unzip icu4c-4_2-Win32-msvc9.zip
+		cd c:\relax
+		7z x d:\glazier\bits\icu4c-4_2_1-Win32-msvc9.zip
 
 ## Make & Build
-	    ./configure \
-		--with-js-include=/cygdrive/c/path_to_seamonkey \
-		--with-js-lib=/cygdrive/c/path_to_seamonkey_lib \
-		--with-win32-icu-binaries=/cygdrive/c/path_to_icu_binaries_root \
-		--with-erlang=$ERL_TOP/release/win32/usr/include \
-		--with-win32-curl=/cygdrive/c/path/to/curl/root/directory \
-		--with-openssl-bin-dir=/cygdrive/c/openssl/bin \
-		--with-msvc-redist-dir=/cygdrive/c/dir/with/vcredist_platform_executable \
-		--prefix=$ERL_TOP/release/win32
+        ./configure \
+        --with-js-include=/cygdrive/c/path_to_seamonkey \
+        --with-js-lib=/cygdrive/c/path_to_seamonkey_lib \
+        --with-win32-icu-binaries=/cygdrive/c/path_to_icu_binaries_root \
+        --with-erlang=$ERL_TOP/release/win32/usr/include \
+        --with-win32-curl=/cygdrive/c/path/to/curl/root/directory \
+        --with-openssl-bin-dir=/cygdrive/c/openssl/bin \
+        --with-msvc-redist-dir=/cygdrive/c/dir/with/vcredist_platform_executable \
+        --prefix=$ERL_TOP/release/win32
 
 ## using seamonkey 2.0.6
-		
-		./configure \
-		--prefix=$ERL_TOP/release/win32 \
-		--with-win32-icu-binaries=/src/icu \
-		--with-erlang=$ERL_TOP/release/win32/usr/include \
-		--with-win32-curl=/src/curl-7.19.5 \
-		--with-openssl-bin-dir=/src/openssl/bin \
-		--with-msvc-redist-dir=/src/vcredist \
-		--with-js-lib=/src/mozilla/js/src \
-		--with-js-include=/src/mozilla/js/src/dist/include/js
-
-
+        ./configure \
+        --prefix=$ERL_TOP/release/win32 \
+        --with-erlang=$ERL_TOP/release/win32/usr/include \
+        --with-win32-icu-binaries=/relax/icu \
+        --with-win32-curl=/relax/curl-7.21.1 \
+        --with-openssl-bin-dir=/relax/openssl/bin \
+        --with-msvc-redist-dir=/relax \
+        --with-js-lib=/src/seamonkey-2.0.6/comm-1.9.1/mozilla/js/src/dist/lib \
+        --with-js-include=/src/seamonkey-2.0.6/comm-1.9.1/mozilla/js/src/dist/include/js
 
 CURL
 [curl] -> win32-openssl [curl_bits]

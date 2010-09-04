@@ -16,7 +16,6 @@ a4f5eaaa1096891b9812b81f104fc4d9 *setup.exe
 b936f0f378b9a35489353e878154e899 *vcredist_x86.exe
 83b3292c1aa8e4d3eb0c6bcd66a55cd0 *VS2008ExpressWithSP1ENUX1504728.iso
 f63275890a78ab0722b9728f670901e4 *Win32OpenSSL-1_0_0a.exe
-2d021270cc8630fd11f3219bcf1fb521 *wxWidgets-2.8.11_with_erl_fixes.zip
 ad14196b38470d927f438ab08e8f16b3 *wxMSW-2.8.11.zip
 7927ab2b518445db4e15ed9d67c1753e *npp.5.7.Installer.exe
 a12686c5e71180980b51bc44dbbed50c *junction.exe

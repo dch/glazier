@@ -21,7 +21,7 @@ echo DONE	retrieving packages
 
 :: md5 checksums
 echo START	md5 checksums...
-::TODO md5sum --check md5sums.txt || echo FAILED: please check any missing or failed files && goto :eof
+%GLAZIER%\bin\md5sum.exe --check md5sums.txt || echo FAILED: please check any missing or failed files && goto eof
 echo DONE	md5 checksums
 
 :: unpack stuff
@@ -89,7 +89,7 @@ echo DONE	install ICU
 
 
 echo START	install vcredist...
-xcopy %GLAZIER%\bits\vcredist_x86.exe DEST%\ /y /f
+xcopy %GLAZIER%\bits\vcredist_x86.exe %RELAX%\ /y /f
 echo DONE	install vcredist
 
 :tools install

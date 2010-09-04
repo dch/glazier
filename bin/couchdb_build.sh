@@ -16,7 +16,7 @@ echo DONE. | tee -a $COUCH_TOP/build_dist.txt
 
 pushd $COUCH_TOP/etc/windows/
 rename .exe _otp_$OTP_VER.exe setup-couchdb-*
-mv setup-couchdb-* /src/built/
+mv setup-couchdb-* /relax/built/
 popd
 
 echo DONE.

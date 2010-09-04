@@ -1,5 +1,5 @@
 @echo off
-echo Build CouchDB under Windows - Time to Relax v0.2
+echo Build CouchDB under Windows - Time to Relax v0.3
 
 :: find our source tree from one level up from current bin
 set GLAZIER=%~dp0..

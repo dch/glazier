@@ -1,4 +1,5 @@
 @echo off
+title Time to Relax.
 setlocal
 pushd %GLAZIER%\bin
 
@@ -72,6 +73,7 @@ goto unix_shell
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :unix_shell
+title Building in %ERL_TOP% with OTP %OTP_VER% and Erlang v%ERL_VER%. Time to Relax.
 %systemdrive%\cygwin\bin\bash /relax/bin/relax.sh
 goto eof
 

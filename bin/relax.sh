@@ -10,7 +10,7 @@
 ## /cygdrive/c/src/otp_src_R13B04/erts/etc/win32/cygwin_tools/vc:/cygdrive/c/src/otp_src_R13B04/erts/etc/win32/cygwin_tools:/cygdrive/c/PROGRA~2/MICROS~1.0/Common7/IDE:/cygdrive/c/PROGRA~2/MICROS~1.0/VC/bin:/cygdrive/c/PROGRA~2/MICROS~1.0/Common7/Tools/:/cygdrive/c/Windows/MICROS~1.NET/FRAMEW~1/:/cygdrive/c/Windows/MICROS~1.NET/FRAMEW~1/:/cygdrive/c/Windows/MICROS~1.NET/FRAMEW~1/V20~1.507:/cygdrive/c/PROGRA~2/MICROS~1.0/VC/VCPACK~1:/cygdrive/c/PROGRA~1/MICROS~1/Windows/v6.0A/bin:/cygdrive/c/PROGRA~1/MICROS~1/Windows/v7.0/bin:/usr/local/bin:/usr/bin:/cygdrive/c/Windows/system32:/cygdrive/c/Windows:/cygdrive/c/Windows/System32/Wbem:/cygdrive/c/Windows/System32/WINDOW~1/v1.0/:/cygdrive/c/PROGRA~2/NSIS:/cygdrive/c/OpenSSL/bin
 
 # build for the right version of erlang
-echo building for Erlang $ERL_VER in $ERL_TOP
+echo Using Erlang $ERL_VER OTP $OTP_VER in $ERL_TOP
 echo
 
 # rebuild path from scratch as ./otp_build env_win32 gets it wrong

@@ -9,8 +9,8 @@ export COUCH_TOP
 --with-win32-curl=/relax/curl-7.21.1 \
 --with-openssl-bin-dir=/relax/openssl/bin \
 --with-msvc-redist-dir=/relax \
---with-js-lib=/src/seamonkey-2.0.6/comm-1.9.1/mozilla/js/src/dist/lib \
---with-js-include=/src/seamonkey-2.0.6/comm-1.9.1/mozilla/js/src/dist/include/js \
+--with-js-lib=/relax/seamonkey-2.0.6/comm-1.9.1/mozilla/js/src/dist/lib \
+--with-js-include=/relax/seamonkey-2.0.6/comm-1.9.1/mozilla/js/src/dist/include/js \
 | tee $COUCH_TOP/build_configure.txt
 
 echo DONE. | tee -a $COUCH_TOP/build_configure.txt

@@ -201,28 +201,28 @@ download and install ispack-5.3.10-unicode.exe, including all additional compone
 to c:\relax\inno5 & ensure its in the path
 
 ## LibCURL
-* you need to have libcurl.lib in the ./configure path (CURL_LIBS="$withval/lib/libcurl")
-* most downloadable libcurls have sasl or other unwanted libs
-* we need this for couch_js.exe to function
-* and for curl for enduser testing
-* untar http://curl.haxx.se/docs/install.html
-		
-#		set OPENSSL_PATH=%systemdrive%\openssl
-#		set INCLUDE=%INCLUDE%;%OPENSSL_PATH%\include\openssl;
-#		set LIBPATH=%LIBPATH%;%OPENSSL_PATH%\lib;
-#		set LIB=%LIB%;%OPENSSL_PATH%\lib;
-#		nmake vc-ssl
-#		couldn't get this to work so instead i built curl/vc6curl.sln
-#		check curl.exe & see what libs it needs - these should be openssl only
-#		check that /src/curl-7.21.1/lib/libcurl.lib exists
-pushd %RELAX%\curl-7*
-vcbuild /upgrade lib\libcurl.vcproj
-vcbuild /useenv /rebuild /platform:Win32 lib\libcurl.vcproj "Release|Win32"
-xcopy lib\Release\libcurl.lib lib\ /y /f
+
+        pushd c:\relax\curl-7*
+        vcbuild /upgrade lib\libcurl.vcproj
+        vcbuild /useenv /rebuild /platform:Win32 lib\libcurl.vcproj "Release|Win32"
+        xcopy lib\Release\libcurl.lib lib\ /y /f
+	popd
+
+TODO maybe none of this section is needed now
+
+        you need to have libcurl.lib in the ./configure path (CURL_LIBS="$withval/lib/libcurl")
+        set OPENSSL_PATH=%systemdrive%\openssl
+        set INCLUDE=%INCLUDE%;%OPENSSL_PATH%\include\openssl;
+        set LIBPATH=%LIBPATH%;%OPENSSL_PATH%\lib;
+        set LIB=%LIB%;%OPENSSL_PATH%\lib;
+        nmake vc-ssl
+        couldn't get this to work so instead i built curl/vc6curl.sln
+        check curl.exe & see what libs it needs - these should be openssl only
+        check that /src/curl-7.21.1/lib/libcurl.lib exists
 
 ## OpenSSL
 
-* already installed into C:/OpenSSL/ for compilation
+* already installed into C:/OpenSSL/ no further steps required
 
 ## ICU
 * binaries from http://site.icu-project.org/
@@ -250,8 +250,8 @@ xcopy lib\Release\libcurl.lib lib\ /y /f
         --with-win32-curl=/relax/curl-7.21.1 \
         --with-openssl-bin-dir=/relax/openssl/bin \
         --with-msvc-redist-dir=/relax \
-        --with-js-lib=/src/seamonkey-2.0.6/comm-1.9.1/mozilla/js/src/dist/lib \
-        --with-js-include=/src/seamonkey-2.0.6/comm-1.9.1/mozilla/js/src/dist/include/js
+        --with-js-lib=/relax/seamonkey-2.0.6/comm-1.9.1/mozilla/js/src/dist/lib \
+        --with-js-include=/relax/seamonkey-2.0.6/comm-1.9.1/mozilla/js/src/dist/include/js
 
 CURL
 [curl] -> win32-openssl [curl_bits]
@@ -283,7 +283,6 @@ TODO // URLs don't go to right AMIs
 * a fix for [SEHOP] security feature causing cygwin & similar unix shell emulations to dump core
 
         regedit d:\glazier\bundles\disable_sehop_kb956607.reg
-        net user administrator couchdb1.0.0
         net user couchdb 1dot0 /add
         net localgroup administrators couchdb /add
 
@@ -293,7 +292,6 @@ TODO // URLs don't go to right AMIs
 
 * restart now
 
-* administrator passwd is _couchdb1.0.0_
 * lgoon as _couchdb_ with passwd _couchdb1dot0_
 * import console_hkcu.reg
 * import 

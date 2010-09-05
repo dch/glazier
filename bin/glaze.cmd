@@ -26,7 +26,7 @@ echo DONE	md5 checksums
 
 :: unpack stuff
 echo START	unpacking tools in [%RELAX%]...
-mkdir %RELAX% > NUL: 2>&1
+mkdir %RELAX%\release > NUL: 2>&1
 pushd %RELAX%
 
 :: 7zip is used for unpacking the ISO images

@@ -1,5 +1,5 @@
 fcd1b1472302fc7283147f4df471f402 *7z465.exe
-6335daa54749d3e35b830e80526bd3be *apache-couchdb-0.11.2.tar.gz
+076b2637dda91cb81fb9bd922ac2f112 *apache-couchdb-0.11.2.tar.gz
 001cf286b72492617e9ffba271702a00 *apache-couchdb-1.0.1.tar.gz
 cafe69114c20c90c47ad3caca05870d8 *curl-7.21.1.tar.gz
 539d6ea0a145ea8f257fca682478f9dd *GRMSDK_EN_DVD.iso
@@ -20,4 +20,3 @@ ad14196b38470d927f438ab08e8f16b3 *wxMSW-2.8.11.zip
 7927ab2b518445db4e15ed9d67c1753e *npp.5.7.Installer.exe
 a12686c5e71180980b51bc44dbbed50c *junction.exe
 f701a6f58b187a02c54165310a810ab2 *setenv.exe
-

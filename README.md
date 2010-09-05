@@ -29,7 +29,7 @@ The full Cygwin install comprises several GiB of data. Run [cygwin]'s setup.exe 
 
 After install, run the cygwin shell, and set up a symlink to where you plan to install related binaries, build erlang, and couchdb. I am using `C:\relax` so:
 
-		mkdir 
+		mkdir
 		ln -s /cygdrive/c/relax /relax
 
 ## Mozilla Build
@@ -80,7 +80,7 @@ or using mklink.exe
 
         mklink /j c:\relax\openssl c:\openssl
 	[etc...]
-    
+
 
 ********************************************************************************
 # Building pre-requisites for Erlang
@@ -152,7 +152,7 @@ jpeg, png, tiff, zlib, regex, expat, base, net, odbc, core,
 
 		echo "skipping gs" > lib/gs/SKIP
 
-* check that `which cl; which link; which mc` return the MS ones, if not then sort them manually
+* check that `which cl; which link; which mc` return the MS ones, if not then sort them out manually. Refer to [relax.cmd](http://github.com/dch/glazier/bin/relax.cmd) and  [relax.sh](http://github.com/dch/glazier/bin/relax.sh)
 * build Erlang using `/src/glazier/bin/erl_config.sh` and `/src/glazier/bin/erl_build.sh`, or manually as follows
 
 		./otp_build autoconf
@@ -178,11 +178,11 @@ or using the relax tools:
 # CouchDB
 ********************************************************************************
 
-minimum requirements
+CouchDB has been built & tested against the following components successfully
 
 * Erlang OTP R13B04 or R14A including source
-* ICU 4.2 only                      (http://icu.sourceforge.net/)
-* OpenSSL  1.0.0a               (http://www.openssl.org/)
+* ICU 4.2.1                      (http://icu.sourceforge.net/)
+* Win32 OpenSSL  1.0.0a               (http://www.openssl.org/)
 * Mozilla SpiderMonkey 1.8 from SeaMonkey 2.0.6
 * libcurl 7.21.1                    (http://curl.haxx.se/libcurl/)
 
@@ -191,8 +191,8 @@ minimum requirements
 The Javascript engine used by CouchDB is built from Seamonkey, using the mozilla build toolkit.
 
 * get [seamonkey_bits]
-* run c:\mozilla-build\start-msvc9.bat
-        
+* run `c:\mozilla-build\start-msvc9.bat` even if you are on a 64-bit platform.
+
         cd /c/relax && mkdir seamonkey-2.0.6
         cd seamonkey-2.0.6
         tar xjf /d/glazier/bits/seamonkey-2.0.6.source.tar.bz2
@@ -208,7 +208,7 @@ The Javascript engine used by CouchDB is built from Seamonkey, using the mozilla
         cd mozilla-central/......./comm-1.9.1/mozilla/js/src
         autoconf-2.13
         ./configure
-        make 
+        make
 
 ## Inno Installer
 from http://www.jrsoftware.org/download.php/ispack-unicode.exe
@@ -217,8 +217,13 @@ to c:\relax\inno5 & ensure its in the path
 
 ## LibCURL
 
+        set OPENSSL_PATH=c:\openssl
+        set INCLUDE=%INCLUDE%;%OPENSSL_PATH%\include\openssl;
+        set LIBPATH=%LIBPATH%;%OPENSSL_PATH%\lib;
+        set LIB=%LIB%;%OPENSSL_PATH%\lib;
+
         pushd c:\relax\curl-7*
-        vcbuild /upgrade lib\libcurl.vcproj
+	vcbuild /upgrade lib\libcurl.vcproj
         vcbuild /useenv /rebuild /platform:Win32 lib\libcurl.vcproj "Release|Win32"
         xcopy lib\Release\libcurl.lib lib\ /y /f
 	popd
@@ -226,10 +231,7 @@ to c:\relax\inno5 & ensure its in the path
 TODO maybe none of this section is needed now
 
         you need to have libcurl.lib in the ./configure path (CURL_LIBS="$withval/lib/libcurl")
-        set OPENSSL_PATH=%systemdrive%\openssl
-        set INCLUDE=%INCLUDE%;%OPENSSL_PATH%\include\openssl;
-        set LIBPATH=%LIBPATH%;%OPENSSL_PATH%\lib;
-        set LIB=%LIB%;%OPENSSL_PATH%\lib;
+
         nmake vc-ssl
         couldn't get this to work so instead i built curl/vc6curl.sln
         check curl.exe & see what libs it needs - these should be openssl only
@@ -309,7 +311,7 @@ TODO // URLs don't go to right AMIs
 
 * lgoon as _couchdb_ with passwd _couchdb1dot0_
 * import console_hkcu.reg
-* import 
+* import
 
 ********************************************************************************
 #Manual Build Procedure
@@ -344,7 +346,7 @@ Three compiler tools are required to build wxWidgets, Erlang, Javascript, and fi
 ********************************************************************************
 
 ### win7 std - default environment
-    
+
     ALLUSERSPROFILE=C:\ProgramData
     APPDATA=C:\Users\couchdb\AppData\Roaming
     CLIENTNAME=continuity.muse
@@ -440,7 +442,7 @@ Three compiler tools are required to build wxWidgets, Erlang, Javascript, and fi
 ********************************************************************************
 
 ### a perfect path for erlang R13B04 after eval `./otp_build env_win32`
-    
+
     export PATH=$ERL_TOP/release/win32/erts-5.7.5/bin:\
     $ERL_TOP/erts/etc/win32/cygwin_tools/vc:\
     $ERL_TOP/erts/etc/win32/cygwin_tools:\
@@ -460,10 +462,10 @@ Three compiler tools are required to build wxWidgets, Erlang, Javascript, and fi
     /cygdrive/c/WINDOWS/system32:\
     /cygdrive/c/WINDOWS:\
     /cygdrive/c/WINDOWS/System32/Wbem
-    
+
     export ERL_TOP=/src/otp_src_R13B04
     export PATH=$ERL_TOP/release/win32/erts-5.7.5/bin:$ERL_TOP/erts/etc/win32/cygwin_tools/vc:$ERL_TOP/erts/etc/win32/cygwin_tools:/cygdrive/c/PROGRA~1/MICROS~1.0/Common7/IDE:/cygdrive/c/PROGRA~1/MICROS~1.0/VC/BIN:/cygdrive/c/PROGRA~1/MICROS~1.0/Common7/Tools:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/V20~1.507:/cygdrive/c/PROGRA~1/MICROS~1.0/VC/VCPACK~1:/cygdrive/c/PROGRA~1/MICROS~3/Windows/v7.0/bin:/src/openssl:/src/nsis:/src/inno5:/usr/local/bin:/usr/bin:/bin:/cygdrive/c/WINDOWS/system32:/cygdrive/c/WINDOWS:/cygdrive/c/WINDOWS/System32/Wbem
-    
+
     export ERL_TOP=/src/otp_src_R14A
     EXPORT PATH=$ERL_TOP/release/win32/erts-5.8/bin:$ERL_TOP/erts/etc/win32/cygwin_tools/vc:$ERL_TOP/erts/etc/win32/cygwin_tools:/cygdrive/c/PROGRA~1/MICROS~1.0/Common7/IDE:/cygdrive/c/PROGRA~1/MICROS~1.0/VC/BIN:/cygdrive/c/PROGRA~1/MICROS~1.0/Common7/Tools:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/V20~1.507:/cygdrive/c/PROGRA~1/MICROS~1.0/VC/VCPACK~1:/cygdrive/c/PROGRA~1/MICROS~3/Windows/v7.0/bin:/src/openssl:/src/nsis:/src/inno5:/usr/local/bin:/usr/bin:/bin:/cygdrive/c/WINDOWS/system32:/cygdrive/c/WINDOWS:/cygdrive/c/WINDOWS/System32/Wbem
 

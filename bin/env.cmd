@@ -30,25 +30,15 @@ goto :eof
 if not "%USERNAME%"=="couchdb" logoff
 ::we are running as couchdb user
 
-set ROOT=%~d0
-echo found root volume: %ROOT%
+set GLAZIER=%~dp0..
+echo found glazier: %GLAZIER%
 echo setting up new environment
-set SRC=%ROOT%\src
-set BIN=%ROOT%\glazier\bin
-set BITS=%ROOT%\glazier\bits
-set CORE=%BIN%;%BIN%\uxtools;%BIN%\pstools;%BIN%\openssl;
 
-setx ROOT %ROOT% > NUL:
-setx SRC %SRC% > NUL:
-setx BIN %BIN% > NUL:
-setx BITS %BITS% > NUL:
-setx CORE %CORE% > NUL:
-
-path=%path%;%CORE%
-pushd %BITS%
+path=%path%;%glazier%\bin
+pushd %GLAZIER%\bits
 
 echo give you some helpful icons
-xcopy "%BITS%\desktop\*.lnk" "%userprofile%\desktop\" /y
+xcopy "desktop\*.lnk" "%userprofile%\desktop\" /y
 echo done.
 
 echo disable various enhanced security functions that complicate build on win2008 server
@@ -56,49 +46,20 @@ bcdedit.exe /set {current} nx AlwaysOff > NUL:
 echo done.
 
 :: reg files seem to need to be loaded from local storage not EBS volume
+pushd %GLAZIER%\bin
 copy *.reg "%temp%\" /y
 pushd "%temp%"
 regedit /s disable_aslr.reg > NUL:
 regedit /s console_hkcu.reg > NUL:
 regedit /s command_process_hkcu.reg > NUL:
-echo done.
-echo installing VC++ redistributable components
-start /wait %BITS%\vcredist_x86.exe /q
+regedit /s disable_sehop_kb956607.reg > NUL:
 echo done.
 popd
-
-echo install compilers -- gcc/cygwin, VC++ 2008 Express, mingw via mozilla
-pause
-
-::start /wait mozillabuildsetup-latest.exe
-:: msys needs a fix by junction point to /c/ to be able to *build* javascript successfully
-junction %systemdrive%\mozilla-build %ROOT%\mozilla-build
-
-::start /wait setup.exe --local-install --quiet-mode
-junction %systemdrive%\cygwin %root%\cygwin
-setx CYGWIN nontsec > NUL:
-:: should work fine from a cygwin softlink but doesn't
-:: junction %systemdrive%\openssl %root%\src\openssl
-
-start /wait D:\VS2008express_SP1_ENUX1504728\VCExpress\setup.exe
-echo done.
-
-echo install SDKs
-pause
-:: this takes *ages* to run so be patient\
-start /wait D:\Windows7_SDK\Setup.exe
-echo done.
 
 echo install windows updates
 pause
 start /wait http://update.microsoft.com/microsoftupdate/v6
 echo done.
-
-::build tools are now all used directly off the snapshot after installation under /src/
-::start /wait ispack-5.3.10-unicode.exe
-::start /wait npp.5.7.Installer.exe
-::start /wait nsis-2.46-setup.exe
-::start /wait Win32OpenSSL-1_0_0a.exe
 
 echo OK: normal exit
 echo press a key to reboot now to complete installation
@@ -109,4 +70,3 @@ goto eof
 echo FAIL: abnormal exit
 
 :eof
-pause

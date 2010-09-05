@@ -5,8 +5,8 @@ echo Build CouchDB under Windows - Time to Relax v0.4
 set GLAZIER=%~dp0..
 path=%~dp0;%PATH%;
 
-:: install stuff to %systemdrive%\relax which is usually C:\relax unless otherwise requested
-if "%RELAX%" == "" set RELAX=%SYSTEMDRIVE%\relax
+:: install stuff to C:\relax unless otherwise requested
+if "%RELAX%" == "" set RELAX=C:\relax
 
 :: set these paths into the user environment for future usage
 setx GLAZIER %GLAZIER%
@@ -105,9 +105,9 @@ echo START	junction points...
 echo END	making junction points
 
 echo START	install win32 OpenSSL...
-start /wait %GLAZIER%\bits\Win32OpenSSL-1_0_0a.exe /silent /sp- /suppressmsgboxes /dir=%systemdrive%\openssl
+start /wait %GLAZIER%\bits\Win32OpenSSL-1_0_0a.exe /silent /sp- /suppressmsgboxes /dir=c:\openssl
 :: TODO fails on XP and 2003 but may not be needed ... or use sysinternals junction.exe or some other tool, or try with symlink only in cygwin
-%GLAZIER%\bits\junction.exe %RELAX%\openssl %systemdrive%\openssl
+%GLAZIER%\bits\junction.exe %RELAX%\openssl c:\openssl
 echo DONE	install win32 OpenSSL
 
 

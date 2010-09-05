@@ -35,6 +35,9 @@ echo setting up reparse points of new volumes
 :: the sysinternals tool works on all platforms incl XP & later
 %GLAZIER%\bits\junction.exe "%RELAX%\vs90" "%VS90COMNTOOLS%\..\.."  > NUL: 2>&1
 %GLAZIER%\bits\junction.exe "%RELAX%\SDKs" "%programfiles%\Microsoft SDKs\Windows"  > NUL: 2>&1
+%GLAZIER%\bits\junction.exe C:\mozilla-build\msys\relax "%RELAX%" > NUL: 2>&1
+%GLAZIER%\bits\junction.exe C:\cygwin\relax "%RELAX%" > NUL: 2>&1
+%GLAZIER%\bits\junction.exe "%RELAX%\openssl" c:\openssl > NUL: 2>&1
 
 :: add ICU, cURL and OpenSSL libraries for C compilers to find later on in CouchDB and Erlang
 set OPENSSL_PATH=%RELAX%\openssl
@@ -74,7 +77,7 @@ goto unix_shell
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :unix_shell
 title Building in %ERL_TOP% with OTP %OTP_VER% and Erlang v%ERL_VER%
-%systemdrive%\cygwin\bin\bash %GLAZIER%\bin\relax.sh
+c:\cygwin\bin\bash %GLAZIER%\bin\relax.sh
 goto eof
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

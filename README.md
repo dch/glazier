@@ -29,6 +29,7 @@ The full Cygwin install comprises several GiB of data. Run [cygwin]'s setup.exe 
 
 After install, run the cygwin shell, and set up a symlink to where you plan to install related binaries, build erlang, and couchdb. I am using `C:\relax` so:
 
+		mkdir 
 		ln -s /cygdrive/c/relax /relax
 
 ## Mozilla Build
@@ -55,7 +56,7 @@ Both CouchDB and Erlang have dependencies on other opensource tools.
 ## OpenSSL
 
 * use the 32-bit version even if you are using a 64-bit OS
-* download [openssl_bits] and install to `c:\relax\openssl`
+* download [openssl_bits] and install to `c:\openssl`
 
 ## Innosoft Installer
 
@@ -78,6 +79,7 @@ Both CouchDB and Erlang have dependencies on other opensource tools.
 or using mklink.exe
 
         mklink /j c:\relax\openssl c:\openssl
+	[etc...]
     
 
 ********************************************************************************
@@ -100,11 +102,12 @@ or using mklink.exe
 * right-click on the project, and set up the dependencies for wx.dsw to achieve the below build order
 jpeg, png, tiff, zlib, regex, expat, base, net, odbc, core,
  gl, html, media, qa, adv, dbgrid, xrc, aui, richtext, xml
+* Launch a new prompt from somewhere like Start -> Programs -> Microsoft Visual C++ -> Visual Studio Tools -> VS2008 Cmd Prompt
 * Then build all unicode release (and unicode debug) packages:
 
         pushd c:\relax\wxMSW*\build\msw
-        start vcbuild /useenv /rebuild /platform:Win32 /M2 wx.sln "Unicode Release|Win32"
-        start vcbuild /useenv /rebuild /platform:Win32 /M2 wx.sln "Unicode Debug|Win32"
+        vcbuild /useenv  /platform:Win32 /M4 wx.sln "Unicode Release|Win32"
+        vcbuild /useenv  /platform:Win32 /M4 wx.sln "Unicode Debug|Win32"
 
 ### stc.dsw
 * open VSC++ & convert `C:\relax\wxMSW-2.8.11\contrib\build\stc\stc.dsw` to C:\relax\wxMSW-2.8.11\contrib\build\stc\stc.sln
@@ -112,8 +115,8 @@ jpeg, png, tiff, zlib, regex, expat, base, net, odbc, core,
         pushd c:\relax\wxMSW*\contrib\build\stc
         set LIB=%LIB%;..\..\..\include..\..\..\lib\vc_lib\mswd
         set LIBPATH=%LIBPATH%;..\..\..\lib\vc_lib
-        start vcbuild /useenv /rebuild /platform:Win32 /M2 stc.sln "Unicode Release|Win32"
-        start vcbuild /useenv /rebuild /platform:Win32 /M2 stc.sln "Unicode Debug|Win32"
+        vcbuild /useenv /platform:Win32 /M4 stc.sln "Unicode Release|Win32"
+        vcbuild /useenv /platform:Win32 /M4 stc.sln "Unicode Debug|Win32"
 
 ### Reference URLs
 * [WxWidgets Source](http://svn.wxwidgets.org/svn/wx/wxWidgets/branches/WX_2_8_BRANCH/docs/msw/install.txt)
@@ -129,6 +132,7 @@ jpeg, png, tiff, zlib, regex, expat, base, net, odbc, core,
 ` will automatically find the correct path, and set up our 32-bit build environment correctly, independently if you have installed on 32 or 64bit windows.
 * start a cygwin shell
 
+        cd /relax
         ln -s /cygdrive/d/glazier/bin bin
 	ln -s /cygdrive/d/glazier/bits bits
 	tar xzf /relax/bits/otp_src_R14A.tar.gz &
@@ -139,7 +143,7 @@ jpeg, png, tiff, zlib, regex, expat, base, net, odbc, core,
 ## Tk/Tcl
 * optional component
 
-        cd $ERL_TOP && tar xvzf /src/bits/tcltk85_win32_bin.tar.gz
+        cd $ERL_TOP && tar xvzf /relax/bits/tcltk85_win32_bin.tar.gz
         # or simply
         cd /relax/otp_src_R14A && tar xvzf /relax/bits/tcltk85_win32_bin.tar.gz
         cd /relax/otp_src_R13B04 && tar xvzf /relax/bits/tcltk85_win32_bin.tar.gz
@@ -157,7 +161,18 @@ jpeg, png, tiff, zlib, regex, expat, base, net, odbc, core,
 		./otp_build release -a
 		./otp_build installer_win32
 		# to setup erlang to run from this new source build immediately run:
-		./release/win32/Install.exe -s
+		## and not ./release/win32/Install.exe -s
+		./otp_build local_setup
+
+[erlang INSTALL-Win32.md on github](http://github.com/erlang/otp/blob/dev/INSTALL-WIN32.md)
+
+or using the relax tools:
+
+        start %glazier%\bin\relax.cmd
+	[select erlang R14A build or R13B04]
+	/relax/bin/erl_config.sh; /relax/bin/erl_build.sh
+	[note concurrent builds don't work - try putting a sleep 1200 in front]
+
 
 ********************************************************************************
 # CouchDB

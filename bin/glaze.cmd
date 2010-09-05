@@ -1,5 +1,5 @@
 @echo off
-echo Build CouchDB under Windows - Time to Relax v0.3
+echo Build CouchDB under Windows - Time to Relax v0.4
 
 :: find our source tree from one level up from current bin
 set GLAZIER=%~dp0..
@@ -44,10 +44,9 @@ echo DONE	unpacking ISOs in [%RELAX%\ISOs]
 echo START	installing compilers...
 echo START	MS VS2008 Express...
 :: TODO remove hackage that prevents installing MSSQL burning CPU and space
-pushd %RELAX%\ISOs\VS2008ExpressWithSP1ENUX1504728\VCExpress\WCU\
-rd /s/q dist > NUL: 2>&1
+pushd %RELAX%\ISOs\VS2008ExpressWithSP1ENUX1504728\VCExpress\WCU\ && rd /s/q dist > NUL: 2>&1
 mkdir dist
-for %%i in (dotNetFramework Silverlight SMO SSE) do @move %i dist\
+for %%i in (dotNetFramework Silverlight SMO SSE) do @move %%i dist\
 cd .. && start /wait setup.exe /q /norestart
 popd
 echo DONE	MS VS2008 Express
@@ -94,7 +93,8 @@ echo DONE	install vcredist
 
 :tools install
 echo START	junction points...
-%GLAZIER%\bits\junction.exe /accepteula
+%GLAZIER%\bits\junction.exe -accepteula > NUL: 2>&1
+
 :: TODO we want to get an env var set by VS2008 install but it  doesn't exist
 :: TODO until this cmd.exe dies and a new one starts up ... bugger
 :: set up junction point to make finding stuff simpler

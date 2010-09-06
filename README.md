@@ -27,10 +27,10 @@ The full Cygwin install comprises several GiB of data. Run [cygwin]'s setup.exe 
 * editors: vim
 * utils: file
 
-After install, run the cygwin shell, and set up a symlink to where you plan to install related binaries, build erlang, and couchdb. I am using `C:\relax` so:
+After install, set up a link to where you plan to install related binaries, build erlang, and couchdb. I am using `C:\relax` so:
 
-		mkdir
-		ln -s /cygdrive/c/relax /relax
+		mkdir c:\relax
+		junction.exe c:\cygwin\relax c:\relax
 
 ## Mozilla Build
 The mozilla build toolchain is needed solely for building our javascript engine.
@@ -91,8 +91,8 @@ or using mklink.exe
 * download [wxwidgets_bits] from [WxWidgets website](http://wxwidgets.org/) & unzip using cygwin into /relax/
 * the Erlang build expects to see wxWidgets in /opt/local/pgm/wxWidgets-2.8.11 by default
 
-        mkdir -p /opt/local/pgm/
-        ln -s /relax/wxMSW-2.8.11 /opt/local/pgm/wxWidgets-2.8.11
+        mkdir c:\cygwin\opt\local\pgm
+        junction c:\cygwin\opt\local\pgm\wxWidgets-2.8.11 c:\relax\wxMSW-2.8.11
 
 * Using a suitable editor (vi in the cygwin suite, or install [notepadplus_bits] for windows users) and
 * Edit `c:\relax\wxMSW-2.8.11\include\wx\msw\setup.h` to enable wxUSE\_GLCANVAS, wxUSE\_POSTSCRIPT and wxUSE\_GRAPHICS_CONTEXT
@@ -130,13 +130,16 @@ jpeg, png, tiff, zlib, regex, expat, base, net, odbc, core,
 
 * after installing VC++ 2008 Express, and most other Visual Studio solutions, `call "%vs90comntools%\..\..\vc\vcvarsall.bat" x86
 ` will automatically find the correct path, and set up our 32-bit build environment correctly, independently if you have installed on 32 or 64bit windows.
-* start a cygwin shell
-
+* in a cmd.exe shell
+      
+        junction.exe %RELAX%\bin %GLAZIER%\bin
+        junction.exe %RELAX%\bits %GLAZIER%\bits
+        mkdir %RELAX%\release
+  
+* in a cygwin sheel
         cd /relax
-        ln -s /cygdrive/d/glazier/bin bin
-	ln -s /cygdrive/d/glazier/bits bits
-	tar xzf /relax/bits/otp_src_R14A.tar.gz &
-	tar xzf /relax/bits/otp_src_R13B04.tar.gz &
+        tar xzf /relax/bits/otp_src_R14A.tar.gz &
+        tar xzf /relax/bits/otp_src_R13B04.tar.gz &
 
 * then run `d:\glazier\bin\relax.cmd`
 
@@ -160,10 +163,9 @@ jpeg, png, tiff, zlib, regex, expat, base, net, odbc, core,
 		./otp_build boot -a
 		./otp_build release -a
 		./otp_build installer_win32
-		# to setup erlang to run from this new source build immediately run:
-		## and not ./release/win32/Install.exe -s
-		./otp_build local_setup
-
+		# we need to set up erlang to run from this new source build to build CouchDB
+		echo -e \\n|./release/win32/Install.exe
+		
 [erlang INSTALL-Win32.md on github](http://github.com/erlang/otp/blob/dev/INSTALL-WIN32.md)
 
 or using the relax tools:
@@ -216,15 +218,16 @@ download and install ispack-5.3.10-unicode.exe, including all additional compone
 to c:\relax\inno5 & ensure its in the path
 
 ## LibCURL
-
+	
+        cd /relax && tar xf /relax/bits/curl-7*
         set OPENSSL_PATH=c:\openssl
         set INCLUDE=%INCLUDE%;%OPENSSL_PATH%\include\openssl;
         set LIBPATH=%LIBPATH%;%OPENSSL_PATH%\lib;
         set LIB=%LIB%;%OPENSSL_PATH%\lib;
 
         pushd c:\relax\curl-7*
-	vcbuild /upgrade lib\libcurl.vcproj
-        vcbuild /useenv /rebuild /platform:Win32 lib\libcurl.vcproj "Release|Win32"
+        vcbuild /useenv /upgrade /platform:Win32 lib\libcurl.vcproj
+        vcbuild /useenv /platform:Win32 lib\libcurl.vcproj "Release|Win32"
         xcopy lib\Release\libcurl.lib lib\ /y /f
 	popd
 

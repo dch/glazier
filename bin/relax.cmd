@@ -15,7 +15,7 @@ pushd %GLAZIER%\bin
 :: C:\Program Files\Microsoft SDKs\Windows\v7.0\mc.exes
 :: etc
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-set CYGWIN=nontsec
+set CYGWIN=nontsec nodosfilewarning
 set DIRCMD=/ogen /p
 ::set JAVA_HOME=c:\Program Files\Java\jre1.6.0_01
 mkdir c:\tmp > NUL: 2>&1
@@ -25,6 +25,8 @@ set TMP=c:\tmp
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: get the VC9 path components set up
 :: this should work where-ever VC9 is installed
+:: but first clear out crud in current path
+path=%windir%\system32;%windir%;%windir%\system32\wbem;%windir%\syswow64;
 call "%vs90comntools%\..\..\vc\vcvarsall.bat" x86
 
 :: now we can set up new paths as junction points

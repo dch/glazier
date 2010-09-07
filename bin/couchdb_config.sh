@@ -11,6 +11,6 @@ export COUCH_TOP
 --with-msvc-redist-dir=/relax \
 --with-js-lib=/relax/seamonkey-2.0.6/comm-1.9.1/mozilla/js/src/dist/lib \
 --with-js-include=/relax/seamonkey-2.0.6/comm-1.9.1/mozilla/js/src/dist/include/js \
-| tee $COUCH_TOP/build_configure.txt
+2>&1 | tee $COUCH_TOP/build_configure.txt
 
 echo DONE. | tee -a $COUCH_TOP/build_configure.txt

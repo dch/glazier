@@ -13,13 +13,8 @@
 echo Using Erlang $ERL_VER OTP $OTP_VER in $ERL_TOP
 echo
 
-## set up symlinks in first time build
-ln -s $RELAX /relax > /dev/null 2>&1
-ln -s $RELAX/bin $GLAZIER/bin > /dev/null 2>&1
-ln -s $RELAX/bits $GLAZIER/bits > /dev/null 2>&1
-mkdir -p /opt/local/pgm/ > /dev/null 2>&1
-ln -s /relax/wxMSW-2.8.11 /opt/local/pgm/wxWidgets-2.8.11 > /dev/null 2>&1
-
+echo doing sanity checks
+# here we want to see that junction points are set up and 
 # rebuild path from scratch as ./otp_build env_win32 gets it wrong
 # first up are erlang build helper scripts
 PATH=$ERL_TOP/release/win32/erts-$ERL_VER/bin:$ERL_TOP/erts/etc/win32/cygwin_tools/vc:$ERL_TOP/erts/etc/win32/cygwin_tools

@@ -1,4 +1,4 @@
 #!/bin/sh
-./otp_build autoconf | tee $ERL_TOP/build_autoconf.txt
-./otp_build configure| tee $ERL_TOP/build_configure.txt
-./otp_build remove_prebuilt_files
+./otp_build autoconf 2>&1 | tee $ERL_TOP/build_autoconf.txt
+./otp_build configure 2>&1 | tee $ERL_TOP/build_configure.txt
+

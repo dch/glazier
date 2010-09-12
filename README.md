@@ -2,54 +2,82 @@
 #Glazier - automating building CouchDB on Windows
 ********************************************************************************
 
-Glazier is a set of scripts designed to help automate as much as practicable the build of CouchDB on Windows, from XP/2003 to Windows 7 or Server 2008. It assumes you're starting from a vanilla state.
+Glazier is a set of scripts designed to help automate as much as practicable the
+build of CouchDB on Windows, from XP/2003 to Windows 7 or Server 2008. It
+assumes you're starting from a vanilla state.
 
 ## Current State
 
-* steps below should produce a working CouchDB build & self-installing .exe from either Erlang/OTP R13B04 or R14A, and CouchDB 0.11.2 or 1.0.1
-* the build environment should be fully functional on both 32,64, desktop and server versions of windows from XP/2003 onwards
+* steps below should produce a working CouchDB build & self-installing .exe from
+	Erlang/OTP  R14A, and CouchDB 0.11.2 or 1.0.1. 
+* the build environment should be fully functional on both 32,64, desktop and
+	server versions of windows from XP/2003 onwards
 * fetching binaries is described and automated
 * installation of development environment is described and automated
-* downloads are not small - [get_bits.cmd](http://github.com/dch/glazier/blob/master/bin/get_bits.cmd) retrieves approx 7GiB of DVD ISOs for Microsoft's Visual Studio 2008 compiler, related SDKs, the smaller cygwin and mozilla build frameworks, source and misc tools
+* downloads are not small -
+	get_bits.cmd](http://github.com/dch/glazier/blob/master/bin/get_bits.cmd)
+	retrieves approx 7GiB of DVD ISOs for Microsoft's Visual Studio 2008
+	compiler, related SDKs, the smaller cygwin and mozilla build frameworks,
+	source and misc tools
 
-********************************************************************************
+# Using Glazier
+
+Glazier requires 5 things to run successfully
+- you are logged in as a local user "couchdb" which has admin permissions
+- Windows XP, 2003, Vista, Windows 7 or 2008, either 32 or 64-bit platforms
+- internet connectivity
+- approx 12GiB of disk space during fetch & build stages
+- download and unzipped
+	[glazier latest zip](http://github.com/dch/glazier/zipball/master)
+- an optional environment variable, %RELAX%, set to where you wish to have CouchDB
+ and Erlang built within. If none is selected, c:\relax will be used.
+
 # Installing the Build Environment
-********************************************************************************
 
-* Building Erlang & CouchDB on Windows requires a custom build environment, which is very sensitive to path order amongst the three different compilers used to build wxWidgets, erlang, javascript, and couchdb
-* Each component is built via standard Makefiles in the Cygwin unix/posix emulation layer, and then handed over to the appropriate compiler to run.
-* This is further complicated by different install locations on 32 vs 64 bit windows versions, and which Microsoft C compiler and Windows SDKs are installed.
+* Building Erlang & CouchDB on Windows requires a custom build environment,
+	which is very sensitive to path order amongst the three different 
+	compilers used to build wxWidgets, erlang, javascript, and couchdb
+* Each component is built via standard Makefiles in the Cygwin unix/posix
+	emulation layer, and then handed over to the appropriate compiler.
+* This is further complicated by different install locations on 32 vs 64 bit
+	windows versions, and which Microsoft C compiler and Windows SDKs
+	installed.
 
 ## Cygwin
-The full Cygwin install comprises several GiB of data. Run [cygwin]'s setup.exe using defaults, optionally installing all components if you have the bandwidth, or alternatively with the following additional modules at a minimum:
+The full Cygwin install comprises several GiB of data. Run [cygwin]'s setup.exe
+	using defaults, optionally installing all components if you have the
+	bandwidth, or alternatively with the following additional modules at a
+	minimum:
 
 * devel: ALL
 * editors: vim
 * utils: file
 
-After install, set up a link to where you plan to install related binaries, build erlang, and couchdb. I am using `C:\relax` so:
+After install, set up a link to where you plan to install related binaries,
+	build erlang, and couchdb. I am using `C:\relax` so:
 
 		mkdir c:\relax
 		junction.exe c:\cygwin\relax c:\relax
 
 ## Mozilla Build
-The mozilla build toolchain is needed solely for building our javascript engine.
+The mozilla build toolchain is needed solely for building a javascript engine.
 
 * download it from [mozbuild] and install per defaults
 
 ## Microsoft Visual C++
-* Erlang and CouchDB can be built using the free VS2008 Express C++ edition from [MSDN](http://msdn.microsoft.com/en-gb/vstudio/)
-* install Visual C++ 9 only, to the default locations, using the DVD ISO [msvc++] excluding optional MSSSQL & Silverlight
+* Erlang and CouchDB can be built using the free VS2008 Express C++ edition
+	from [MSDN](http://msdn.microsoft.com/en-gb/vstudio/)
+* install Visual C++ 9 only, to the default locations, using the DVD ISO
+	[msvc++] excluding optional MSSSQL & Silverlight
 
 ## Windows 7 SDK
-* The windows 7 SDK is required, as the free VS2008 install is missing the message compiler. Download one of the following version per your requirements & install
+* The windows 7 SDK is required, as the free VS2008 install is missing the
+	message compiler. Download one of the following version per your
+	requirements & install
 * [win7sdk_32bit]
 * [win7sdk_64bit]
 
-
-********************************************************************************
 # Supporting Tools
-********************************************************************************
 
 Both CouchDB and Erlang have dependencies on other opensource tools.
 
@@ -68,9 +96,14 @@ Both CouchDB and Erlang have dependencies on other opensource tools.
 
 ## set up links
 
-* to keep our paths clean later, and largely independent of the compiler installs if you have pre-existing ones, start a new cmd.exe prompt with a fresh environment
-* this should have both VS90ComnTools and ProgramFiles environment vars defined from the previous install of Visual Studio
-* setup the following hard links (junction points), using either the included mklink tool (Windows 7 and later), or [junction](http://live.sysinternals.com/junction.exe) from sysinternals:
+* to keep our paths clean later, and largely independent of the compiler
+	installs if you have pre-existing ones, start a new cmd.exe prompt
+	with a fresh environment
+* this should have both VS90ComnTools and ProgramFiles environment vars
+	defined from the previous install of Visual Studio
+* setup the following hard links (junction points), using either the included
+	mklink tool (Windows 7 and later), or SysInternal's
+	[junction](http://live.sysinternals.com/junction.exe)
 
         junction c:\relax\openssl c:\openssl
         junction c:\relax\vs90 "%VS90COMNTOOLS%\..\.."
@@ -81,55 +114,59 @@ or using mklink.exe
         mklink /j c:\relax\openssl c:\openssl
 	[etc...]
 
-
-********************************************************************************
 # Building pre-requisites for Erlang
-********************************************************************************
 
 ## wxWidgets
-* two components are used for building Erlang's graphical shell, `werl.exe` on windows
-* download [wxwidgets_bits] from [WxWidgets website](http://wxwidgets.org/) & unzip using cygwin into /relax/
-* the Erlang build expects to see wxWidgets in /opt/local/pgm/wxWidgets-2.8.11 by default
+* two components are used for building Erlang's graphical shell, `werl.exe`
+	on windows
+* download [wxwidgets_bits] from [WxWidgets website](http://wxwidgets.org/)
+	& unzip using cygwin into /relax/
+* the Erlang build expects to see wxWidgets in /opt/local/pgm/wxWidgets-2.8.11
+	by default
 
         mkdir c:\cygwin\opt\local\pgm
         junction c:\cygwin\opt\local\pgm\wxWidgets-2.8.11 c:\relax\wxMSW-2.8.11
 
-* Using a suitable editor (vi in the cygwin suite, or install [notepadplus_bits] for windows users) and
-* Edit `c:\relax\wxMSW-2.8.11\include\wx\msw\setup.h` to enable wxUSE\_GLCANVAS, wxUSE\_POSTSCRIPT and wxUSE\_GRAPHICS_CONTEXT
+* Using a suitable editor (vi in the cygwin suite, or install
+	[notepadplus_bits] for windows users) and
+* Edit `c:\relax\wxMSW-2.8.11\include\wx\msw\setup.h` to enable
+	`wxUSE\_GLCANVAS, wxUSE\_POSTSCRIPT` and `wxUSE\_GRAPHICS_CONTEXT`
 
 ### wx.dsw
-* open VSC++ & the project  `C:\relax\wxMSW-2.8.11\build\msw\wx.dsw`, accepting the automatic conversion to the newer VC++ format and save as `\relax\wxMSW-2.8.11\build\msw\wx.sln`
-* right-click on the project, and set up the dependencies for wx.dsw to achieve the below build order
-jpeg, png, tiff, zlib, regex, expat, base, net, odbc, core,
- gl, html, media, qa, adv, dbgrid, xrc, aui, richtext, xml
-* Launch a new prompt from somewhere like Start -> Programs -> Microsoft Visual C++ -> Visual Studio Tools -> VS2008 Cmd Prompt
+* open VSC++ & the project  `C:\relax\wxMSW-2.8.11\build\msw\wx.dsw`,
+	accepting the automatic conversion to the newer VC++ format and save
+	as `\relax\wxMSW-2.8.11\build\msw\wx.sln`
+* right-click on the project, and set up the dependencies for wx.dsw to
+	achieve the below build order
+`jpeg, png, tiff, zlib, regex, expat, base, net, odbc, core,
+ gl, html, media, qa, adv, dbgrid, xrc, aui, richtext, xml`
+* Launch a new prompt from somewhere like Start -> Programs -> Microsoft
+	Visual C++ -> Visual Studio Tools -> VS2008 Cmd Prompt
 * Then build all unicode release (and unicode debug) packages:
 
-        pushd c:\relax\wxMSW*\build\msw
+        pushd %RELAX%\wxMSW*\build\msw
         vcbuild /useenv  /platform:Win32 /M4 wx.sln "Unicode Release|Win32"
         vcbuild /useenv  /platform:Win32 /M4 wx.sln "Unicode Debug|Win32"
 
 ### stc.dsw
-* open VSC++ & convert `C:\relax\wxMSW-2.8.11\contrib\build\stc\stc.dsw` to C:\relax\wxMSW-2.8.11\contrib\build\stc\stc.sln
+* open VSC++ & convert `%RELAX%\wxMSW-2.8.11\contrib\build\stc\stc.dsw`
+	to `%RELAX%\wxMSW-2.8.11\contrib\build\stc\stc.sln`
 
-        pushd c:\relax\wxMSW*\contrib\build\stc
+        pushd %RELAX%\wxMSW*\contrib\build\stc
         set LIB=%LIB%;..\..\..\include..\..\..\lib\vc_lib\mswd
         set LIBPATH=%LIBPATH%;..\..\..\lib\vc_lib
         vcbuild /useenv /platform:Win32 /M4 stc.sln "Unicode Release|Win32"
         vcbuild /useenv /platform:Win32 /M4 stc.sln "Unicode Debug|Win32"
 
-### Reference URLs
-* [WxWidgets Source](http://svn.wxwidgets.org/svn/wx/wxWidgets/branches/WX_2_8_BRANCH/docs/msw/install.txt)
-* [MSVC++ WxWidgets](http://wiki.wxwidgets.org/Microsoft_Visual_C%2B%2B_Guide)
-* [WxWidgets compilation advice](http://rhyous.com/2009/12/16/how-to-compile-a-wxwidgets-application-in-visual-studio-2008/)
-* [wxWidgets](http://www.zerothlaw.org/joomla/index.php?option=com_jd-wiki&Itemid=26&id=wxwidgets:wxwidgets_with_visual_studio_express) guidance
-
 ********************************************************************************
 # Building Erlang
-********************************************************************************
 
-* after installing VC++ 2008 Express, and most other Visual Studio solutions, `call "%vs90comntools%\..\..\vc\vcvarsall.bat" x86
-` will automatically find the correct path, and set up our 32-bit build environment correctly, independently if you have installed on 32 or 64bit windows.
+* after installing VC++ 2008 Express, and most other Visual Studio solutions,
+	`call "%vs90comntools%\..\..\vc\vcvarsall.bat" x86` will automatically
+	insert the correct VS2008 compiler paths, but not the Windows v7.0 SDK.
+	It sets up our 32-bit build environment correctly, independently if
+	you have installed on 32 or 64bit windows.
+	
 * in a cmd.exe shell
       
         junction.exe %RELAX%\bin %GLAZIER%\bin
@@ -308,31 +345,11 @@ TODO // URLs don't go to right AMIs
 
 * restart now
 
-* logon as _couchdb_ with passwd _couchdb1dot0_
-* import console_hkcu.reg
-* import
-
 ********************************************************************************
-#Manual Build Procedure
+# Appendices
 ********************************************************************************
 
-This procedure has been tested on the following platforms successfully:
-- Windows XP SP2 32 bit
-- Windows 7 64 bit
-- Amazon Windows 2003 32-bit medium instance
-
-# Core Tools
-A number of opensource tools are used to unpack or retrieve files.
-
-* [7zip]
-# Set up Compilers
-Three compiler tools are required to build wxWidgets, Erlang, Javascript, and finally CouchDB.
-
-* download and install Microsoft Visual Studio 2008 Express, and install C++ only using the DVD ISO [msvc++] excluding optional MSSSQL & Silverlight
-
-***
-# Licenses
-***
+## Licences
 
 * the core tools & scripts used in glazier are released or included as BSD-style licence
 * curl and the included openssl libraries are the only ones distributed with glazier
@@ -340,9 +357,7 @@ Three compiler tools are required to build wxWidgets, Erlang, Javascript, and fi
 * curl <http://curl.haxx.se/docs/copyright.html>
 * openssl <http://www.openssl.org/source/license.html>
 
-********************************************************************************
-# sample environments on different windows platforms
-********************************************************************************
+## sample environments on different windows platforms
 
 ### win7 std - default environment
 
@@ -385,8 +400,6 @@ Three compiler tools are required to build wxWidgets, Erlang, Javascript, and fi
     USERPROFILE=C:\Users\couchdb
     VS90COMNTOOLS=C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\Tools\
     windir=C:\Windows
-
-********************************************************************************
 
 ### win7 std - vs2008 environment
     ALLUSERSPROFILE=C:\ProgramData
@@ -438,7 +451,6 @@ Three compiler tools are required to build wxWidgets, Erlang, Javascript, and fi
     windir=C:\Windows
     WindowsSdkDir=C:\Program Files\Microsoft SDKs\Windows\v6.0A\
 
-********************************************************************************
 
 ### a perfect path for erlang R13B04 after eval `./otp_build env_win32`
 
@@ -468,10 +480,7 @@ Three compiler tools are required to build wxWidgets, Erlang, Javascript, and fi
     export ERL_TOP=/src/otp_src_R14A
     EXPORT PATH=$ERL_TOP/release/win32/erts-5.8/bin:$ERL_TOP/erts/etc/win32/cygwin_tools/vc:$ERL_TOP/erts/etc/win32/cygwin_tools:/cygdrive/c/PROGRA~1/MICROS~1.0/Common7/IDE:/cygdrive/c/PROGRA~1/MICROS~1.0/VC/BIN:/cygdrive/c/PROGRA~1/MICROS~1.0/Common7/Tools:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/V20~1.507:/cygdrive/c/PROGRA~1/MICROS~1.0/VC/VCPACK~1:/cygdrive/c/PROGRA~1/MICROS~3/Windows/v7.0/bin:/src/openssl:/src/nsis:/src/inno5:/usr/local/bin:/usr/bin:/bin:/cygdrive/c/WINDOWS/system32:/cygdrive/c/WINDOWS:/cygdrive/c/WINDOWS/System32/Wbem
 
-
-********************************************************************************
-# Download URLs - visible only in raw text view
-********************************************************************************
+## Download URLs - visible only in raw text view
 
 [7zip_bits]:		http://downloads.sourceforge.net/sevenzip/7z465.exe
 [7zip_license]:		http://www.7-zip.org/license.txt

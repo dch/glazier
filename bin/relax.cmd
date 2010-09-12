@@ -46,6 +46,7 @@ set OPENSSL_PATH=%RELAX%\openssl
 set CURL_PATH=%RELAX%\curl-7.21.1
 set ICU_PATH=%RELAX%\icu
 
+:: set path for curl & couch compilation later on
 set INCLUDE=%INCLUDE%;%OPENSSL_PATH%\include\openssl;%CURL_PATH%\include\curl;%ICU_PATH%\include;
 set LIBPATH=%LIBPATH%;%OPENSSL_PATH%\lib;%CURL_PATH%\lib;%ICU_PATH%\lib;
 set LIB=%LIB%;%OPENSSL_PATH%\lib;%CURL_PATH%\lib;%ICU_PATH%\lib;

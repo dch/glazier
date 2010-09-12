@@ -6,7 +6,7 @@
 ################################################################################
 # stuff we could use in future
 #bitvise_sshd_bits		WinSSHD5-Inst.exe	http://dl.bitvise.com/WinSSHD5-Inst.exe
-#ramdisk	imdiskinst.exe	http://www.ltr-data.se/files/imdiskinst.exe
+ramdisk	imdiskinst.exe	http://www.ltr-data.se/files/imdiskinst.exe
 notepadplus	npp.5.7.Installer.exe	http://downloads.sourceforge.net/project/notepad-plus/notepad%2B%2B%20releases%20binary/npp%205.7%20bin/npp.5.7.Installer.exe
 junction	junction.exe	http://live.sysinternals.com/junction.exe
 setenv	setenv.exe	http://barnyard.syr.edu/~vefatica/ftpfiles/setenv.exe

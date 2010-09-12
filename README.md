@@ -2,11 +2,11 @@
 #Glazier - automating building CouchDB on Windows
 ********************************************************************************
 
-Glazier is a set of scripts designed to help automate as much as practicable the build of CouchDB on Windows, from XP/2003 to Windows 7 or Server 2008.
+Glazier is a set of scripts designed to help automate as much as practicable the build of CouchDB on Windows, from XP/2003 to Windows 7 or Server 2008. It assumes you're starting from a vanilla state.
 
 ## Current State
 
-* steps below should produce a working CouchDB build & self-installing .exe
+* steps below should produce a working CouchDB build & self-installing .exe from either Erlang/OTP R13B04 or R14A, and CouchDB 0.11.2 or 1.0.1
 * the build environment should be fully functional on both 32,64, desktop and server versions of windows from XP/2003 onwards
 * fetching binaries is described and automated
 * installation of development environment is described and automated
@@ -17,11 +17,11 @@ Glazier is a set of scripts designed to help automate as much as practicable the
 ********************************************************************************
 
 * Building Erlang & CouchDB on Windows requires a custom build environment, which is very sensitive to path order amongst the three different compilers used to build wxWidgets, erlang, javascript, and couchdb
-* Each component is built in differing environments and consolidated via Makefiles
+* Each component is built via standard Makefiles in the Cygwin unix/posix emulation layer, and then handed over to the appropriate compiler to run.
 * This is further complicated by different install locations on 32 vs 64 bit windows versions, and which Microsoft C compiler and Windows SDKs are installed.
 
 ## Cygwin
-The full Cygwin install comprises several GiB of data. Run [cygwin]'s setup.exe using defaults with the following additional modules at a minimum:
+The full Cygwin install comprises several GiB of data. Run [cygwin]'s setup.exe using defaults, optionally installing all components if you have the bandwidth, or alternatively with the following additional modules at a minimum:
 
 * devel: ALL
 * editors: vim
@@ -136,7 +136,7 @@ jpeg, png, tiff, zlib, regex, expat, base, net, odbc, core,
         junction.exe %RELAX%\bits %GLAZIER%\bits
         mkdir %RELAX%\release
   
-* in a cygwin sheel
+* in a cygwin shell
         cd /relax
         tar xzf /relax/bits/otp_src_R14A.tar.gz &
         tar xzf /relax/bits/otp_src_R13B04.tar.gz &
@@ -156,7 +156,7 @@ jpeg, png, tiff, zlib, regex, expat, base, net, odbc, core,
 		echo "skipping gs" > lib/gs/SKIP
 
 * check that `which cl; which link; which mc` return the MS ones, if not then sort them out manually. Refer to [relax.cmd](http://github.com/dch/glazier/bin/relax.cmd) and  [relax.sh](http://github.com/dch/glazier/bin/relax.sh)
-* build Erlang using `/src/glazier/bin/erl_config.sh` and `/src/glazier/bin/erl_build.sh`, or manually as follows
+* build Erlang using `/relax/glazier/bin/erl_config.sh` and `/relax/glazier/bin/erl_build.sh`, or manually as follows
 
 		./otp_build autoconf
 		./otp_build configure
@@ -217,33 +217,29 @@ from http://www.jrsoftware.org/download.php/ispack-unicode.exe
 download and install ispack-5.3.10-unicode.exe, including all additional components
 to c:\relax\inno5 & ensure its in the path
 
+## OpenSSL
+
+* already installed into C:/OpenSSL/ no further steps required
+
+
 ## LibCURL
-	
+
+### from cygwin shell:	
+
         cd /relax && tar xf /relax/bits/curl-7*
+
+### from cmd shell:
+
+        pushd c:\relax\curl-7*
         set OPENSSL_PATH=c:\openssl
         set INCLUDE=%INCLUDE%;%OPENSSL_PATH%\include\openssl;
         set LIBPATH=%LIBPATH%;%OPENSSL_PATH%\lib;
         set LIB=%LIB%;%OPENSSL_PATH%\lib;
 
-        pushd c:\relax\curl-7*
         vcbuild /useenv /upgrade /platform:Win32 lib\libcurl.vcproj
         vcbuild /useenv /platform:Win32 lib\libcurl.vcproj "Release|Win32"
         xcopy lib\Release\libcurl.lib lib\ /y /f
 	popd
-
-TODO maybe none of this section is needed now
-
-        you need to have libcurl.lib in the ./configure path (CURL_LIBS="$withval/lib/libcurl")
-
-        nmake vc-ssl
-        couldn't get this to work so instead i built curl/vc6curl.sln
-        check curl.exe & see what libs it needs - these should be openssl only
-        check that /src/curl-7.21.1/lib/libcurl.lib exists
-
-## OpenSSL
-
-* already installed into C:/OpenSSL/ no further steps required
-
 ## ICU
 * binaries from http://site.icu-project.org/
 		wget http://download.icu-project.org/files/icu4c/4.4.1/icu4c-4_4_1-Win32-msvc9.zip
@@ -312,7 +308,7 @@ TODO // URLs don't go to right AMIs
 
 * restart now
 
-* lgoon as _couchdb_ with passwd _couchdb1dot0_
+* logon as _couchdb_ with passwd _couchdb1dot0_
 * import console_hkcu.reg
 * import
 
@@ -482,7 +478,6 @@ Three compiler tools are required to build wxWidgets, Erlang, Javascript, and fi
 [AWS console]:		https://console.aws.amazon.com/ec2/home#c=EC2&s=Instances
 [AWS Windows Servers]:	http://developer.amazonwebservices.com/connect/kbcategory.jspa?categoryID=201
 [bitvise_sshd_bits]:	http://dl.bitvise.com/WinSSHD5-Inst.exe
-[curl_bits]:		http://curl.haxx.se/download/curl-7.19.5-win32-ssl.ziP
 [curl]:			http://curl.haxx.se/download.html
 [curl_license]:		http://curl.haxx.se/docs/copyright.html
 [cygwin]:		http://www.cygwin.com/setup.exe
@@ -494,8 +489,9 @@ Three compiler tools are required to build wxWidgets, Erlang, Javascript, and fi
 [inno_bits]:		http://www.jrsoftware.org/download.php/is-unicode.exe
 [inno_help]:		http://www.jrsoftware.org/ishelp/
 [libcurl_bits]:		http://curl.haxx.se/download/libcurl-7.19.3-win32-ssl-msvc.zip
-[libcurl-src]:		http://curl.haxx.se/download/curl-7.21.1.tar.gz
+[libcurl_src]:		http://curl.haxx.se/download/curl-7.21.1.tar.gz
 [msvc++]:		http://download.microsoft.com/download/E/8/E/E8EEB394-7F42-4963-A2D8-29559B738298/VS2008ExpressWithSP1ENUX1504728.iso
+[vsmc++webstart]:	http://download.microsoft.com/download/A/5/4/A54BADB6-9C3F-478D-8657-93B3FC9FE62D/vcsetup.exe
 [mozbuild]:		http://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/MozillaBuildSetup-Latest.exe
 [notepadplus_bits]:	http://download.sourceforge.net/project/notepad-plus/notepad%2B%2B%20releases%20binary/npp%205.7%20bin/npp.5.7.Installer.exe
 [nsis_bits]:		http://download.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
@@ -504,7 +500,7 @@ Three compiler tools are required to build wxWidgets, Erlang, Javascript, and fi
 [ramdisk]:		http://www.ltr-data.se/files/imdiskinst.exe
 [seamonkey_bits]:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/2.0.6/source/seamonkey-2.0.6.source.tar.bz2
 [SEHOP]:		http://support.microsoft.com/kb/956607
-[vcredist]:		http://download.microsoft.com/download/d/1/0/d10d210e-e0ad-4010-b547-bc5e395ef691/vcredist_x86.exe
+[vcredist]:		http://download.microsoft.com/download/d/d/9/dd9a82d0-52ef-40db-8dab-795376989c03/vcredist_x86.exe
 [win7sdk_32bit]:	http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDK_EN_DVD.iso
 [win7sdk_64bit]:	http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDKX_EN_DVD.iso
 [wxwidgets_bits]:	http://sourceforge.net/projects/wxwindows/files/2.8.11/wxMSW-2.8.11.zip

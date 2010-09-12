@@ -36,8 +36,8 @@ Glazier requires 5 things to run successfully
 # Running Automatically #######################################################
 
 * run `%GLAZIER%\bin\glaze.cmd` to fetch & cache the bits, install compiilers
-* you will need to select the cygwin modules individually
-* close any open command prompts
+* you will need to select the cygwin modules individually 
+* close any open command prompts or shells
 * run `%GLAZIER%\bin\relax.cmd` to start a valid build environment
 * select the erlang version you wish to build from
 * the first time around you will need to unpack your erlang and couchdb tarballs
@@ -62,7 +62,7 @@ Glazier requires 5 things to run successfully
 	during compilation phase, load these onto <http://friendpaste.com/>
 	don't email them to the mailing list
 
-# Installing the Build Environment
+# Installing the Build Environment ############################################
 
 * Building Erlang & CouchDB on Windows requires a custom build environment,
 	which is very sensitive to path order amongst the three different 
@@ -73,7 +73,8 @@ Glazier requires 5 things to run successfully
 	windows versions, and which Microsoft C compiler and Windows SDKs
 	installed.
 
-## Cygwin
+## Cygwin #####################################################################
+
 The full Cygwin install comprises several GiB of data. Run [cygwin]'s setup.exe
 	using defaults, optionally installing all components if you have the
 	bandwidth, or alternatively with the following additional modules at a
@@ -90,46 +91,53 @@ After install, set up a link to where you plan to install related binaries,
 		mkdir %RELAX%
 		junction.exe c:\cygwin\relax %RELAX%
 
-## Mozilla Build
+## Mozilla Build ##############################################################
+
 The mozilla build toolchain is needed solely for building a javascript engine.
 
 * Download it from [mozbuild] and install per defaults
 
-## Microsoft Visual C++
+## Microsoft Visual C++ #######################################################
+
 * Erlang and CouchDB can be built using the free VS2008 Express C++ edition
 	from [MSDN](http://msdn.microsoft.com/en-gb/vstudio/)
 * install Visual C++ 9 only, to the default locations, using the DVD ISO
 	[msvc++] excluding optional MSSSQL & Silverlight
 
-## Windows 7 SDK
+## Windows 7 SDK ##############################################################
+
 * The windows 7 SDK is required, as the free VS2008 install is missing the
 	message compiler. Download one of the following version per your
 	requirements & install
 * [win7sdk_32bit]
 * [win7sdk_64bit]
 
-# Supporting Tools
+# Supporting Tools ############################################################
 
 Both CouchDB and Erlang have dependencies on other opensource tools.
 
-## OpenSSL
+## OpenSSL ####################################################################
 
 * use the 32-bit version even if you are using a 64-bit OS
 * download [openssl_bits] and install to `c:\openssl`
 
-## Innosoft Installer
+## Innosoft Installer #########################################################
 
 * download the installer [inno_bits] and install to `c:\relax\inno5`
 
-## NSIS Installer
+## NSIS Installer #############################################################
 
 * download the installer [nsis_bits] and install to `c:\relax\nsis`
 
-## set up links
+## Microsoft Visual C++ runtime ###############################################
 
-* to keep our paths clean later, and largely independent of the compiler
-	installs if you have pre-existing ones, start a new cmd.exe prompt
-	with a fresh environment
+* download the runtime installer [vcredist] and copy to `c:\relax\`
+
+## set up hard links ##########################################################
+
+* to keep our paths clean later, and largely independent of compiler
+	installations if you have pre-existing ones, start a new cmd.exe
+	prompt	with a fresh environment
 * this should have both VS90ComnTools and ProgramFiles environment vars
 	defined from the previous install of Visual Studio
 * setup the following hard links (junction points), using either the included
@@ -145,9 +153,10 @@ or using mklink.exe
         mklink /j c:\relax\openssl c:\openssl
 	[etc...]
 
-# Building pre-requisites for Erlang
+# Building pre-requisites for Erlang ##########################################
 
-## wxWidgets
+## wxWidgets ##################################################################
+
 * two components are used for building Erlang's graphical shell, `werl.exe`
 	on windows
 * download [wxwidgets_bits] from [WxWidgets website](http://wxwidgets.org/)
@@ -163,7 +172,8 @@ or using mklink.exe
 * Edit `c:\relax\wxMSW-2.8.11\include\wx\msw\setup.h` to enable
 	`wxUSE\_GLCANVAS, wxUSE\_POSTSCRIPT` and `wxUSE\_GRAPHICS_CONTEXT`
 
-### wx.dsw
+### wx.dsw ####################################################################
+
 * open VSC++ & the project  `C:\relax\wxMSW-2.8.11\build\msw\wx.dsw`,
 	accepting the automatic conversion to the newer VC++ format and save
 	as `\relax\wxMSW-2.8.11\build\msw\wx.sln`
@@ -179,7 +189,8 @@ or using mklink.exe
         vcbuild /useenv  /platform:Win32 /M4 wx.sln "Unicode Release|Win32"
         vcbuild /useenv  /platform:Win32 /M4 wx.sln "Unicode Debug|Win32"
 
-### stc.dsw
+### stc.dsw ###################################################################
+
 * open VSC++ & convert `%RELAX%\wxMSW-2.8.11\contrib\build\stc\stc.dsw`
 	to `%RELAX%\wxMSW-2.8.11\contrib\build\stc\stc.sln`
 
@@ -189,14 +200,14 @@ or using mklink.exe
         vcbuild /useenv /platform:Win32 /M4 stc.sln "Unicode Release|Win32"
         vcbuild /useenv /platform:Win32 /M4 stc.sln "Unicode Debug|Win32"
 
-********************************************************************************
-# Building Erlang
+
+# Building Erlang #############################################################
 
 * after installing VC++ 2008 Express, and most other Visual Studio solutions,
 	`call "%vs90comntools%\..\..\vc\vcvarsall.bat" x86` will automatically
-	insert the correct VS2008 compiler paths, but not the Windows v7.0 SDK.
-	It sets up our 32-bit build environment correctly, independently if
-	you have installed on 32 or 64bit windows.
+	set up our 32-bit build environment correctly, independently if
+	you have installed on 32 or 64bit windows, with the exception of the
+	Windows v7.0 SDK.
 	
 * in a cmd.exe shell
       
@@ -212,8 +223,9 @@ or using mklink.exe
 
 * then run `%GLAZIER%\bin\relax.cmd`
 
-## Tk/Tcl
-* optional component
+## Tk/Tcl #####################################################################
+
+* optional components
 
         cd $ERL_TOP && tar xvzf /relax/bits/tcltk85_win32_bin.tar.gz
         # or simply
@@ -224,8 +236,13 @@ or using mklink.exe
 
 		echo "skipping gs" > lib/gs/SKIP
 
-* check that `which cl; which link; which mc` return the MS ones, if not then sort them out manually. Refer to [relax.cmd](http://github.com/dch/glazier/bin/relax.cmd) and  [relax.sh](http://github.com/dch/glazier/bin/relax.sh)
-* build Erlang using `/relax/glazier/bin/erl_config.sh` and `/relax/glazier/bin/erl_build.sh`, or manually as follows
+* check that `which cl; which link; which mc` return the MS ones, if not then
+ sort them out manually. Refer to
+ [relax.cmd](http://github.com/dch/glazier/bin/relax.cmd) and
+ [relax.sh](http://github.com/dch/glazier/bin/relax.sh)
+ 
+* build Erlang using `/relax/glazier/bin/erl_config.sh` and
+	`/relax/glazier/bin/erl_build.sh`, or manually as follows
 
 		./otp_build autoconf
 		./otp_build configure
@@ -233,33 +250,31 @@ or using mklink.exe
 		./otp_build release -a
 		./otp_build installer_win32
 		# we need to set up erlang to run from this new source build to build CouchDB
-		echo -e \\n|./release/win32/Install.exe
+		./release/win32/Install.exe -s
 		
-[erlang INSTALL-Win32.md on github](http://github.com/erlang/otp/blob/dev/INSTALL-WIN32.md)
+* More details are at [erlang INSTALL-Win32.md on github](http://github.com/erlang/otp/blob/dev/INSTALL-WIN32.md)
 
-or using the relax tools:
+* or using the relax tools:
 
         start %glazier%\bin\relax.cmd
-	[select erlang R14A build or R13B04]
-	/relax/bin/erl_config.sh; /relax/bin/erl_build.sh
-	[note concurrent builds don't work - try putting a sleep 1200 in front]
+	[select erlang build]
+	erl_config.sh; erl_build.sh
 
 
-********************************************************************************
-# CouchDB
-********************************************************************************
+# CouchDB #####################################################################
 
 CouchDB has been built & tested against the following components successfully
 
 * Erlang OTP R13B04 or R14A including source
-* ICU 4.2.1                      (http://icu.sourceforge.net/)
-* Win32 OpenSSL  1.0.0a               (http://www.openssl.org/)
+* ICU 4.2.1
+* Win32 OpenSSL  1.0.0a
 * Mozilla SpiderMonkey 1.8 from SeaMonkey 2.0.6
-* libcurl 7.21.1                    (http://curl.haxx.se/libcurl/)
+* libcurl 7.21.1
 
-## Javascript
+## Javascript #################################################################
 
-The Javascript engine used by CouchDB is built from Seamonkey, using the mozilla build toolkit.
+The Javascript engine used by CouchDB is built from Seamonkey, using the
+mozilla build toolkit.
 
 * get [seamonkey_bits]
 * run `c:\mozilla-build\start-msvc9.bat` even if you are on a 64-bit platform.
@@ -281,25 +296,25 @@ The Javascript engine used by CouchDB is built from Seamonkey, using the mozilla
         ./configure
         make
 
-## Inno Installer
-from http://www.jrsoftware.org/download.php/ispack-unicode.exe
-download and install ispack-5.3.10-unicode.exe, including all additional components
-to c:\relax\inno5 & ensure its in the path
+## Inno Installer #############################################################
 
-## OpenSSL
+* Download from [inno_bits]
+* Install to c:\relax\inno5 & ensure its in the path
+* Install ispack-5.3.10-unicode.exe, optionally including additional components
+
+## OpenSSL ####################################################################
 
 * already installed into C:/OpenSSL/ no further steps required
 
+## LibCURL ####################################################################
 
-## LibCURL
-
-### from cygwin shell:	
+* Extract from cygwin shell if not already done
 
         cd /relax && tar xf /relax/bits/curl-7*
 
-### from cmd shell:
+* run from a cmd.exe shell:
 
-        pushd c:\relax\curl-7*
+        pushd %RELAX%\curl-7*
         set OPENSSL_PATH=c:\openssl
         set INCLUDE=%INCLUDE%;%OPENSSL_PATH%\include\openssl;
         set LIBPATH=%LIBPATH%;%OPENSSL_PATH%\lib;
@@ -309,14 +324,19 @@ to c:\relax\inno5 & ensure its in the path
         vcbuild /useenv /platform:Win32 lib\libcurl.vcproj "Release|Win32"
         xcopy lib\Release\libcurl.lib lib\ /y /f
 	popd
-## ICU
-* binaries from http://site.icu-project.org/
-		wget http://download.icu-project.org/files/icu4c/4.4.1/icu4c-4_4_1-Win32-msvc9.zip
-		wget http://download.icu-project.org/files/icu4c/4.2/icu4c-4_2-Win32-msvc9.zip
-		cd c:\relax
-		7z x d:\glazier\bits\icu4c-4_2_1-Win32-msvc9.zip
 
-## Make & Build
+## ICU ########################################################################
+
+* Download and unzip the compiled libraries from [icu_bits_curr]
+
+		cd %RELAX%\
+		curl -#LO 
+		7z x bits\icu*.zip
+
+## Make & Build ###############################################################
+
+* The generic configure script looks like this:
+
         ./configure \
         --with-js-include=/cygdrive/c/path_to_seamonkey \
         --with-js-lib=/cygdrive/c/path_to_seamonkey_lib \
@@ -327,7 +347,10 @@ to c:\relax\inno5 & ensure its in the path
         --with-msvc-redist-dir=/cygdrive/c/dir/with/vcredist_platform_executable \
         --prefix=$ERL_TOP/release/win32
 
-## using seamonkey 2.0.6
+## using seamonkey 2.0.6 ######################################################
+
+* This is the recommended config if you have used the above config:
+
         ./configure \
         --prefix=$ERL_TOP/release/win32 \
         --with-erlang=$ERL_TOP/release/win32/usr/include \

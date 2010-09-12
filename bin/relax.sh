@@ -38,6 +38,8 @@ PATH=$PATH:/relax/openssl:/relax/nsis:/relax/inno5
 
 # then cygwin tools
 PATH=$PATH:/usr/local/bin:/usr/bin:/bin	
+# then glazier tools
+PATH=$PATH:/relax/bin
 # then windows
 PATH=$PATH:/cygdrive/c/WINDOWS/system32:/cygdrive/c/WINDOWS:/cygdrive/c/WINDOWS/System32/Wbem:/cygdrive/c/Windows/System32/WindowsPowerShell/v1.0
 

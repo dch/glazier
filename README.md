@@ -1,36 +1,66 @@
-********************************************************************************
-#Glazier - automating building CouchDB on Windows
-********************************************************************************
+#Glazier - automating building CouchDB on Windows #############################
 
 Glazier is a set of scripts designed to help automate as much as practicable the
 build of CouchDB on Windows, from XP/2003 to Windows 7 or Server 2008. It
 assumes you're starting from a vanilla state.
 
-## Current State
+# Using Glazier  ##############################################################
 
-* steps below should produce a working CouchDB build & self-installing .exe from
+Glazier requires 5 things to run successfully
+1 you are logged in as a local user "couchdb" which has admin permissions
+2 Windows XP, 2003, Vista, Windows 7 or 2008, either 32 or 64-bit platforms
+3 internet connectivity
+4 approx 12GiB of disk space during fetch & build stages
+5 download and unzipped
+	[glazier latest zip](http://github.com/dch/glazier/zipball/master)
+6 an optional environment variable, %RELAX%, set to where you wish to have CouchDB
+ and Erlang built within. If none is selected, c:\relax will be used.
+
+
+## Current State ##############################################################
+
+* The steps below, manually or automated, should produce a working CouchDB build & self-installing .exe from
 	Erlang/OTP  R14A, and CouchDB 0.11.2 or 1.0.1. 
-* the build environment should be fully functional on both 32,64, desktop and
+* The build environment should be fully functional on both 32,64, desktop and
 	server versions of windows from XP/2003 onwards
-* fetching binaries is described and automated
-* installation of development environment is described and automated
-* downloads are not small -
+* Fetching binaries is described and automated
+* Installation of development environment is described and automated
+* Downloads are not small -
 	get_bits.cmd](http://github.com/dch/glazier/blob/master/bin/get_bits.cmd)
 	retrieves approx 7GiB of DVD ISOs for Microsoft's Visual Studio 2008
 	compiler, related SDKs, the smaller cygwin and mozilla build frameworks,
 	source and misc tools
+* Glazier tries to be self-contained so that it is both repeatable and also
+	easy to clean up.
 
-# Using Glazier
+# Running Automatically #######################################################
 
-Glazier requires 5 things to run successfully
-- you are logged in as a local user "couchdb" which has admin permissions
-- Windows XP, 2003, Vista, Windows 7 or 2008, either 32 or 64-bit platforms
-- internet connectivity
-- approx 12GiB of disk space during fetch & build stages
-- download and unzipped
-	[glazier latest zip](http://github.com/dch/glazier/zipball/master)
-- an optional environment variable, %RELAX%, set to where you wish to have CouchDB
- and Erlang built within. If none is selected, c:\relax will be used.
+* run `%GLAZIER%\bin\glaze.cmd` to fetch & cache the bits, install compiilers
+* you will need to select the cygwin modules individually
+* close any open command prompts
+* run `%GLAZIER%\bin\relax.cmd` to start a valid build environment
+* select the erlang version you wish to build from
+* the first time around you will need to unpack your erlang and couchdb tarballs
+
+        cd /relax
+        tar xzf /relax/bits/apache-couchdb-0.11.2.tar.gz &        
+        tar xzf /relax/bits/apache-couchdb-1.0.1.tar.gz &        
+        tar xzf /relax/bits/curl-7.21.1.tar.gz &        
+        tar xzf /relax/bits/otp_src_R13B04.tar.gz &        
+        tar xzf /relax/bits/otp_src_R14A.tar.gz &
+        cd /relax/otp_src_R13B04; tar xzf /relax/bits/tcltk85_win32_bin.tar.gz &
+        cd /relax/otp_src_R14A;   tar xzf /relax/bits/tcltk85_win32_bin.tar.gz &
+        
+* then run the following 4 scripts in order
+        
+        couchdb_build.sh
+        couchdb_config.sh
+        erl_build.sh
+        erl_config.sh
+
+* each of these scripts leaves logfiles in the root folder. If you have issues
+	during compilation phase, load these onto <http://friendpaste.com/>
+	don't email them to the mailing list
 
 # Installing the Build Environment
 
@@ -56,13 +86,14 @@ The full Cygwin install comprises several GiB of data. Run [cygwin]'s setup.exe
 After install, set up a link to where you plan to install related binaries,
 	build erlang, and couchdb. I am using `C:\relax` so:
 
-		mkdir c:\relax
-		junction.exe c:\cygwin\relax c:\relax
+		setx RELAX c:\relax
+		mkdir %RELAX%
+		junction.exe c:\cygwin\relax %RELAX%
 
 ## Mozilla Build
 The mozilla build toolchain is needed solely for building a javascript engine.
 
-* download it from [mozbuild] and install per defaults
+* Download it from [mozbuild] and install per defaults
 
 ## Microsoft Visual C++
 * Erlang and CouchDB can be built using the free VS2008 Express C++ edition
@@ -173,12 +204,13 @@ or using mklink.exe
         junction.exe %RELAX%\bits %GLAZIER%\bits
         mkdir %RELAX%\release
   
-* in a cygwin shell
+* in a cygwin shell, using these new junction points:
+
         cd /relax
         tar xzf /relax/bits/otp_src_R14A.tar.gz &
         tar xzf /relax/bits/otp_src_R13B04.tar.gz &
 
-* then run `d:\glazier\bin\relax.cmd`
+* then run `%GLAZIER%\bin\relax.cmd`
 
 ## Tk/Tcl
 * optional component

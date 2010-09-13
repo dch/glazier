@@ -7,14 +7,14 @@ assumes you're starting from a vanilla state.
 # Using Glazier  ##############################################################
 
 Glazier requires 5 things to run successfully
-1 you are logged in as a local user "couchdb" which has admin permissions
-2 Windows XP, 2003, Vista, Windows 7 or 2008, either 32 or 64-bit platforms
-3 internet connectivity
-4 approx 12GiB of disk space during fetch & build stages
-5 download and unzipped
-	[glazier latest zip](http://github.com/dch/glazier/zipball/master)
-6 an optional environment variable, %RELAX%, set to where you wish to have CouchDB
- and Erlang built within. If none is selected, c:\relax will be used.
+1. you are logged in as a local user "couchdb" which has admin permissions
+2. Windows XP, 2003, Vista, Windows 7 or 2008, either 32 or 64-bit platforms
+3. internet connectivity
+4. approx 12GiB of disk space during fetch & build stages
+5. download and unzipped [glazier latest zip](http://github.com/dch/glazier/zipball/master)
+
+6. an optional environment variable, `%RELAX%`, set to where you wish to have CouchDB
+ and Erlang built within. If none is selected, `c:\relax` will be used.
 
 
 ## Current State ##############################################################
@@ -26,12 +26,13 @@ Glazier requires 5 things to run successfully
 * Fetching binaries is described and automated
 * Installation of development environment is described and automated
 * Downloads are not small -
-	get_bits.cmd](http://github.com/dch/glazier/blob/master/bin/get_bits.cmd)
+	[get_bits.cmd](http://github.com/dch/glazier/blob/master/bin/get_bits.cmd)
 	retrieves approx 7GiB of DVD ISOs for Microsoft's Visual Studio 2008
 	compiler, related SDKs, the smaller cygwin and mozilla build frameworks,
 	source and misc tools
 * Glazier tries to be self-contained so that it is both repeatable and also
 	easy to clean up.
+* Compilation stages are not yet automated but are all now command-line driven
 
 # Running Automatically #######################################################
 
@@ -50,14 +51,16 @@ Glazier requires 5 things to run successfully
         tar xzf /relax/bits/otp_src_R14A.tar.gz &
         cd /relax/otp_src_R13B04; tar xzf /relax/bits/tcltk85_win32_bin.tar.gz &
         cd /relax/otp_src_R14A;   tar xzf /relax/bits/tcltk85_win32_bin.tar.gz &
-        
+
+`TODO // confirm steps needed before getting to here. Use manual install first`
+
 * then run the following 4 scripts in order
         
-        couchdb_build.sh
-        couchdb_config.sh
         erl_build.sh
         erl_config.sh
-
+        couchdb_build.sh
+        couchdb_config.sh
+        
 * each of these scripts leaves logfiles in the root folder. If you have issues
 	during compilation phase, load these onto <http://friendpaste.com/>
 	don't email them to the mailing list
@@ -76,16 +79,16 @@ Glazier requires 5 things to run successfully
 ## Cygwin #####################################################################
 
 The full Cygwin install comprises several GiB of data. Run [cygwin]'s setup.exe
-	using defaults, optionally installing all components if you have the
-	bandwidth, or alternatively with the following additional modules at a
-	minimum:
+using defaults, optionally installing all components if you have the
+bandwidth, or alternatively with the following additional modules at a
+minimum:
 
 * devel: ALL
 * editors: vim
 * utils: file
 
 After install, set up a link to where you plan to install related binaries,
-	build erlang, and couchdb. I am using `C:\relax` so:
+build erlang, and couchdb. I am using `C:\relax` so:
 
 		setx RELAX c:\relax
 		mkdir %RELAX%
@@ -102,7 +105,8 @@ The mozilla build toolchain is needed solely for building a javascript engine.
 * Erlang and CouchDB can be built using the free VS2008 Express C++ edition
 	from [MSDN](http://msdn.microsoft.com/en-gb/vstudio/)
 * install Visual C++ 9 only, to the default locations, using the DVD ISO
-	[msvc++] excluding optional MSSSQL & Silverlight
+	[msvc++] excluding optional MSSSQL & Silverlight, or alternatively the
+	web installer [vsmc++webstart]
 
 ## Windows 7 SDK ##############################################################
 
@@ -170,7 +174,7 @@ or using mklink.exe
 * Using a suitable editor (vi in the cygwin suite, or install
 	[notepadplus_bits] for windows users) and
 * Edit `c:\relax\wxMSW-2.8.11\include\wx\msw\setup.h` to enable
-	`wxUSE\_GLCANVAS, wxUSE\_POSTSCRIPT` and `wxUSE\_GRAPHICS_CONTEXT`
+	`wxUSE_GLCANVAS, wxUSE_POSTSCRIPT` and `wxUSE_GRAPHICS_CONTEXT`
 
 ### wx.dsw ####################################################################
 
@@ -304,7 +308,7 @@ mozilla build toolkit.
 
 ## OpenSSL ####################################################################
 
-* already installed into C:/OpenSSL/ no further steps required
+* already installed into `C:/OpenSSL/` no further steps required
 
 ## LibCURL ####################################################################
 
@@ -555,7 +559,7 @@ TODO // URLs don't go to right AMIs
 [libcurl_bits]:		http://curl.haxx.se/download/libcurl-7.19.3-win32-ssl-msvc.zip
 [libcurl_src]:		http://curl.haxx.se/download/curl-7.21.1.tar.gz
 [msvc++]:		http://download.microsoft.com/download/E/8/E/E8EEB394-7F42-4963-A2D8-29559B738298/VS2008ExpressWithSP1ENUX1504728.iso
-[vsmc++webstart]:	http://download.microsoft.com/download/A/5/4/A54BADB6-9C3F-478D-8657-93B3FC9FE62D/vcsetup.exe
+[msvc++webstart]:	http://download.microsoft.com/download/A/5/4/A54BADB6-9C3F-478D-8657-93B3FC9FE62D/vcsetup.exe
 [mozbuild]:		http://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/MozillaBuildSetup-Latest.exe
 [notepadplus_bits]:	http://download.sourceforge.net/project/notepad-plus/notepad%2B%2B%20releases%20binary/npp%205.7%20bin/npp.5.7.Installer.exe
 [nsis_bits]:		http://download.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
@@ -570,3 +574,4 @@ TODO // URLs don't go to right AMIs
 [wxwidgets_bits]:	http://sourceforge.net/projects/wxwindows/files/2.8.11/wxMSW-2.8.11.zip
 [zlib-bits]:		http://zlib.net/zlib125-dll.zip
 [zlib-src]:		http://zlib.net/zlib-1.2.5.tar.gz
+

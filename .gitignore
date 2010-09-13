@@ -1,0 +1,9 @@
+release/*
+bits/*.gz
+bits/*.exe
+bits/*.zip
+bits/*.bz2
+bits/setup.log*
+bits/http*
+
+

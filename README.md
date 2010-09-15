@@ -225,7 +225,7 @@ or using mklink.exe
         tar xzf /relax/bits/otp_src_R14A.tar.gz &
         tar xzf /relax/bits/otp_src_R13B04.tar.gz &
 
-* then run `%GLAZIER%\bin\relax.cmd`
+* then run from explorer, `%GLAZIER%\bin\relax.cmd`
 
 ## Tk/Tcl #####################################################################
 
@@ -283,16 +283,16 @@ mozilla build toolkit.
 * get [seamonkey_bits]
 * run `c:\mozilla-build\start-msvc9.bat` even if you are on a 64-bit platform.
 
-        cd /c/relax && mkdir seamonkey-2.0.6
+        cd $RELAX && mkdir seamonkey-2.0.6
         cd seamonkey-2.0.6
-        tar xjf /d/glazier/bits/seamonkey-2.0.6.source.tar.bz2
-        cd /c/relax/seamonkey-2.0.6/comm-1.9.1/mozilla/js/src
+        tar xjf ../bits/seamonkey-2.0.6.source.tar.bz2
+        cd ./comm-1.9.1/mozilla/js/src
         autoconf-2.13
         ./configure
         make
 
-* to install from -current do:
-        cd /c/relax && mkdir seamonkey-current
+* to build and install from -current do:
+        cd $RELAX && mkdir seamonkey-current
         cd seamonkey-current
         hg clone http://hg.mozilla.org/mozilla-central
         cd mozilla-central/......./comm-1.9.1/mozilla/js/src
@@ -316,7 +316,7 @@ mozilla build toolkit.
 
         cd /relax && tar xf /relax/bits/curl-7*
 
-* run from a cmd.exe shell:
+* run from a Visual Studio command shell:
 
         pushd %RELAX%\curl-7*
         set OPENSSL_PATH=c:\openssl
@@ -334,7 +334,6 @@ mozilla build toolkit.
 * Download and unzip the compiled libraries from [icu_bits_curr]
 
 		cd %RELAX%\
-		curl -#LO 
 		7z x bits\icu*.zip
 
 ## Make & Build ###############################################################
@@ -353,7 +352,7 @@ mozilla build toolkit.
 
 ## using seamonkey 2.0.6 ######################################################
 
-* This is the recommended config if you have used the above config:
+* This is the recommended config if you have used the above steps:
 
         ./configure \
         --prefix=$ERL_TOP/release/win32 \
@@ -365,11 +364,10 @@ mozilla build toolkit.
         --with-js-lib=/relax/seamonkey-2.0.6/comm-1.9.1/mozilla/js/src/dist/lib \
         --with-js-include=/relax/seamonkey-2.0.6/comm-1.9.1/mozilla/js/src/dist/include/js
 
-CURL
-[curl] -> win32-openssl [curl_bits]
+
 
 # Automated Test Bed for Builds
-The objective is to take the current manual steps, and have them automated for a successful build off a variety of representative Microsoft current OS using Amazon EC2 infrastructure.
+The objective is to take the current manual steps, and have them automated for a successful build off a variety of representative Microsoft current OS using Amazon EC2 infrastructure. Unfortunately this is either failing due to issues with cygwin/mingw+msys running on Amazon's old version Xen hypervisor on newer AMIs, or too slow on the base i386/c.medium build which does work but takes days. 
 
 ## Tested AMIs
 
@@ -380,7 +378,7 @@ TODO // URLs don't go to right AMIs
 * ami-c3e40daa | amazon/Windows-Server2008r1sp2-i386-Base-v103 ** bash.exe dumps core
 * ami-d9e40db0 | amazon/Windows-Server2008r1sp2-x86_64-Base-v103 ** bash.exe and cmd.exe dumps core
 * ami-f11ff098 | amazon/Windows-Server2003r2-i386-Base-v109 ** too bloody slow
-* ami-f51ff09c | amazon/Windows-Server2003r2-x86_64-Base-v109
+* ami-f51ff09c | amazon/Windows-Server2003r2-x86_64-Base-v109 ** bash.exe dumps core
 
 * NB both of the Win2008 ones above dump core while installing/running cygwin so we do not build by default
 * reference CouchDB install is therefore Win2003r2 x86_64  ami-f51ff09c l1.large & snap-080bb263 for accompanying binaries

@@ -6,7 +6,7 @@ if "%RELAX%" == "" set RELAX=C:\relax
 
 :: find our source tree from one level up from current bin
 set GLAZIER=%~dp0..
-path=%~dp0;%~dp00..\bits;%RELAX%\7zip;%PATH%;
+path=%~dp0;%~dp0..\bits;%RELAX%\7zip;%PATH%;
 
 :: set these paths into the user environment for future usage
 setx GLAZIER %GLAZIER%
@@ -71,9 +71,10 @@ echo START	installing cygwin...
 :: store bits in d:\glazier\bits\
 :: direct connection
 :: http uidaho
-:: defaults + all DEVEL + utils/file
-junction.exe c:\cygwin\bin %GLAZIER%\bin
-junction.exe c:\cygwin\bits %GLAZIER%\bits
+:: defaults + all DEVEL + UTILS/file
+junction.exe c:\cygwin\relax %RELAX%
+junction.exe %RELAX%\bin %GLAZIER%\bin
+junction.exe %RELAX%\bits %GLAZIER%\bits
 mkdir c:\cygwin\release
 echo END	installing cygwin
 
@@ -85,7 +86,7 @@ echo DONE	unpacking tools in [%RELAX%]
 
 :unpack source
 echo START	install wxWidgets...
-start /wait %RELAX%\7zip\7z.exe x %GLAZIER%\bits\wxMSW* -aos -o%RELAX%\
+start /wait %RELAX%\7zip\7z.exe x %GLAZIER%\bits\wxMSW* -aos -y -o%RELAX%\
 mkdir c:\cygwin\opt\local\pgm
 junction.exe c:\cygwin\opt\local\pgm\wxWidgets-2.8.11 c:\relax\wxMSW-2.8.11
 echo DONE	install wxWidgets

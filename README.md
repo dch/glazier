@@ -178,7 +178,7 @@ or using mklink.exe
 
 ### wx.dsw ####################################################################
 
-* open VSC++ & the project  `C:\relax\wxMSW-2.8.11\build\msw\wx.dsw`,
+* open VSC++ & the project  `%RELAX%\wxMSW-2.8.11\build\msw\wx.dsw`,
 	accepting the automatic conversion to the newer VC++ format and save
 	as `\relax\wxMSW-2.8.11\build\msw\wx.sln`
 * right-click on the project, and set up the dependencies for wx.dsw to

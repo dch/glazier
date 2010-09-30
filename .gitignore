@@ -5,5 +5,4 @@ bits/*.zip
 bits/*.bz2
 bits/setup.log*
 bits/http*
-
-
+bits/*.iso

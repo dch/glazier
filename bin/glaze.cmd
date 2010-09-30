@@ -38,7 +38,7 @@ echo DONE	installing 7zip
 :: unpack the ISOs into %RELAX%\ISOs\{name}
 echo START	unpacking ISOs in [%RELAX%\ISOs] ...
 mkdir %RELAX%\ISOs > NUL: 2>&1
-7z.exe x %GLAZIER%\bits\*.iso -aos -o%RELAX%\ISOs\*
+7z.exe x %GLAZIER%\bits\*.iso -aoa -o%RELAX%\ISOs\*
 echo DONE	unpacking ISOs in [%RELAX%\ISOs]
 
 :: start installing stuff
@@ -47,7 +47,7 @@ echo START	MS VS2008 Express...
 :: TODO remove hackage that prevents installing MSSQL burning CPU and space
 pushd %RELAX%\ISOs\VS2008ExpressWithSP1ENUX1504728\VCExpress\WCU\ && rd /s/q dist > NUL: 2>&1
 mkdir dist
-for %%i in (dotNetFramework Silverlight SMO SSE) do @move %%i dist\
+for %%i in (Silverlight SMO SSE) do @move %%i dist\
 cd .. && start /wait setup.exe /q /norestart
 popd
 echo DONE	MS VS2008 Express
@@ -86,7 +86,7 @@ echo DONE	unpacking tools in [%RELAX%]
 
 :unpack source
 echo START	install wxWidgets...
-start /wait %RELAX%\7zip\7z.exe x %GLAZIER%\bits\wxMSW* -aos -y -o%RELAX%\
+start /wait %RELAX%\7zip\7z.exe x %GLAZIER%\bits\wxMSW* -aoa -y -o%RELAX%\
 mkdir c:\cygwin\opt\local\pgm
 junction.exe c:\cygwin\opt\local\pgm\wxWidgets-2.8.11 c:\relax\wxMSW-2.8.11
 echo DONE	install wxWidgets
@@ -94,7 +94,7 @@ echo DONE	install wxWidgets
 
 
 echo START	install ICU...
-start /wait %RELAX%\7zip\7z.exe x %GLAZIER%\bits\icu* -aos -o%RELAX%\
+start /wait %RELAX%\7zip\7z.exe x %GLAZIER%\bits\icu* -aoa -o%RELAX%\
 echo DONE	install ICU
 
 

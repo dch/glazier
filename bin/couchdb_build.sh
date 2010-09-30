@@ -14,9 +14,11 @@ echo DONE. | tee -a $COUCH_TOP/build_install.txt
 make dist 2>&1   | tee $COUCH_TOP/build_dist.txt
 echo DONE. | tee -a $COUCH_TOP/build_dist.txt
 
-pushd $COUCH_TOP/etc/windows/ 2>&1  | tee -a $COUCH_TOP/build_dist.txt
-rename .exe _otp_$OTP_VER.exe setup-couchdb-*  2>&1  | tee -a $COUCH_TOP/build_dist.txt
-mv setup-couchdb-* /relax/release/  2>&1  | tee -a $COUCH_TOP/build_dist.txt
-popd
+echo DONE.
+echo to move build files to release area run the following:
+echo pushd $COUCH_TOP/etc/windows/
+echo rename .exe _otp_$OTP_VER.exe setup-couchdb-*
+echo mv setup-couchdb-* /relax/release
+echo popd
 
 echo DONE.

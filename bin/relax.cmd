@@ -12,7 +12,7 @@ pushd %GLAZIER%\bin
 :: this is complicated by the fact that on different builds of windows, VC installs to different places
 :: C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\link.exe
 :: C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\cl.exe
-:: C:\Program Files\Microsoft SDKs\Windows\v7.0\mc.exes
+:: C:\Program Files\Microsoft SDKs\Windows\v7.0\mc.exe
 :: etc
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 set CYGWIN=nontsec nodosfilewarning

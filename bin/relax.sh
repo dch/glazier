@@ -23,8 +23,8 @@ PATH=$ERL_TOP/release/win32/erts-$ERL_VER/bin:$ERL_TOP/erts/etc/win32/cygwin_too
 ###PATH=$PATH:/cygdrive/c/PROGRA~2/MICROS~1.0/Common7/IDE:/cygdrive/c/PROGRA~2/MICROS~1.0/VC/BIN:/cygdrive/c/PROGRA~2/MICROS~1.0/Common7/Tools:/cygdrive/c/PROGRA~2/MICROS~1.0/VC/VCPACK~1
 PATH=$PATH:/relax/vs90/Common7/IDE:/relax/vs90/VC/BIN:/relax/vs90/Common7/Tools:/relax/vs90/vc/vcPackages
 
-#### then .Net framework which we probably don't need at all
-###PATH=$PATH:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/V20~1.507
+#### then .Net framework which we need to have clean manifests and SxS for Win7 x64
+PATH=$PATH:/cygdrive/c/WINDOWS/Microsoft.NET/Framework:/cygdrive/c/Microsoft.NET/Framework/v2.0.50727
 
 # then SDKs
 ###PATH=$PATH:/cygdrive/c/PROGRA~1/MICROS~1/Windows/v7.0/bin

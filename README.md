@@ -239,6 +239,7 @@ or using mklink.exe
 * or skip the whole damn lot this way
 
         echo "skipping gs" > lib/gs/SKIP
+        echo "skipping jinterface" > lib/jinterface/SKIP
 
 * check that `which cl; which link; which mc` return the MS ones, if not then
  sort them out manually. Refer to

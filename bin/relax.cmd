@@ -54,11 +54,12 @@ set LIB=%LIB%;%OPENSSL_PATH%\lib;%CURL_PATH%\lib;%ICU_PATH%\lib;
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::check which version of erlang setup we want
 :: choice.exe exists on all windows platforms since MSDOS but not on XP
-set /p choice=press A to use erlang R14B, B for erlang R13B04, C (or wait) to exit to the shell
+set /p choice=press 4 to use erlang R14B, 3 to use erlang R14A, 2 for erlang R13B04, 1 (or wait) to exit to the shell
 :: then get to unix goodness as fast as possible
-if /i "%choice%"=="c" goto win_shell
-if /i "%choice%"=="b" goto R13B04
-if /i "%choice%"=="a" goto R14B
+if /i "%choice%"=="1" goto win_shell
+if /i "%choice%"=="2" goto R13B04
+if /i "%choice%"=="3" goto R14A
+if /i "%choice%"=="4" goto R14B
 :: else
 goto eof
 
@@ -67,6 +68,13 @@ goto eof
 set ERL_TOP=/relax/otp_src_R14B
 set ERL_VER=5.8.1
 set OTP_VER=R14B
+goto unix_shell
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:R14A
+set ERL_TOP=/relax/otp_src_R14A
+set ERL_VER=5.8
+set OTP_VER=R14A
 goto unix_shell
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

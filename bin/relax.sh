@@ -40,6 +40,7 @@ PATH=$PATH:/relax/openssl:/relax/nsis:/relax/inno5
 PATH=$PATH:/usr/local/bin:/usr/bin:/bin	
 # then glazier tools
 PATH=$PATH:/relax/bin
+
 # then windows
 PATH=$PATH:/cygdrive/c/WINDOWS/system32:/cygdrive/c/WINDOWS:/cygdrive/c/WINDOWS/System32/Wbem:/cygdrive/c/Windows/System32/WindowsPowerShell/v1.0
 
@@ -58,7 +59,7 @@ RC_SH_DEBUG_LOG=$TMP/rc_r$OTP_VER.log
 MD_SH_DEBUG_LOG=$TMP/md_r$OTP_VER.log
 MC_SH_DEBUG_LOG=$TMP/mc_r$OTP_VER.log
 
-export OVERRIDE_TARGET CC CXX AR RANLIB OVERRIDE_CONFIG_CACHE_STATIC OVERRIDE_CONFIG_CACHE INCLUDE LIB LIBPATH PATH TMP CC_SH LD_SH RC_SH MD_SH MC_SH ERL_TOP ERL_VER OTP_VER SHELL RELAX GLAZIER
+export OVERRIDE_TARGET CC CXX AR RANLIB OVERRIDE_CONFIG_CACHE_STATIC OVERRIDE_CONFIG_CACHE INCLUDE LIB LIBPATH LINK CL PATH TMP CC_SH LD_SH RC_SH MD_SH MC_SH ERL_TOP ERL_VER OTP_VER SHELL RELAX GLAZIER
 
 # first change to $RELAX as if erlang tar.gz are not extracted the latter will fail
 cd $RELAX
@@ -70,7 +71,7 @@ echo current path:
 echo $PATH | sed 's/:/\n/g'
 echo
 echo please check the toolkit paths point to Microsoft versions:
-which mc; which lc; which cl; which link
+which mc; which lc; which cl; which link; which mt
 echo
 
 echo Ready to build Erlang and CouchDB using Erlang $ERL_VER OTP $OTP_VER in $ERL_TOP

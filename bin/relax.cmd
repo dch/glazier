@@ -51,6 +51,10 @@ set INCLUDE=%INCLUDE%;%OPENSSL_PATH%\include\openssl;%CURL_PATH%\include\curl;%I
 set LIBPATH=%LIBPATH%;%OPENSSL_PATH%\lib;%CURL_PATH%\lib;%ICU_PATH%\lib;
 set LIB=%LIB%;%OPENSSL_PATH%\lib;%CURL_PATH%\lib;%ICU_PATH%\lib;
 
+:: set LINK & CL to resolve manifest binding issues & virtualisation hack in ld.sh#171
+:: set CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
+:: set LINK=/manifestuac:"level=asInvoker uiAccess=false"
+
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::check which version of erlang setup we want
 :: choice.exe exists on all windows platforms since MSDOS but not on XP

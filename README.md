@@ -48,13 +48,67 @@ Glazier requires 5 things to run successfully
         tar xzf /relax/bits/apache-couchdb-1.0.1.tar.gz &        
         tar xzf /relax/bits/curl-7.21.1.tar.gz &        
         tar xzf /relax/bits/otp_src_R13B04.tar.gz &        
-        tar xzf /relax/bits/otp_src_R14A.tar.gz &
-        tar xzf /relax/bits/otp_src_R14B.tar.gz &
         cd /relax/otp_src_R13B04; tar xzf /relax/bits/tcltk85_win32_bin.tar.gz &
+        tar xzf /relax/bits/otp_src_R14A.tar.gz &
         cd /relax/otp_src_R14A;   tar xzf /relax/bits/tcltk85_win32_bin.tar.gz &
+        tar xzf /relax/bits/otp_src_R14B.tar.gz &
         cd /relax/otp_src_R14B;   tar xzf /relax/bits/tcltk85_win32_bin.tar.gz &
 
 `TODO // confirm steps needed before getting to here. Use manual install first`
+
+
+       manifest fixes here
+       
+       for /r %i in (*.dll) do @echo %i && mt -manifest %GLAZIER%\bits\generic.manifest -outputresource:%i;2
+       for /r %i in (*.exe) do @echo %i && mt -manifest %GLAZIER%\bits\generic.manifest -outputresource:%i;1
+       
+       http://msdn.microsoft.com/en-us/library/f2c0w594(v=VS.90).aspx
+       http://msdn.microsoft.com/en-us/library/y0zzbyt4(v=VS.90).aspx
+       http://msdn.microsoft.com/en-us/library/7f0aews7(v=VS.90).aspx
+       http://social.msdn.microsoft.com/Forums/en/vcgeneral/thread/7cf5108b-6cb1-43db-9893-d1ac105919c6
+       http://msdn.microsoft.com/en-us/library/bb756929.aspx
+       http://www.codeproject.com/answers/58606/How-do-you-get-XP-visual-styles-manifest-to-work-o.aspx
+       http://tydbits.com/This-application-has-failed-to-start-because-the-application-configuration-is-incorrect
+       http://blogs.msdn.com/b/oldnewthing/archive/2007/05/31/2995284.aspx
+       /MANIFESTUAC:NO 
+       <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+       <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+         <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
+           <security>
+             <requestedPrivileges>
+               <requestedExecutionLevel level="asInvoker" uiAccess="false"></requestedExecutionLevel>
+             </requestedPrivileges>
+           </security>
+         </trustInfo>
+         <dependency>
+           <dependentAssembly>
+             <assemblyIdentity type="win32" name="Microsoft.VC90.CRT" version="9.0.21022.8" processorArchitecture="x86" publicKeyToken="1fc8b3b9a1e18e3b"></assemblyIdentity>
+             <assemblyIdentity type="win32" name="Microsoft.VC90.CRT" version="9.0.30729.1" processorArchitecture="x86" publicKeyToken="1fc8b3b9a1e18e3b"></assemblyIdentity>
+           </dependentAssembly>
+         </dependency>
+         <dependency>
+           <dependentAssembly>
+             <assemblyIdentity type="win32" name="Microsoft.Windows.Common-Controls" version="6.0.0.0" processorArchitecture="*" publicKeyToken="6595b64144ccf1df" language="*"></assemblyIdentity>
+             </dependentAssembly>
+          </dependency>
+        </assembly>
+
+* a number of changes are required to get the SxS manifests to build successfully
+
+    - revert ld.sh to that from R14A (just remove line 170-172 - the sed XML hack)
+    - [don't] set LINK to `/manifestuac:"level=asInvoker uiAccess=false"`
+    - set CL to `-D_BIND_TO_CURRENT_VCLIBS_VERSION` in cc.sh#28 COMMON_CFLAGS or in relax.cmd
+    - ensure your `$RELAX/vcredist_x86.exe` matches that used by your compiler
+    - modify `$ERL_TOP/erts/etc/win32/nsis/find_redist.sh` to actually work with
+    
+        if [ -f "$ERL_TOP/../vcredist_x86.exe" ]; then 
+            echo $ERL_TOP/../vcredist_x86.exe
+            exit 0
+        fi
+
+
+* a fix for the 4GiB overflow in the win32 driver is also needed
+
 
 * then run the following 4 scripts in order
         
@@ -224,6 +278,7 @@ or using mklink.exe
         cd /relax
         tar xzf /relax/bits/otp_src_R14A.tar.gz &
         tar xzf /relax/bits/otp_src_R13B04.tar.gz &
+        tar xzf /relax/bits/otp_src_R14B.tar.gz &
 
 * then run from explorer, `%GLAZIER%\bin\relax.cmd`
 
@@ -235,6 +290,7 @@ or using mklink.exe
         # or simply
         cd /relax/otp_src_R14A && tar xvzf /relax/bits/tcltk85_win32_bin.tar.gz
         cd /relax/otp_src_R13B04 && tar xvzf /relax/bits/tcltk85_win32_bin.tar.gz
+        cd /relax/otp_src_R14B && tar xvzf /relax/bits/tcltk85_win32_bin.tar.gz
 
 * or skip the whole damn lot this way
 

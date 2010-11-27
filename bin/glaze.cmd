@@ -1,5 +1,5 @@
 @echo off
-echo Build CouchDB under Windows - Time to Relax v0.5
+echo Build CouchDB under Windows - Time to Relax v0.6
 
 :: install stuff to C:\relax unless otherwise requested
 if "%RELAX%" == "" set RELAX=C:\relax
@@ -32,13 +32,14 @@ pushd %RELAX%
 
 :: 7zip is used for unpacking the ISO images
 echo START	installing 7zip...
-%GLAZIER%\bits\7z465.exe /S /D=%RELAX%\7zip
+start /wait %GLAZIER%\bits\7z465.exe /S /D=%RELAX%\7zip
 echo DONE	installing 7zip
 
 :: unpack the ISOs into %RELAX%\ISOs\{name}
 echo START	unpacking ISOs in [%RELAX%\ISOs] ...
 mkdir %RELAX%\ISOs > NUL: 2>&1
 7z.exe x %GLAZIER%\bits\*.iso -aoa -o%RELAX%\ISOs\*
+xcopy %relax%\ISOs\VS2008ExpressWithSP1ENUX1504728\VCExpress\WCU\vcredist_x86.exe %glazier%\bits\ /y
 echo DONE	unpacking ISOs in [%RELAX%\ISOs]
 
 :: start installing stuff
@@ -59,7 +60,7 @@ pushd %RELAX%\ISOs\
 rd /s/q Win7SDK > NUL: 2>&1
 rename GRMSDKX_EN_DVD Win7SDK
 xcopy GRMSDK_EN_DVD Win7SDK\ /e /y
-rd /s/q GRMSDK_EN_DVD 
+rd /s/q GRMSDK_EN_DVD
 start /wait win7sdk\setup.exe /q
 popd
 echo DONE	installing Windows 7 SDK
@@ -75,7 +76,6 @@ echo START	installing cygwin...
 junction.exe c:\cygwin\relax %RELAX%
 junction.exe %RELAX%\bin %GLAZIER%\bin
 junction.exe %RELAX%\bits %GLAZIER%\bits
-mkdir c:\cygwin\release
 echo END	installing cygwin
 
 echo START	installing latest mozilla build tools...
@@ -104,8 +104,7 @@ echo DONE	install vcredist
 
 
 echo START	install win32 OpenSSL...
-start /wait %GLAZIER%\bits\Win32OpenSSL-1_0_0a.exe /silent /sp- /suppressmsgboxes /dir=c:\openssl
-:: TODO fails on XP and 2003 but may not be needed ... or use sysinternals junction.exe or some other tool, or try with symlink only in cygwin
+start /wait %GLAZIER%\bits\Win32OpenSSL-1_0_0b.exe /silent /sp- /suppressmsgboxes /dir=c:\openssl
 junction.exe %RELAX%\openssl c:\openssl
 echo DONE	install win32 OpenSSL
 

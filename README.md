@@ -20,7 +20,7 @@ Glazier requires 5 things to run successfully
 ## Current State ##############################################################
 
 * The steps below, manually or automated, should produce a working CouchDB build
-    & self-installing .exe from Erlang/OTP R14B, and CouchDB 0.11.2 or 1.0.1.
+    & self-installing .exe from Erlang/OTP R14B01, and CouchDB 0.11.2 or 1.0.1.
 * The build environment should be fully functional on both 32,64, desktop and
     server versions of windows from XP/2003 onwards
 * Fetching dependent binaries is described and automated
@@ -32,7 +32,8 @@ Glazier requires 5 things to run successfully
     source and misc tools
 * Glazier tries to be self-contained so that it is both repeatable and also
     easy to clean up.
-* Compilation stages are not yet automated but are all now command-line driven
+* Compilation stages are not fully automated but are all now command-line driven
+* Visual Studio 2010 is not supported yet by all build tools; use VSE 2008
 
 # Running Automatically #######################################################
 
@@ -46,70 +47,14 @@ Glazier requires 5 things to run successfully
         cd /relax
         tar xzf /relax/bits/apache-couchdb-0.11.2.tar.gz &
         tar xzf /relax/bits/apache-couchdb-1.0.1.tar.gz &
-        tar xzf /relax/bits/curl-7.21.1.tar.gz &
+        tar xzf /relax/bits/curl-7.21.3.tar.gz &
         tar xzf /relax/bits/otp_src_R13B04.tar.gz &
         cd /relax/otp_src_R13B04; tar xzf /relax/bits/tcltk85_win32_bin.tar.gz &
-        tar xzf /relax/bits/otp_src_R14A.tar.gz &
-        cd /relax/otp_src_R14A;   tar xzf /relax/bits/tcltk85_win32_bin.tar.gz &
-        tar xzf /relax/bits/otp_src_R14B.tar.gz &
-        cd /relax/otp_src_R14B;   tar xzf /relax/bits/tcltk85_win32_bin.tar.gz &
+        tar xzf /relax/bits/otp_src_R14B01.tar.gz &
+        cd /relax/otp_src_R14B01;   tar xzf /relax/bits/tcltk85_win32_bin.tar.gz &
 
-`TODO // confirm steps needed before getting to here. Use manual install first`
-
-
-       manifest fixes here
-
-       for /r %i in (*.dll) do @echo %i && mt -manifest %GLAZIER%\bits\generic.manifest -outputresource:%i;2
-       for /r %i in (*.exe) do @echo %i && mt -manifest %GLAZIER%\bits\generic.manifest -outputresource:%i;1
-
-       http://msdn.microsoft.com/en-us/library/f2c0w594(v=VS.90).aspx
-       http://msdn.microsoft.com/en-us/library/y0zzbyt4(v=VS.90).aspx
-       http://msdn.microsoft.com/en-us/library/7f0aews7(v=VS.90).aspx
-       http://social.msdn.microsoft.com/Forums/en/vcgeneral/thread/7cf5108b-6cb1-43db-9893-d1ac105919c6
-       http://msdn.microsoft.com/en-us/library/bb756929.aspx
-       http://www.codeproject.com/answers/58606/How-do-you-get-XP-visual-styles-manifest-to-work-o.aspx
-       http://tydbits.com/This-application-has-failed-to-start-because-the-application-configuration-is-incorrect
-       http://blogs.msdn.com/b/oldnewthing/archive/2007/05/31/2995284.aspx
-       /MANIFESTUAC:NO
-       <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-       <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
-         <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
-           <security>
-             <requestedPrivileges>
-               <requestedExecutionLevel level="asInvoker" uiAccess="false"></requestedExecutionLevel>
-             </requestedPrivileges>
-           </security>
-         </trustInfo>
-         <dependency>
-           <dependentAssembly>
-             <assemblyIdentity type="win32" name="Microsoft.VC90.CRT" version="9.0.21022.8" processorArchitecture="x86" publicKeyToken="1fc8b3b9a1e18e3b"></assemblyIdentity>
-             <assemblyIdentity type="win32" name="Microsoft.VC90.CRT" version="9.0.30729.1" processorArchitecture="x86" publicKeyToken="1fc8b3b9a1e18e3b"></assemblyIdentity>
-           </dependentAssembly>
-         </dependency>
-         <dependency>
-           <dependentAssembly>
-             <assemblyIdentity type="win32" name="Microsoft.Windows.Common-Controls" version="6.0.0.0" processorArchitecture="*" publicKeyToken="6595b64144ccf1df" language="*"></assemblyIdentity>
-             </dependentAssembly>
-          </dependency>
-        </assembly>
-
-* a number of changes are required to get the SxS manifests to build successfully
-
-    - revert ld.sh to that from R14A (just remove line 170-172 - the sed XML hack)
-    - [don't] set LINK to `/manifestuac:"level=asInvoker uiAccess=false"`
-    - set CL to `-D_BIND_TO_CURRENT_VCLIBS_VERSION` in cc.sh#28 COMMON_CFLAGS or in relax.cmd
-    - ensure your `$RELAX/vcredist_x86.exe` matches that used by your compiler
-    - modify `$ERL_TOP/erts/etc/win32/nsis/find_redist.sh` to actually work with
-
-        if [ -f "$ERL_TOP/../vcredist_x86.exe" ]; then
-            echo $ERL_TOP/../vcredist_x86.exe
-            exit 0
-        fi
-
-
-* a fix for the 4GiB overflow in the win32 driver is also needed
-
-
+* some fixes are required for resolving manifest compilation; this is underway
+    for more information see end of this doc
 * then run the following 4 scripts in order
 
         erl_build.sh
@@ -594,6 +539,63 @@ TODO // URLs don't go to right AMIs
     export ERL_TOP=/src/otp_src_R14A
     EXPORT PATH=$ERL_TOP/release/win32/erts-5.8/bin:$ERL_TOP/erts/etc/win32/cygwin_tools/vc:$ERL_TOP/erts/etc/win32/cygwin_tools:/cygdrive/c/PROGRA~1/MICROS~1.0/Common7/IDE:/cygdrive/c/PROGRA~1/MICROS~1.0/VC/BIN:/cygdrive/c/PROGRA~1/MICROS~1.0/Common7/Tools:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/V20~1.507:/cygdrive/c/PROGRA~1/MICROS~1.0/VC/VCPACK~1:/cygdrive/c/PROGRA~1/MICROS~3/Windows/v7.0/bin:/src/openssl:/src/nsis:/src/inno5:/usr/local/bin:/usr/bin:/bin:/cygdrive/c/WINDOWS/system32:/cygdrive/c/WINDOWS:/cygdrive/c/WINDOWS/System32/Wbem
 
+## Manifest Errors Notes
+
+
+`TODO // confirm steps needed before getting to here. Use manual install first`
+
+
+       manifest fixes here
+
+       for /r %i in (*.dll) do @echo %i && mt -manifest %GLAZIER%\bits\generic.manifest -outputresource:%i;2
+       for /r %i in (*.exe) do @echo %i && mt -manifest %GLAZIER%\bits\generic.manifest -outputresource:%i;1
+
+       http://msdn.microsoft.com/en-us/library/f2c0w594(v=VS.90).aspx
+       http://msdn.microsoft.com/en-us/library/y0zzbyt4(v=VS.90).aspx
+       http://msdn.microsoft.com/en-us/library/7f0aews7(v=VS.90).aspx
+       http://social.msdn.microsoft.com/Forums/en/vcgeneral/thread/7cf5108b-6cb1-43db-9893-d1ac105919c6
+       http://msdn.microsoft.com/en-us/library/bb756929.aspx
+       http://www.codeproject.com/answers/58606/How-do-you-get-XP-visual-styles-manifest-to-work-o.aspx
+       http://tydbits.com/This-application-has-failed-to-start-because-the-application-configuration-is-incorrect
+       http://blogs.msdn.com/b/oldnewthing/archive/2007/05/31/2995284.aspx
+       /MANIFESTUAC:NO
+       <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+       <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+         <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
+           <security>
+             <requestedPrivileges>
+               <requestedExecutionLevel level="asInvoker" uiAccess="false"></requestedExecutionLevel>
+             </requestedPrivileges>
+           </security>
+         </trustInfo>
+         <dependency>
+           <dependentAssembly>
+             <assemblyIdentity type="win32" name="Microsoft.VC90.CRT" version="9.0.21022.8" processorArchitecture="x86" publicKeyToken="1fc8b3b9a1e18e3b"></assemblyIdentity>
+             <assemblyIdentity type="win32" name="Microsoft.VC90.CRT" version="9.0.30729.1" processorArchitecture="x86" publicKeyToken="1fc8b3b9a1e18e3b"></assemblyIdentity>
+           </dependentAssembly>
+         </dependency>
+         <dependency>
+           <dependentAssembly>
+             <assemblyIdentity type="win32" name="Microsoft.Windows.Common-Controls" version="6.0.0.0" processorArchitecture="*" publicKeyToken="6595b64144ccf1df" language="*"></assemblyIdentity>
+             </dependentAssembly>
+          </dependency>
+        </assembly>
+
+* a number of changes are required to get the SxS manifests to build successfully
+
+    - revert ld.sh to that from R14A (just remove line 170-172 - the sed XML hack)
+    - [don't] set LINK to `/manifestuac:"level=asInvoker uiAccess=false"`
+    - set CL to `-D_BIND_TO_CURRENT_VCLIBS_VERSION` in cc.sh#28 COMMON_CFLAGS or in relax.cmd
+    - ensure your `$RELAX/vcredist_x86.exe` matches that used by your compiler
+    - modify `$ERL_TOP/erts/etc/win32/nsis/find_redist.sh` to actually work with
+
+        if [ -f "$ERL_TOP/../vcredist_x86.exe" ]; then
+            echo $ERL_TOP/../vcredist_x86.exe
+            exit 0
+        fi
+
+* a fix for the 4GiB overflow in the win32 driver is also needed
+
 ## Download URLs - visible only in raw text view
 
 [7zip_bits]:		http://downloads.sourceforge.net/sevenzip/7z465.exe
@@ -617,7 +619,7 @@ TODO // URLs don't go to right AMIs
 [openssl_bits]:		http://www.slproweb.com/download/Win32OpenSSL-1_0_0c.exe
 [openssl_license]:	http://www.openssl.org/source/license.html
 [ramdisk]:		http://www.ltr-data.se/files/imdiskinst.exe
-[seamonkey_bits]:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/2.1b1/source/seamonkey-2.1b1.source.tar.bz2
+[seamonkey_bits]:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/2.0.11/source/seamonkey-2.0.11.source.tar.bz2
 [SEHOP]:		http://support.microsoft.com/kb/956607
 [vcredist]:		http://download.microsoft.com/download/d/d/9/dd9a82d0-52ef-40db-8dab-795376989c03/vcredist_x86.exe
 [win7sdk_32bit]:	http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDK_EN_DVD.iso

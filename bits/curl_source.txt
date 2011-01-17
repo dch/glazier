@@ -3,7 +3,7 @@
 erlang_R13B04	otp_src_R13B04.tar.gz	http://www.erlang.org/download/otp_src_R13B04.tar.gz
 erlang_R14B01	otp_src_R14B01.tar.gz	http://www.erlang.org/download/otp_src_R14B01.tar.gz
 nsis	nsis-2.46-setup.exe	http://download.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
-inno	isetup-5.3.10-unicode.exe	http://www.jrsoftware.org/download.php/is-unicode.exe
+inno	isetup-5.4.0-unicode.exe	http://www.jrsoftware.org/download.php/is-unicode.exe
 wxwidgets	wxMSW-2.8.11.zip	http://sourceforge.net/projects/wxwindows/files/2.8.11/wxMSW-2.8.11.zip
 erlang_tcl	tcltk85_win32_bin.tar.gz	http://www.erlang.org/download/tcltk85_win32_bin.tar.gz
 ################################################################################
@@ -12,7 +12,7 @@ libicu	icu4c-4_2_1-Win32-msvc9.zip	http://download.icu-project.org/files/icu4c/4
 ###libicu	icu4c-4_6-Win32-msvc10.zip	http://download.icu-project.org/files/icu4c/4.6/icu4c-4_6-Win32-msvc10.zip
 libcurl	curl-7.21.3.tar.gz	http://curl.haxx.se/download/curl-7.21.3.tar.gz
 nsis	nsis-2.46-setup.exe	http://download.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
-seamonkey	seamonkey-2.1b1.source.tar.bz2	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/2.1b1/source/seamonkey-2.1b1.source.tar.bz2
+seamonkey	seamonkey-2.0.11.source.tar.bz2	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/2.0.11/source/seamonkey-2.0.11.source.tar.bz2
 ################################################################################
 # bits required for both builds
 #vcredist is provided within VC++ bundle. here are a number of links for different versions ... go figure

@@ -597,32 +597,27 @@ TODO // URLs don't go to right AMIs
 ## Download URLs - visible only in raw text view
 
 [7zip_bits]:		http://downloads.sourceforge.net/sevenzip/7z465.exe
-[7zip_license]:		http://www.7-zip.org/license.txt
-[AWS console]:		https://console.aws.amazon.com/ec2/home#c=EC2&s=Instances
-[AWS Windows Servers]:	http://developer.amazonwebservices.com/connect/kbcategory.jspa?categoryID=201
 [bitvise_sshd_bits]:	http://dl.bitvise.com/WinSSHD5-Inst.exe
 [curl]:			http://curl.haxx.se/download.html
-[curl_license]:		http://curl.haxx.se/docs/copyright.html
 [cygwin]:		http://www.cygwin.com/setup.exe
 [DEP]:			http://support.microsoft.com/kb/875352
 [erlang_R13B04]:	http://www.erlang.org/download/otp_src_R13B04.tar.gz
-[erlang_R14A]:		http://www.erlang.org/download/otp_src_R14A.tar.gz
-[erlang_R14B]:		http://www.erlang.org/download/otp_src_R14B.tar.gz
+[erlang_R14B01]:	http://www.erlang.org/download/otp_src_R14B01.tar.gz
 [icu_bits_curr]:	http://download.icu-project.org/files/icu4c/4.2/icu4c-4_2-Win32-msvc9.zip
-[icu_bits_latest]:		http://download.icu-project.org/files/icu4c/4.5.1/icu4c-4_5_1-Win32-msvc9.zip
+[icu_bits_latest]:	http://download.icu-project.org/files/icu4c/4.6/icu4c-4_6-Win32-msvc10.zip
 [inno_bits]:		http://www.jrsoftware.org/download.php/is-unicode.exe
 [inno_help]:		http://www.jrsoftware.org/ishelp/
 [libcurl_bits]:		http://curl.haxx.se/download/libcurl-7.19.3-win32-ssl-msvc.zip
-[libcurl_src]:		http://curl.haxx.se/download/curl-7.21.1.tar.gz
+[libcurl_src]:		http://curl.haxx.se/download/curl-7.21.2.tar.gz
 [msvc++]:		http://download.microsoft.com/download/E/8/E/E8EEB394-7F42-4963-A2D8-29559B738298/VS2008ExpressWithSP1ENUX1504728.iso
 [msvc++webstart]:	http://download.microsoft.com/download/A/5/4/A54BADB6-9C3F-478D-8657-93B3FC9FE62D/vcsetup.exe
 [mozbuild]:		http://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/MozillaBuildSetup-Latest.exe
 [notepadplus_bits]:	http://download.sourceforge.net/project/notepad-plus/notepad%2B%2B%20releases%20binary/npp%205.7%20bin/npp.5.7.Installer.exe
 [nsis_bits]:		http://download.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
-[openssl_bits]:		http://www.slproweb.com/download/Win32OpenSSL-1_0_0b.exe
+[openssl_bits]:		http://www.slproweb.com/download/Win32OpenSSL-1_0_0c.exe
 [openssl_license]:	http://www.openssl.org/source/license.html
 [ramdisk]:		http://www.ltr-data.se/files/imdiskinst.exe
-[seamonkey_bits]:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/2.0.10/source/seamonkey-2.0.10.source.tar.bz2
+[seamonkey_bits]:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/2.1b1/source/seamonkey-2.1b1.source.tar.bz2
 [SEHOP]:		http://support.microsoft.com/kb/956607
 [vcredist]:		http://download.microsoft.com/download/d/d/9/dd9a82d0-52ef-40db-8dab-795376989c03/vcredist_x86.exe
 [win7sdk_32bit]:	http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDK_EN_DVD.iso

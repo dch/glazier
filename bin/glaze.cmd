@@ -104,7 +104,7 @@ echo DONE	install vcredist
 
 
 echo START	install win32 OpenSSL...
-start /wait %GLAZIER%\bits\Win32OpenSSL-1_0_0b.exe /silent /sp- /suppressmsgboxes /dir=c:\openssl
+start /wait %GLAZIER%\bits\Win32OpenSSL-1_0_0c.exe /silent /sp- /suppressmsgboxes /dir=c:\openssl
 junction.exe %RELAX%\openssl c:\openssl
 echo DONE	install win32 OpenSSL
 
@@ -115,7 +115,7 @@ echo DONE	install NSIS
 
 
 echo START	install Inno...
-start /wait %GLAZIER%\bits\isetup-5.3.10-unicode.exe /silent /dir="%RELAX%\inno5"
+start /wait %GLAZIER%\bits\isetup-5.4.0-unicode.exe /silent /dir="%RELAX%\inno5"
 echo DONE	install Inno
 
 echo START	install NotepadPlus...

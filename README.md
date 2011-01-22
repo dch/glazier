@@ -271,11 +271,11 @@ or using mklink.exe
 
 CouchDB has been built & tested against the following components successfully
 
-* Erlang OTP R13B04 or R14A including source
+* Erlang OTP R13B04 or R14B01 including source
 * ICU 4.2.1
-* Win32 OpenSSL  1.0.0a
-* Mozilla SpiderMonkey 1.8 from SeaMonkey 2.0.6
-* libcurl 7.21.1
+* Win32 OpenSSL  1.0.0c
+* Mozilla SpiderMonkey 1.8.5 or SeaMonkey 2.0.11 release
+* libcurl 7.21.3
 
 ## Javascript #################################################################
 
@@ -285,15 +285,15 @@ mozilla build toolkit.
 * get [seamonkey_bits]
 * run `c:\mozilla-build\start-msvc9.bat` even if you are on a 64-bit platform.
 
-        cd $RELAX && mkdir seamonkey-2.0.8
-        cd seamonkey-2.0.8
-        tar xjf ../bits/seamonkey-2.0.8.source.tar.bz2
+        cd $RELAX && mkdir seamonkey-2.0.11
+        cd seamonkey-2.0.11
+        tar xjf ../bits/seamonkey-2.0.11.source.tar.bz2
         cd ./comm-1.9.1/mozilla/js/src
         autoconf-2.13
         ./configure
         make
 
-* to build and install from -current do:
+* to build and install from SpiderMonkey 1.8.5 do:
         cd $RELAX && mkdir seamonkey-current
         cd seamonkey-current
         hg clone http://hg.mozilla.org/mozilla-central
@@ -306,7 +306,7 @@ mozilla build toolkit.
 
 * Download from [inno_bits]
 * Install to c:\relax\inno5 & ensure its in the path
-* Install ispack-5.3.10-unicode.exe, optionally including additional components
+* Install ispack-5.4.0-unicode.exe, optionally including additional components
 
 ## OpenSSL ####################################################################
 
@@ -322,6 +322,8 @@ mozilla build toolkit.
 
         pushd %RELAX%\curl-7*
         set OPENSSL_PATH=c:\openssl
+        set USE_SSLEAY=1
+        set USE_OPENSSL=1
         set INCLUDE=%INCLUDE%;%OPENSSL_PATH%\include\openssl;
         set LIBPATH=%LIBPATH%;%OPENSSL_PATH%\lib;
         set LIB=%LIB%;%OPENSSL_PATH%\lib;
@@ -352,7 +354,7 @@ mozilla build toolkit.
         --with-msvc-redist-dir=/cygdrive/c/dir/with/vcredist_platform_executable \
         --prefix=$ERL_TOP/release/win32
 
-## using seamonkey 2.0.8 ######################################################
+## using seamonkey 2.0.11 ######################################################
 
 * This is the recommended config if you have used the above steps:
 
@@ -360,12 +362,26 @@ mozilla build toolkit.
         --prefix=$ERL_TOP/release/win32 \
         --with-erlang=$ERL_TOP/release/win32/usr/include \
         --with-win32-icu-binaries=/relax/icu \
-        --with-win32-curl=/relax/curl-7.21.1 \
+        --with-win32-curl=/relax/curl-7.21.3 \
         --with-openssl-bin-dir=/relax/openssl/bin \
         --with-msvc-redist-dir=/relax \
-        --with-js-lib=/relax/seamonkey-2.0.8/comm-1.9.1/mozilla/js/src/dist/lib \
-        --with-js-include=/relax/seamonkey-2.0.8/comm-1.9.1/mozilla/js/src/dist/include/js
+        --with-js-lib=/relax/seamonkey-2.0.11/comm-1.9.1/mozilla/js/src/dist/lib \
+        --with-js-include=/relax/seamonkey-2.0.11/comm-1.9.1/mozilla/js/src/dist/include/js
 
+## using spidermonkey 1.8.5  ###################################################
+
+* This is the recommended config if you have used the above steps:
+
+        ./configure \
+        --prefix=$ERL_TOP/release/win32 \
+        --with-erlang=$ERL_TOP/release/win32/usr/include \
+        --with-win32-icu-binaries=/relax/icu \
+        --with-win32-curl=/relax/curl-7.21.3 \
+        --with-openssl-bin-dir=/relax/openssl/bin \
+        --with-msvc-redist-dir=/relax \
+        --with-js-lib=/relax/spidermonkey/js/src/dist/lib \
+        --with-js-include=/relax/spidermonkey/js/src/dist/include \
+        2>&1 | tee $COUCH_TOP/build_configure.txt
 
 
 # Automated Test Bed for Builds
@@ -589,10 +605,10 @@ TODO // URLs don't go to right AMIs
     - ensure your `$RELAX/vcredist_x86.exe` matches that used by your compiler
     - modify `$ERL_TOP/erts/etc/win32/nsis/find_redist.sh` to actually work with
 
-        if [ -f "$ERL_TOP/../vcredist_x86.exe" ]; then
-            echo $ERL_TOP/../vcredist_x86.exe
-            exit 0
-        fi
+            if [ -f "$ERL_TOP/../vcredist_x86.exe" ]; then
+                echo $ERL_TOP/../vcredist_x86.exe
+                exit 0
+            fi
 
 * a fix for the 4GiB overflow in the win32 driver is also needed
 
@@ -620,6 +636,7 @@ TODO // URLs don't go to right AMIs
 [openssl_license]:	http://www.openssl.org/source/license.html
 [ramdisk]:		http://www.ltr-data.se/files/imdiskinst.exe
 [seamonkey_bits]:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/2.0.11/source/seamonkey-2.0.11.source.tar.bz2
+[spidermonkey_bits]:	'http://hg.mozilla.org/tracemonkey/archive/57a6ad20eae9.tar.gz
 [SEHOP]:		http://support.microsoft.com/kb/956607
 [vcredist]:		http://download.microsoft.com/download/d/d/9/dd9a82d0-52ef-40db-8dab-795376989c03/vcredist_x86.exe
 [win7sdk_32bit]:	http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDK_EN_DVD.iso

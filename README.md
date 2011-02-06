@@ -279,8 +279,8 @@ CouchDB has been built & tested against the following components successfully
 
 ## Javascript #################################################################
 
-The Javascript engine used by CouchDB is built from Seamonkey, using the
-mozilla build toolkit.
+The Javascript engine used by CouchDB is Mozilla Spidermonkey. As there is no formal release
+for it, you can also build from Seamonkey, using the mozilla build toolkit.
 
 * get [seamonkey_bits]
 * run `c:\mozilla-build\start-msvc9.bat` even if you are on a 64-bit platform.
@@ -293,11 +293,13 @@ mozilla build toolkit.
         ./configure
         make
 
-* to build and install from SpiderMonkey 1.8.5 do:
-        cd $RELAX && mkdir seamonkey-current
-        cd seamonkey-current
-        hg clone http://hg.mozilla.org/mozilla-central
-        cd mozilla-central/......./comm-1.9.1/mozilla/js/src
+* to build and install from SpiderMonkey get [spidermonkey_bits]
+* run `c:\mozilla-build\start-msvc9.bat` even if you are on a 64-bit platform.
+
+        cd $RELAX && mkdir spidermonkey-1.8.5
+        cd spidermonkey-1.8.5
+        tar xzf ../bits/57a6ad20eae9.tar.gz
+        cd ./tracemonkey-57a6ad20eae9/js/src
         autoconf-2.13
         ./configure
         make
@@ -345,12 +347,12 @@ mozilla build toolkit.
 * The generic configure script looks like this:
 
         ./configure \
-        --with-js-include=/cygdrive/c/path_to_seamonkey \
-        --with-js-lib=/cygdrive/c/path_to_seamonkey_lib \
+        --with-js-include=/cygdrive/c/path_to_spidermonkey/dist/include \
+        --with-js-lib=/cygdrive/c/path_to_spidermonkey/dist/lib \
         --with-win32-icu-binaries=/cygdrive/c/path_to_icu_binaries_root \
         --with-erlang=$ERL_TOP/release/win32/usr/include \
         --with-win32-curl=/cygdrive/c/path/to/curl/root/directory \
-        --with-openssl-bin-dir=/cygdrive/c/openssl/bin \
+        --with-openssl-bin-dir=/cygdrive/c/path/to/openssl/bin \
         --with-msvc-redist-dir=/cygdrive/c/dir/with/vcredist_platform_executable \
         --prefix=$ERL_TOP/release/win32
 

@@ -19,7 +19,7 @@ Glazier requires 6 things to run successfully
 ## Current State ##############################################################
 
 * The steps below, manually or automated, should produce a working CouchDB build
-    & self-installing .exe from Erlang/OTP R14B01, and CouchDB 0.11.2 or 1.0.1.
+    & self-installing .exe from Erlang/OTP R14B01, and CouchDB 0.11.2 or 1.0.2.
 * The build environment should be fully functional on both 32,64, desktop and
     server versions of windows from XP/2003 onwards
 * Fetching dependent binaries is described and automated
@@ -45,7 +45,7 @@ Glazier requires 6 things to run successfully
 
         cd /relax
         tar xzf /relax/bits/apache-couchdb-0.11.2.tar.gz &
-        tar xzf /relax/bits/apache-couchdb-1.0.1.tar.gz &
+        tar xzf /relax/bits/apache-couchdb-1.0.2.tar.gz &
         tar xzf /relax/bits/curl-7.21.3.tar.gz &
         tar xzf /relax/bits/otp_src_R14B01.tar.gz &
         cd /relax/otp_src_R14B01;   tar xzf /relax/bits/tcltk85_win32_bin.tar.gz &
@@ -59,7 +59,7 @@ Glazier requires 6 things to run successfully
 
 * each of these scripts leaves logfiles in the root folder. If you have issues
     during compilation phase, load these onto <http://friendpaste.com/>
-    don't email them to the mailing list
+    before emailing your issues to the mailing list
 
 # Installing the Build Environment ############################################
 
@@ -215,10 +215,7 @@ or using mklink.exe
 
 * in a cygwin shell, using these new junction points:
 
-        cd /relax
-        tar xzf /relax/bits/otp_src_R14A.tar.gz &
-        tar xzf /relax/bits/otp_src_R13B04.tar.gz &
-        tar xzf /relax/bits/otp_src_R14B.tar.gz &
+        cd /relax && tar xzf /relax/bits/otp_src_R14B01.tar.gz &
 
 * then run from explorer, `%GLAZIER%\bin\relax.cmd`
 

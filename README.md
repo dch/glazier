@@ -6,16 +6,15 @@ assumes you're starting from a vanilla state.
 
 # Using Glazier  ##############################################################
 
-Glazier requires 5 things to run successfully
+Glazier requires 6 things to run successfully
 
-1. you are logged in as a local user "couchdb" which has admin permissions
+1. you are logged in as a local user with admin permissions
 2. Windows XP, 2003, Vista, Windows 7 or 2008, either 32 or 64-bit platforms
 3. internet connectivity
 4. approx 12GiB of disk space during fetch & build stages
 5. download and unzipped [glazier latest zip](http://github.com/dch/glazier/zipball/master)
 6. an optional environment variable, `%RELAX%`, set to where you wish to have CouchDB
  and Erlang built within. If none is selected, `c:\relax` will be used.
-
 
 ## Current State ##############################################################
 
@@ -33,7 +32,7 @@ Glazier requires 5 things to run successfully
 * Glazier tries to be self-contained so that it is both repeatable and also
     easy to clean up.
 * Compilation stages are not fully automated but are all now command-line driven
-* Visual Studio 2010 is not supported yet by all build tools; use VSE 2008
+* Visual Studio 2010 is not supported yet by all build tools so use Visual Studio Express 2008 instead
 
 # Running Automatically #######################################################
 
@@ -48,13 +47,9 @@ Glazier requires 5 things to run successfully
         tar xzf /relax/bits/apache-couchdb-0.11.2.tar.gz &
         tar xzf /relax/bits/apache-couchdb-1.0.1.tar.gz &
         tar xzf /relax/bits/curl-7.21.3.tar.gz &
-        tar xzf /relax/bits/otp_src_R13B04.tar.gz &
-        cd /relax/otp_src_R13B04; tar xzf /relax/bits/tcltk85_win32_bin.tar.gz &
         tar xzf /relax/bits/otp_src_R14B01.tar.gz &
         cd /relax/otp_src_R14B01;   tar xzf /relax/bits/tcltk85_win32_bin.tar.gz &
 
-* some fixes are required for resolving manifest compilation; this is underway
-    for more information see end of this doc
 * then run the following 4 scripts in order
 
         erl_build.sh
@@ -229,15 +224,13 @@ or using mklink.exe
 
 ## Tk/Tcl #####################################################################
 
-* optional components
+* optional components - used for debugger and java interfaces
 
         cd $ERL_TOP && tar xvzf /relax/bits/tcltk85_win32_bin.tar.gz
         # or simply
-        cd /relax/otp_src_R14A && tar xvzf /relax/bits/tcltk85_win32_bin.tar.gz
-        cd /relax/otp_src_R13B04 && tar xvzf /relax/bits/tcltk85_win32_bin.tar.gz
-        cd /relax/otp_src_R14B && tar xvzf /relax/bits/tcltk85_win32_bin.tar.gz
+        cd /relax/otp_src_R14B01 && tar xvzf /relax/bits/tcltk85_win32_bin.tar.gz
 
-* or skip the whole damn lot this way
+* or skip the whole damn lot this way 
 
         echo "skipping gs" > lib/gs/SKIP
         echo "skipping jinterface" > lib/jinterface/SKIP
@@ -271,27 +264,16 @@ or using mklink.exe
 
 CouchDB has been built & tested against the following components successfully
 
-* Erlang OTP R13B04 or R14B01 including source
+* Erlang OTP R14B01 including source
 * ICU 4.2.1
-* Win32 OpenSSL  1.0.0c
+* Win32 OpenSSL 1.0.0c
 * Mozilla SpiderMonkey 1.8.5 or SeaMonkey 2.0.11 release
 * libcurl 7.21.3
 
 ## Javascript #################################################################
 
 The Javascript engine used by CouchDB is Mozilla Spidermonkey. As there is no formal release
-for it, you can also build from Seamonkey, using the mozilla build toolkit.
-
-* get [seamonkey_bits]
-* run `c:\mozilla-build\start-msvc9.bat` even if you are on a 64-bit platform.
-
-        cd $RELAX && mkdir seamonkey-2.0.11
-        cd seamonkey-2.0.11
-        tar xjf ../bits/seamonkey-2.0.11.source.tar.bz2
-        cd ./comm-1.9.1/mozilla/js/src
-        autoconf-2.13
-        ./configure
-        make
+for it, you can build from anywhere on trunk. The 1.8.5 source below is also used on the Mac OS X homebrew build of CouchDB.
 
 * to build and install from SpiderMonkey get [spidermonkey_bits]
 * run `c:\mozilla-build\start-msvc9.bat` even if you are on a 64-bit platform.
@@ -356,20 +338,6 @@ for it, you can also build from Seamonkey, using the mozilla build toolkit.
         --with-msvc-redist-dir=/cygdrive/c/dir/with/vcredist_platform_executable \
         --prefix=$ERL_TOP/release/win32
 
-## using seamonkey 2.0.11 ######################################################
-
-* This is the recommended config if you have used the above steps:
-
-        ./configure \
-        --prefix=$ERL_TOP/release/win32 \
-        --with-erlang=$ERL_TOP/release/win32/usr/include \
-        --with-win32-icu-binaries=/relax/icu \
-        --with-win32-curl=/relax/curl-7.21.3 \
-        --with-openssl-bin-dir=/relax/openssl/bin \
-        --with-msvc-redist-dir=/relax \
-        --with-js-lib=/relax/seamonkey-2.0.11/comm-1.9.1/mozilla/js/src/dist/lib \
-        --with-js-include=/relax/seamonkey-2.0.11/comm-1.9.1/mozilla/js/src/dist/include/js
-
 ## using spidermonkey 1.8.5  ###################################################
 
 * This is the recommended config if you have used the above steps:
@@ -385,43 +353,6 @@ for it, you can also build from Seamonkey, using the mozilla build toolkit.
         --with-js-include=/relax/spidermonkey/js/src/dist/include \
         2>&1 | tee $COUCH_TOP/build_configure.txt
 
-
-# Automated Test Bed for Builds
-The objective is to take the current manual steps, and have them automated for a successful build off a variety of representative Microsoft current OS using Amazon EC2 infrastructure. Unfortunately this is either failing due to issues with cygwin/mingw+msys running on Amazon's old version Xen hypervisor on newer AMIs, or too slow on the base i386/c.medium build which does work but takes days.
-
-## Tested AMIs
-
-These are all sourced from [AWS Windows Servers] provided by Amazon. The release build is taken from the Windows 2008 64-bit AMI below. You will need to set up an AWS account before using the [AWS console] and we recommend using spot instances as these are significantly cheaper to run.
-
-TODO // URLs don't go to right AMIs
-
-* ami-c3e40daa | amazon/Windows-Server2008r1sp2-i386-Base-v103 ** bash.exe dumps core
-* ami-d9e40db0 | amazon/Windows-Server2008r1sp2-x86_64-Base-v103 ** bash.exe and cmd.exe dumps core
-* ami-f11ff098 | amazon/Windows-Server2003r2-i386-Base-v109 ** too bloody slow
-* ami-f51ff09c | amazon/Windows-Server2003r2-x86_64-Base-v109 ** bash.exe dumps core
-
-* NB both of the Win2008 ones above dump core while installing/running cygwin so we do not build by default
-* reference CouchDB install is therefore Win2003r2 x86_64  ami-f51ff09c l1.large & snap-080bb263 for accompanying binaries
-* reference CouchDB install is therefore Win2003r2 x86_i386  ami-f11ff098 c1.medium & snap-080bb263 for accompanying binaries
-
-## Config of bundled W2008R1SP2 64b AMI
-
-* attach a 30GiB EBS vol for storage of the bits
-* logon, bring up an admin command prompt by right-clicking on any Command Prompt link and choosing "Run as Administrator"
-* execute the following within that
-* diskmgmt.msc -> find the newly attached volume & turn it online
-* a fix for [SEHOP] security feature causing cygwin & similar unix shell emulations to dump core
-
-        regedit d:\glazier\bundles\disable_sehop_kb956607.reg
-        net user couchdb 1dot1 /add
-        net localgroup administrators couchdb /add
-
-* disable UAC -> control panel -> user accts -> turn UAC off -> restart later
-* start menu -> server manager -> 2nd pane -> configure IE ESC
-* disable [DEP] ->  bcdedit.exe /set {current} nx AlwaysOff
-
-* restart now
-
 ********************************************************************************
 # Appendices
 ********************************************************************************
@@ -434,186 +365,6 @@ TODO // URLs don't go to right AMIs
 * curl <http://curl.haxx.se/docs/copyright.html>
 * openssl <http://www.openssl.org/source/license.html>
 
-## sample environments on different windows platforms
-
-### win7 std - default environment
-
-    ALLUSERSPROFILE=C:\ProgramData
-    APPDATA=C:\Users\couchdb\AppData\Roaming
-    CLIENTNAME=continuity.muse
-    CommonProgramFiles=C:\Program Files\Common Files
-    CommonProgramFiles(x86)=C:\Program Files (x86)\Common Files
-    CommonProgramW6432=C:\Program Files\Common Files
-    COMPUTERNAME=BUILD
-    ComSpec=C:\Windows\system32\cmd.exe
-    FP_NO_HOST_CHECK=NO
-    HOMEDRIVE=C:
-    HOMEPATH=\Users\couchdb
-    LOCALAPPDATA=C:\Users\couchdb\AppData\Local
-    LOGONSERVER=\\BUILD
-    NUMBER_OF_PROCESSORS=1
-    OPENSSL_CONF=C:\OpenSSL\bin\openssl.cfg
-    OS=Windows_NT
-    Path=C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\
-    PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
-    PROCESSOR_ARCHITECTURE=AMD64
-    PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 15 Stepping 6, GenuineIntel
-    PROCESSOR_LEVEL=6
-    PROCESSOR_REVISION=0f06
-    ProgramData=C:\ProgramData
-    ProgramFiles=C:\Program Files
-    ProgramFiles(x86)=C:\Program Files (x86)
-    ProgramW6432=C:\Program Files
-    PROMPT=$P$G
-    PSModulePath=C:\Windows\system32\WindowsPowerShell\v1.0\Modules\
-    PUBLIC=C:\Users\Public
-    SESSIONNAME=RDP-Tcp#0
-    SystemDrive=C:
-    SystemRoot=C:\Windows
-    TEMP=C:\Users\couchdb\AppData\Local\Temp
-    TMP=C:\Users\couchdb\AppData\Local\Temp
-    USERDOMAIN=BUILD
-    USERNAME=couchdb
-    USERPROFILE=C:\Users\couchdb
-    VS90COMNTOOLS=C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\Tools\
-    windir=C:\Windows
-
-### win7 std - vs2008 environment
-    ALLUSERSPROFILE=C:\ProgramData
-    APPDATA=C:\Users\couchdb\AppData\Roaming
-    CLIENTNAME=continuity.muse
-    CommonProgramFiles=C:\Program Files\Common Files
-    CommonProgramFiles(x86)=C:\Program Files (x86)\Common Files
-    CommonProgramW6432=C:\Program Files\Common Files
-    COMPUTERNAME=BUILD
-    ComSpec=C:\Windows\system32\cmd.exe
-    DevEnvDir=C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE
-    FP_NO_HOST_CHECK=NO
-    FrameworkDir=C:\Windows\Microsoft.NET\Framework
-    FrameworkVersion=v2.0.50727
-    HOMEDRIVE=C:
-    HOMEPATH=\Users\couchdb
-    INCLUDE=C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\ATLMFC\INCLUDE;C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\INCLUDE;C:\Program Files\Microsoft SDKs\Windows\v6.0A\include;
-    LIB=C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\ATLMFC\LIB;C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\LIB;C:\Program Files\Microsoft SDKs\Windows\v6.0A\lib;
-    LIBPATH=C:\Windows\Microsoft.NET\Framework\;C:\Windows\Microsoft.NET\Framework\v2.0.50727;C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\ATLMFC\LIB;C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\LIB;
-    LOCALAPPDATA=C:\Users\couchdb\AppData\Local
-    LOGONSERVER=\\BUILD
-    NUMBER_OF_PROCESSORS=1
-    OPENSSL_CONF=C:\OpenSSL\bin\openssl.cfg
-    OS=Windows_NT
-    Path=C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE;C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\BIN;C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\Tools;C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\Tools\bin;C:\Windows\Microsoft.NET\Framework\;C:\Windows\Microsoft.NET\Framework\\Microsoft .NET Framework 3.5 (Pre-Release Version);C:\Windows\Microsoft.NET\Framework\v2.0.50727;C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\VCPackages;C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\
-    PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
-    PROCESSOR_ARCHITECTURE=AMD64
-    PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 15 Stepping 6, GenuineIntel
-    PROCESSOR_LEVEL=6
-    PROCESSOR_REVISION=0f06
-    ProgramData=C:\ProgramData
-    ProgramFiles=C:\Program Files
-    ProgramFiles(x86)=C:\Program Files (x86)
-    ProgramW6432=C:\Program Files
-    PROMPT=$P$G
-    PSModulePath=C:\Windows\system32\WindowsPowerShell\v1.0\Modules\
-    PUBLIC=C:\Users\Public
-    SESSIONNAME=RDP-Tcp#0
-    SystemDrive=C:
-    SystemRoot=C:\Windows
-    TEMP=C:\Users\couchdb\AppData\Local\Temp
-    TMP=C:\Users\couchdb\AppData\Local\Temp
-    USERDOMAIN=BUILD
-    USERNAME=couchdb
-    USERPROFILE=C:\Users\couchdb
-    VCINSTALLDIR=C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC
-    VS90COMNTOOLS=C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\Tools\
-    VSINSTALLDIR=C:\Program Files (x86)\Microsoft Visual Studio 9.0
-    windir=C:\Windows
-    WindowsSdkDir=C:\Program Files\Microsoft SDKs\Windows\v6.0A\
-
-
-### a perfect path for erlang R13B04 after eval `./otp_build env_win32`
-
-    export PATH=$ERL_TOP/release/win32/erts-5.7.5/bin:\
-    $ERL_TOP/erts/etc/win32/cygwin_tools/vc:\
-    $ERL_TOP/erts/etc/win32/cygwin_tools:\
-    /cygdrive/c/PROGRA~1/MICROS~1.0/Common7/IDE:\
-    /cygdrive/c/PROGRA~1/MICROS~1.0/VC/BIN:\
-    /cygdrive/c/PROGRA~1/MICROS~1.0/Common7/Tools:\
-    /cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/:\
-    /cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/V20~1.507:\
-    /cygdrive/c/PROGRA~1/MICROS~1.0/VC/VCPACK~1:\
-    /cygdrive/c/PROGRA~1/MICROS~3/Windows/v7.0/bin:\
-    /src/openssl:\
-    /src/nsis:\
-    /src/inno5:\
-    /usr/local/bin:\
-    /usr/bin:\
-    /bin:\
-    /cygdrive/c/WINDOWS/system32:\
-    /cygdrive/c/WINDOWS:\
-    /cygdrive/c/WINDOWS/System32/Wbem
-
-    export ERL_TOP=/src/otp_src_R13B04
-    export PATH=$ERL_TOP/release/win32/erts-5.7.5/bin:$ERL_TOP/erts/etc/win32/cygwin_tools/vc:$ERL_TOP/erts/etc/win32/cygwin_tools:/cygdrive/c/PROGRA~1/MICROS~1.0/Common7/IDE:/cygdrive/c/PROGRA~1/MICROS~1.0/VC/BIN:/cygdrive/c/PROGRA~1/MICROS~1.0/Common7/Tools:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/V20~1.507:/cygdrive/c/PROGRA~1/MICROS~1.0/VC/VCPACK~1:/cygdrive/c/PROGRA~1/MICROS~3/Windows/v7.0/bin:/src/openssl:/src/nsis:/src/inno5:/usr/local/bin:/usr/bin:/bin:/cygdrive/c/WINDOWS/system32:/cygdrive/c/WINDOWS:/cygdrive/c/WINDOWS/System32/Wbem
-
-    export ERL_TOP=/src/otp_src_R14A
-    EXPORT PATH=$ERL_TOP/release/win32/erts-5.8/bin:$ERL_TOP/erts/etc/win32/cygwin_tools/vc:$ERL_TOP/erts/etc/win32/cygwin_tools:/cygdrive/c/PROGRA~1/MICROS~1.0/Common7/IDE:/cygdrive/c/PROGRA~1/MICROS~1.0/VC/BIN:/cygdrive/c/PROGRA~1/MICROS~1.0/Common7/Tools:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/:/cygdrive/c/WINDOWS/MICROS~1.NET/FRAMEW~1/V20~1.507:/cygdrive/c/PROGRA~1/MICROS~1.0/VC/VCPACK~1:/cygdrive/c/PROGRA~1/MICROS~3/Windows/v7.0/bin:/src/openssl:/src/nsis:/src/inno5:/usr/local/bin:/usr/bin:/bin:/cygdrive/c/WINDOWS/system32:/cygdrive/c/WINDOWS:/cygdrive/c/WINDOWS/System32/Wbem
-
-## Manifest Errors Notes
-
-
-`TODO // confirm steps needed before getting to here. Use manual install first`
-
-
-       manifest fixes here
-
-       for /r %i in (*.dll) do @echo %i && mt -manifest %GLAZIER%\bits\generic.manifest -outputresource:%i;2
-       for /r %i in (*.exe) do @echo %i && mt -manifest %GLAZIER%\bits\generic.manifest -outputresource:%i;1
-
-       http://msdn.microsoft.com/en-us/library/f2c0w594(v=VS.90).aspx
-       http://msdn.microsoft.com/en-us/library/y0zzbyt4(v=VS.90).aspx
-       http://msdn.microsoft.com/en-us/library/7f0aews7(v=VS.90).aspx
-       http://social.msdn.microsoft.com/Forums/en/vcgeneral/thread/7cf5108b-6cb1-43db-9893-d1ac105919c6
-       http://msdn.microsoft.com/en-us/library/bb756929.aspx
-       http://www.codeproject.com/answers/58606/How-do-you-get-XP-visual-styles-manifest-to-work-o.aspx
-       http://tydbits.com/This-application-has-failed-to-start-because-the-application-configuration-is-incorrect
-       http://blogs.msdn.com/b/oldnewthing/archive/2007/05/31/2995284.aspx
-       /MANIFESTUAC:NO
-       <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-       <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
-         <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
-           <security>
-             <requestedPrivileges>
-               <requestedExecutionLevel level="asInvoker" uiAccess="false"></requestedExecutionLevel>
-             </requestedPrivileges>
-           </security>
-         </trustInfo>
-         <dependency>
-           <dependentAssembly>
-             <assemblyIdentity type="win32" name="Microsoft.VC90.CRT" version="9.0.21022.8" processorArchitecture="x86" publicKeyToken="1fc8b3b9a1e18e3b"></assemblyIdentity>
-             <assemblyIdentity type="win32" name="Microsoft.VC90.CRT" version="9.0.30729.1" processorArchitecture="x86" publicKeyToken="1fc8b3b9a1e18e3b"></assemblyIdentity>
-           </dependentAssembly>
-         </dependency>
-         <dependency>
-           <dependentAssembly>
-             <assemblyIdentity type="win32" name="Microsoft.Windows.Common-Controls" version="6.0.0.0" processorArchitecture="*" publicKeyToken="6595b64144ccf1df" language="*"></assemblyIdentity>
-             </dependentAssembly>
-          </dependency>
-        </assembly>
-
-* a number of changes are required to get the SxS manifests to build successfully
-
-    - revert ld.sh to that from R14A (just remove line 170-172 - the sed XML hack)
-    - [don't] set LINK to `/manifestuac:"level=asInvoker uiAccess=false"`
-    - set CL to `-D_BIND_TO_CURRENT_VCLIBS_VERSION` in cc.sh#28 COMMON_CFLAGS or in relax.cmd
-    - ensure your `$RELAX/vcredist_x86.exe` matches that used by your compiler
-    - modify `$ERL_TOP/erts/etc/win32/nsis/find_redist.sh` to actually work with
-
-            if [ -f "$ERL_TOP/../vcredist_x86.exe" ]; then
-                echo $ERL_TOP/../vcredist_x86.exe
-                exit 0
-            fi
-
-* a fix for the 4GiB overflow in the win32 driver is also needed
-
 ## Download URLs - visible only in raw text view
 
 [7zip_bits]:		http://downloads.sourceforge.net/sevenzip/7z465.exe
@@ -621,7 +372,6 @@ TODO // URLs don't go to right AMIs
 [curl]:			http://curl.haxx.se/download.html
 [cygwin]:		http://www.cygwin.com/setup.exe
 [DEP]:			http://support.microsoft.com/kb/875352
-[erlang_R13B04]:	http://www.erlang.org/download/otp_src_R13B04.tar.gz
 [erlang_R14B01]:	http://www.erlang.org/download/otp_src_R14B01.tar.gz
 [icu_bits_curr]:	http://download.icu-project.org/files/icu4c/4.2/icu4c-4_2-Win32-msvc9.zip
 [icu_bits_latest]:	http://download.icu-project.org/files/icu4c/4.6/icu4c-4_6-Win32-msvc10.zip
@@ -630,13 +380,11 @@ TODO // URLs don't go to right AMIs
 [libcurl_bits]:		http://curl.haxx.se/download/libcurl-7.19.3-win32-ssl-msvc.zip
 [libcurl_src]:		http://curl.haxx.se/download/curl-7.21.3.tar.gz
 [msvc++]:		http://download.microsoft.com/download/E/8/E/E8EEB394-7F42-4963-A2D8-29559B738298/VS2008ExpressWithSP1ENUX1504728.iso
-[msvc++webstart]:	http://download.microsoft.com/download/A/5/4/A54BADB6-9C3F-478D-8657-93B3FC9FE62D/vcsetup.exe
 [mozbuild]:		http://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/MozillaBuildSetup-Latest.exe
 [notepadplus_bits]:	http://download.sourceforge.net/project/notepad-plus/notepad%2B%2B%20releases%20binary/npp%205.7%20bin/npp.5.7.Installer.exe
 [nsis_bits]:		http://download.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
 [openssl_bits]:		http://www.slproweb.com/download/Win32OpenSSL-1_0_0c.exe
 [ramdisk]:		http://www.ltr-data.se/files/imdiskinst.exe
-[seamonkey_bits]:	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/2.0.11/source/seamonkey-2.0.11.source.tar.bz2
 [spidermonkey_bits]:	http://hg.mozilla.org/tracemonkey/archive/57a6ad20eae9.tar.gz
 [SEHOP]:		http://support.microsoft.com/kb/956607
 [vcredist]:		http://download.microsoft.com/download/d/d/9/dd9a82d0-52ef-40db-8dab-795376989c03/vcredist_x86.exe

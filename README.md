@@ -44,6 +44,8 @@ Glazier requires 6 things to run successfully
 * the first time around you will need to unpack your erlang and couchdb tarballs
 
         cd /relax
+        CYGWIN="nontsec nodosfilewarning"
+	CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
         tar xzf /relax/bits/apache-couchdb-0.11.2.tar.gz &
         tar xzf /relax/bits/apache-couchdb-1.0.2.tar.gz &
         tar xzf /relax/bits/curl-7.21.3.tar.gz &
@@ -186,6 +188,7 @@ or using mklink.exe
 * Then build all unicode release (and unicode debug) packages:
 
         pushd %RELAX%\wxMSW*\build\msw
+        set CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
         vcbuild /useenv  /platform:Win32 /M4 wx.sln "Unicode Release|Win32"
         vcbuild /useenv  /platform:Win32 /M4 wx.sln "Unicode Debug|Win32"
 
@@ -195,6 +198,7 @@ or using mklink.exe
     to `%RELAX%\wxMSW-2.8.11\contrib\build\stc\stc.sln`
 
         pushd %RELAX%\wxMSW*\contrib\build\stc
+        set CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
         vcbuild /useenv /platform:Win32 /M4 stc.sln "Unicode Release|Win32"
         vcbuild /useenv /platform:Win32 /M4 stc.sln "Unicode Debug|Win32"
 
@@ -279,7 +283,8 @@ for it, you can build from anywhere on trunk. The 1.8.5 source below is also use
         cd spidermonkey-1.8.5
         tar xzf ../bits/57a6ad20eae9.tar.gz
         cd ./tracemonkey-57a6ad20eae9/js/src
-        autoconf-2.13
+        CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
+	autoconf-2.13
         ./configure
         make
 
@@ -309,6 +314,7 @@ for it, you can build from anywhere on trunk. The 1.8.5 source below is also use
         set LIBPATH=%LIBPATH%;%OPENSSL_PATH%\lib;
         set LIB=%LIB%;%OPENSSL_PATH%\lib;
 
+        set CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
         vcbuild /useenv /upgrade /platform:Win32 lib\libcurl.vcproj
         vcbuild /useenv /platform:Win32 lib\libcurl.vcproj "Release|Win32"
         xcopy lib\Release\libcurl.lib lib\ /y /f

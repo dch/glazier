@@ -45,7 +45,7 @@ Glazier requires 6 things to run successfully
 
         cd /relax
         CYGWIN="nontsec nodosfilewarning"
-	CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
+        CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
         tar xzf /relax/bits/apache-couchdb-0.11.2.tar.gz &
         tar xzf /relax/bits/apache-couchdb-1.0.2.tar.gz &
         tar xzf /relax/bits/curl-7.21.3.tar.gz &
@@ -284,7 +284,7 @@ for it, you can build from anywhere on trunk. The 1.8.5 source below is also use
         tar xzf ../bits/57a6ad20eae9.tar.gz
         cd ./tracemonkey-57a6ad20eae9/js/src
         CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
-	autoconf-2.13
+        autoconf-2.13
         ./configure
         make
 

@@ -241,8 +241,8 @@ or using mklink.exe
  [relax.cmd](http://github.com/dch/glazier/bin/relax.cmd) and
  [relax.sh](http://github.com/dch/glazier/bin/relax.sh)
 
-* build Erlang using `/relax/glazier/bin/erl_config.sh` and
-        `/relax/glazier/bin/erl_build.sh`, or manually as follows
+* build Erlang using `/relax/glazier/bin/erl_config.sh`
+  and `/relax/glazier/bin/erl_build.sh`, or manually as follows
 
         ./otp_build autoconf
         ./otp_build configure

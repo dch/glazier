@@ -362,7 +362,7 @@ for it, you can build from anywhere on trunk. The 1.8.5 source below is also use
 
 ## Licences
 
-* the core tools & scripts used in glazier are released or included as BSD-style licence
+* the core tools & scripts used in glazier are released or included under the same Apache Licence used for CouchDB
 * curl and the included openssl libraries are the only ones distributed with glazier
 * the silent installation of each component assumes your implicit acceptance of the rest
 * curl <http://curl.haxx.se/docs/copyright.html>

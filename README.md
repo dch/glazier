@@ -171,7 +171,9 @@ or using mklink.exe
         junction c:\cygwin\opt\local\pgm\wxWidgets-2.8.11 c:\relax\wxMSW-2.8.11
 
 * A number of manual changes are required to get WxWidgets to build cleanly.
-    These can be done manually or simply apply the overlay from [wxoverlay]
+    These can be done manually or simply apply the overlay from [wxoverlay] &
+    skip through to the build instructions lower down.
+
 * Using a suitable editor (vi in the cygwin suite, or install
     [notepadplus_bits] for windows users) and
 * Edit `c:\relax\wxMSW-2.8.11\include\wx\msw\setup.h` to enable
@@ -242,7 +244,21 @@ or using mklink.exe
  [relax.cmd](http://github.com/dch/glazier/bin/relax.cmd) and
  [relax.sh](http://github.com/dch/glazier/bin/relax.sh)
 
-* build Erlang using `/relax/glazier/bin/erl_config.sh`
+Getting OTP to find vcredist_x86.exe is not easy. A simple solution is to hack `$ERL_TOP/erts/etc/win32/nsis/find_redist.sh` to look in `$ERL_TOP/..` first.
+                
+        # shortcut for locating vcredist_x86.exe is to put it into $ERL_TOP
+        if [ -f $ERL_TOP/vcredist_x86.exe ]; then
+            echo $ERL_TOP/vcredist_x86.exe
+            exit 0
+        fi
+        
+        # or $ERL_TOP/.. to share across multiple builds
+        if [ -f $ERL_TOP/../vcredist_x86.exe ]; then
+            echo $ERL_TOP/../vcredist_x86.exe
+            exit 0
+        fi
+
+* Build Erlang using `/relax/glazier/bin/erl_config.sh`
   and `/relax/glazier/bin/erl_build.sh`, or manually as follows
 
         ./otp_build autoconf

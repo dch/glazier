@@ -47,10 +47,10 @@ echo START	installing compilers...
 echo START	MS VS2008 Express...
 :: TODO remove hackage that prevents installing MSSQL burning CPU and space
 pushd %RELAX%\ISOs\VS2008ExpressWithSP1ENUX1504728\VCExpress\WCU\ && rd /s/q dist > NUL: 2>&1
-mkdir dist
-for %%i in (Silverlight SMO SSE) do @move %%i dist\
+::mkdir dist
+::for %%i in (Silverlight SMO SSE) do @move %%i dist\
 cd .. && start /wait setup.exe /q /norestart
-popd
+::popd
 echo DONE	MS VS2008 Express
 
 echo START	installing Windows 7 SDK...
@@ -119,7 +119,7 @@ start /wait %GLAZIER%\bits\isetup-5.4.0-unicode.exe /silent /dir="%RELAX%\inno5"
 echo DONE	install Inno
 
 echo START	install NotepadPlus...
-start /wait %GLAZIER%\bits\npp.5.7.Installer.exe /S /D=%RELAX%\npp5
+7z x -o%relax%\npp %GLAZIER%\bits\npp.5.8.7.bin.minimalist.7z 
 echo DONE	install NotepadPlus
 
 :eof

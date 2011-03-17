@@ -19,7 +19,7 @@ Glazier requires 6 things to run successfully
 ## Current State ##############################################################
 
 * The steps below, manually or automated, should produce a working CouchDB build
-    & self-installing .exe from Erlang/OTP R14B01, and CouchDB 0.11.2 or 1.0.2.
+    & self-installing .exe from Erlang/OTP R14B01, and CouchDB 1.0.0 onwards.
 * The build environment should be fully functional on both 32,64, desktop and
     server versions of windows from XP/2003 onwards
 * Fetching dependent binaries is described and automated
@@ -32,7 +32,8 @@ Glazier requires 6 things to run successfully
 * Glazier tries to be self-contained so that it is both repeatable and also
     easy to clean up.
 * Compilation stages are not fully automated but are all now command-line driven
-* Visual Studio 2010 is not supported yet by all build tools so use Visual Studio Express 2008 instead
+* Visual Studio 2010 is not supported yet by all source code so use Visual
+    Studio Express 2008 instead
 
 # Running Automatically #######################################################
 
@@ -46,11 +47,10 @@ Glazier requires 6 things to run successfully
         cd /relax
         CYGWIN="nontsec nodosfilewarning"
         CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
-        tar xzf /relax/bits/apache-couchdb-0.11.2.tar.gz &
         tar xzf /relax/bits/apache-couchdb-1.0.2.tar.gz &
         tar xzf /relax/bits/curl-7.21.3.tar.gz &
         tar xzf /relax/bits/otp_src_R14B01.tar.gz &
-        cd /relax/otp_src_R14B01;   tar xzf /relax/bits/tcltk85_win32_bin.tar.gz &
+        cd /relax/otp_src_R14B01 && tar xzf /relax/bits/tcltk85_win32_bin.tar.gz &
 
 * then run the following 4 scripts in order
 
@@ -104,7 +104,7 @@ The mozilla build toolchain is needed solely for building a javascript engine.
     from [MSDN](http://msdn.microsoft.com/en-gb/vstudio/)
 * install Visual C++ 9 only, to the default locations, using the DVD ISO
     [msvc++] excluding optional MSSSQL & Silverlight, or alternatively the
-    web installer [vsmc++webstart]
+    web installer [msvc++webstart]
 
 ## Windows 7 SDK ##############################################################
 
@@ -133,7 +133,8 @@ Both CouchDB and Erlang have dependencies on other opensource tools.
 
 ## Microsoft Visual C++ runtime ###############################################
 
-* download the runtime installer [vcredist] and copy to `c:\relax\`
+* download the runtime installer [vcredist] and copy to `c:\relax\` - note this
+    is the same as the one provided with VS2008 SP1 - this is IMPORTANT
 
 ## set up hard links ##########################################################
 
@@ -228,10 +229,8 @@ or using mklink.exe
 * optional components - used for debugger and java interfaces
 
         cd $ERL_TOP && tar xvzf /relax/bits/tcltk85_win32_bin.tar.gz
-        # or simply
-        cd /relax/otp_src_R14B01 && tar xvzf /relax/bits/tcltk85_win32_bin.tar.gz
 
-* or skip the whole damn lot this way 
+* or skip the whole damn lot this way
 
         echo "skipping gs" > lib/gs/SKIP
         echo "skipping jinterface" > lib/jinterface/SKIP
@@ -257,7 +256,7 @@ or using mklink.exe
 * or using the relax tools:
 
         start %glazier%\bin\relax.cmd
-        [select erlang build]
+        :: [select an erlang build]
         erl_config.sh; erl_build.sh
 
 
@@ -267,14 +266,15 @@ CouchDB has been built & tested against the following components successfully
 
 * Erlang OTP R14B01 including source
 * ICU 4.2.1
-* Win32 OpenSSL 1.0.0c
+* Win32 OpenSSL 1.0.0d
 * Mozilla SpiderMonkey 1.8.5 or SeaMonkey 2.0.11 release
 * libcurl 7.21.3
 
 ## Javascript #################################################################
 
-The Javascript engine used by CouchDB is Mozilla Spidermonkey. As there is no formal release
-for it, you can build from anywhere on trunk. The 1.8.5 source below is also used on the Mac OS X homebrew build of CouchDB.
+The Javascript engine used by CouchDB is Mozilla Spidermonkey. As there is no
+formal release for it, you can build from anywhere on trunk. The 1.8.5 source
+below is also used on the Mac OS X homebrew build of CouchDB.
 
 * to build and install from SpiderMonkey get [spidermonkey_bits]
 * run `c:\mozilla-build\start-msvc9.bat` even if you are on a 64-bit platform.
@@ -283,7 +283,6 @@ for it, you can build from anywhere on trunk. The 1.8.5 source below is also use
         cd spidermonkey-1.8.5
         tar xzf ../bits/57a6ad20eae9.tar.gz
         cd ./tracemonkey-57a6ad20eae9/js/src
-        CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
         autoconf-2.13
         ./configure
         make
@@ -362,9 +361,10 @@ for it, you can build from anywhere on trunk. The 1.8.5 source below is also use
 
 ## Licences
 
-* the core tools & scripts used in glazier are released or included under the same Apache Licence used for CouchDB
-* curl and the included openssl libraries are the only ones distributed with glazier
-* the silent installation of each component assumes your implicit acceptance of the rest
+* the core tools & scripts used in glazier are released or included under the
+    same Apache Licence used for CouchDB
+* curl and the included openssl libraries are the only ones built into glazier
+* the silent installation of each component assumes your implicit acceptance~
 * curl <http://curl.haxx.se/docs/copyright.html>
 * openssl <http://www.openssl.org/source/license.html>
 
@@ -376,6 +376,7 @@ for it, you can build from anywhere on trunk. The 1.8.5 source below is also use
 [cygwin]:		http://www.cygwin.com/setup.exe
 [DEP]:			http://support.microsoft.com/kb/875352
 [erlang_R14B01]:	http://www.erlang.org/download/otp_src_R14B01.tar.gz
+[erlang_R14B02]:	http://www.erlang.org/download/otp_src_R14B02.tar.gz
 [icu_bits_curr]:	http://download.icu-project.org/files/icu4c/4.2/icu4c-4_2-Win32-msvc9.zip
 [icu_bits_latest]:	http://download.icu-project.org/files/icu4c/4.6/icu4c-4_6-Win32-msvc10.zip
 [inno_bits]:		http://www.jrsoftware.org/download.php/is-unicode.exe
@@ -386,7 +387,7 @@ for it, you can build from anywhere on trunk. The 1.8.5 source below is also use
 [mozbuild]:		http://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/MozillaBuildSetup-Latest.exe
 [notepadplus_bits]:	http://download.sourceforge.net/project/notepad-plus/notepad%2B%2B%20releases%20binary/npp%205.7%20bin/npp.5.7.Installer.exe
 [nsis_bits]:		http://download.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
-[openssl_bits]:		http://www.slproweb.com/download/Win32OpenSSL-1_0_0c.exe
+[openssl_bits]:		http://www.slproweb.com/download/Win32OpenSSL-1_0_0d.exe
 [ramdisk]:		http://www.ltr-data.se/files/imdiskinst.exe
 [spidermonkey_bits]:	http://hg.mozilla.org/tracemonkey/archive/57a6ad20eae9.tar.gz
 [SEHOP]:		http://support.microsoft.com/kb/956607

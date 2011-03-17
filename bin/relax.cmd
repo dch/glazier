@@ -61,12 +61,13 @@ set CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::check which version of erlang setup we want
 :: choice.exe exists on all windows platforms since MSDOS but not on XP
-set /p choice=press 4 to use erlang R14b01, 3 to use erlang R13b04, 1 (or wait) to exit to the shell
+set /p choice=press 2 for erlang R14b02, 4 for erlang R14b01, 3 to use erlang R13b04, 0 (or wait) to exit to the shell
 :: then get to unix goodness as fast as possible
-if /i "%choice%"=="1" goto win_shell
+if /i "%choice%"=="0" goto win_shell
 ::::if /i "%choice%"=="2" goto R......
 if /i "%choice%"=="3" goto R13B04
 if /i "%choice%"=="4" goto R14B01
+if /i "%choice%"=="2" goto R14B02
 :: else
 goto eof
 
@@ -75,6 +76,13 @@ goto eof
 set ERL_TOP=/relax/otp_src_R14B01
 set ERL_VER=5.8.2
 set OTP_VER=R14B01
+goto unix_shell
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:R14B02
+set ERL_TOP=/relax/otp_src_R14B02
+set ERL_VER=5.8.3
+set OTP_VER=R14B02
 goto unix_shell
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

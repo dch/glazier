@@ -170,6 +170,8 @@ or using mklink.exe
         mkdir c:\cygwin\opt\local\pgm
         junction c:\cygwin\opt\local\pgm\wxWidgets-2.8.11 c:\relax\wxMSW-2.8.11
 
+* A number of manual changes are required to get WxWidgets to build cleanly.
+    These can be done manually or simply apply the overlay from [wxoverlay]
 * Using a suitable editor (vi in the cygwin suite, or install
     [notepadplus_bits] for windows users) and
 * Edit `c:\relax\wxMSW-2.8.11\include\wx\msw\setup.h` to enable
@@ -385,7 +387,7 @@ below is also used on the Mac OS X homebrew build of CouchDB.
 [libcurl_src]:		http://curl.haxx.se/download/curl-7.21.3.tar.gz
 [msvc++]:		http://download.microsoft.com/download/E/8/E/E8EEB394-7F42-4963-A2D8-29559B738298/VS2008ExpressWithSP1ENUX1504728.iso
 [mozbuild]:		http://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/MozillaBuildSetup-Latest.exe
-[notepadplus_bits]:	http://download.sourceforge.net/project/notepad-plus/notepad%2B%2B%20releases%20binary/npp%205.7%20bin/npp.5.7.Installer.exe
+[notepadplus_bits]:	http://sourceforge.net/projects/notepad-plus/files/notepad%2B%2B%20releases%20binary/npp%205.8.7%20bin/npp.5.8.7.Installer.exe/download
 [nsis_bits]:		http://download.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
 [openssl_bits]:		http://www.slproweb.com/download/Win32OpenSSL-1_0_0d.exe
 [ramdisk]:		http://www.ltr-data.se/files/imdiskinst.exe
@@ -395,3 +397,5 @@ below is also used on the Mac OS X homebrew build of CouchDB.
 [win7sdk_32bit]:	http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDK_EN_DVD.iso
 [win7sdk_64bit]:	http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDKX_EN_DVD.iso
 [wxwidgets_bits]:	http://sourceforge.net/projects/wxwindows/files/2.8.11/wxMSW-2.8.11.zip
+[wxoverlay]:            https://github.com/dch/glazier/raw/master/bits/wxMSW-2.8.11_erlang_overlay.zip
+

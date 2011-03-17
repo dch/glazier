@@ -104,7 +104,7 @@ echo DONE	install vcredist
 
 
 echo START	install win32 OpenSSL...
-start /wait %GLAZIER%\bits\Win32OpenSSL-1_0_0c.exe /silent /sp- /suppressmsgboxes /dir=c:\openssl
+start /wait %GLAZIER%\bits\Win32OpenSSL-1_0_0d.exe /silent /sp- /suppressmsgboxes /dir=c:\openssl
 junction.exe %RELAX%\openssl c:\openssl
 echo DONE	install win32 OpenSSL
 

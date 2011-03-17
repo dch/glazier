@@ -31,7 +31,7 @@ spidermonkey	57a6ad20eae9.tar.gz	http://hg.mozilla.org/tracemonkey/archive/57a6a
 ## vs2005sp1_secfix: http://download.microsoft.com/download/6/B/B/6BB661D6-A8AE-4819-B79F-236472F6070C/vcredist_x86.exe
 ## vs2005sp1_secfix: http://download.microsoft.com/download/6/B/B/6BB661D6-A8AE-4819-B79F-236472F6070C/vcredist_x64.exe
 
-openssl	Win32OpenSSL-1_0_0c.exe	http://www.slproweb.com/download/Win32OpenSSL-1_0_0c.exe
+openssl	Win32OpenSSL-1_0_0d.exe	http://www.slproweb.com/download/Win32OpenSSL-1_0_0d.exe
 ## not auto redirect but original link is from http://www.apache.org/dyn/closer.cgi?path=/couchdb/1.0.1/apache-couchdb-1.0.1.tar.gz
 apache-couchdb-1.0.2	apache-couchdb-1.0.2.tar.gz	http://people.apache.org/~davisp/dist/1.0.2/apache-couchdb-1.0.2.tar.gz
 apache-couchdb-1.0.1	apache-couchdb-1.0.1.tar.gz	http://people.apache.org/~nslater/dist/1.0.1/apache-couchdb-1.0.1.tar.gz

@@ -12,7 +12,8 @@ libicu	icu4c-4_2_1-Win32-msvc9.zip	http://download.icu-project.org/files/icu4c/4
 ###libicu	icu4c-4_6-Win32-msvc10.zip	http://download.icu-project.org/files/icu4c/4.6/icu4c-4_6-Win32-msvc10.zip
 libcurl	curl-7.21.3.tar.gz	http://curl.haxx.se/download/curl-7.21.3.tar.gz
 nsis	nsis-2.46-setup.exe	http://download.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
-spidermonkey	57a6ad20eae9.tar.gz	http://hg.mozilla.org/tracemonkey/archive/57a6ad20eae9.tar.gz
+#spidermonkey	57a6ad20eae9.tar.gz	http://hg.mozilla.org/tracemonkey/archive/57a6ad20eae9.tar.gz
+spidermonkey    js185-1.0.0.tar.gz  http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz
 #seamonkey	seamonkey-2.0.11.source.tar.bz2	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/2.0.11/source/seamonkey-2.0.11.source.tar.bz2
 ################################################################################
 # bits required for both builds

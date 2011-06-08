@@ -18,7 +18,8 @@ popd
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 pushd %relax%\%openssl_ver%
-perl Configure VC-WIN32 --prefix=%RELAX%\openssl
+:: enable-static-engine is now required for Erlang R14B03 to link against
+perl Configure VC-WIN32 --prefix=%RELAX%\openssl enable-static-engine
 call ms\do_nasm
 nmake -f ms\ntdll.mak
 nmake -f ms\ntdll.mak test

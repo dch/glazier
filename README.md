@@ -19,13 +19,13 @@ Glazier requires 6 things to run successfully
 ## Current State ##############################################################
 
 * The steps below, manually or automated, should produce a working CouchDB build
-    & self-installing .exe from Erlang/OTP R14B01, and CouchDB 1.0.0 onwards.
+    & self-installing .exe from Erlang/OTP R14B01, and CouchDB 1.0.1 onwards.
 * The build environment should be fully functional on both 32,64, desktop and
     server versions of windows from XP/2003 onwards
 * Fetching dependent binaries is described and automated
 * Installation of compilers and development environment is described and automated
 * Downloads are not small -
-[get_bits.cmd](http://github.com/dch/glazier/blob/master/bin/get_bits.cmd)
+[get_bits.cmd](https://github.com/dch/glazier/blob/master/bin/get_bits.cmd)
     retrieves approx 7GiB of DVD ISOs for Microsoft's Visual Studio 2008
     compiler, related SDKs, the smaller cygwin and mozilla build frameworks,
     source and misc tools
@@ -49,8 +49,8 @@ Glazier requires 6 things to run successfully
         CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
         tar xzf /relax/bits/apache-couchdb-1.0.2.tar.gz &
         tar xzf /relax/bits/curl-7.21.3.tar.gz &
-        tar xzf /relax/bits/otp_src_R14B01.tar.gz &
-        cd /relax/otp_src_R14B01 && tar xzf /relax/bits/tcltk85_win32_bin.tar.gz &
+        tar xzf /relax/bits/otp_src_R14B02.tar.gz &
+        cd /relax/otp_src_R14B02 && tar xzf /relax/bits/tcltk85_win32_bin.tar.gz &
 
 * then run the following 4 scripts in order
 
@@ -121,7 +121,7 @@ Both CouchDB and Erlang have dependencies on other opensource tools.
 ## OpenSSL ####################################################################
 
 * use the 32-bit version even if you are using a 64-bit OS
-* download [openssl_bits] and install to `c:\openssl`
+* download [openssl_bits] and unzip to `c:\openssl`
 
 ## Innosoft Installer #########################################################
 
@@ -134,7 +134,10 @@ Both CouchDB and Erlang have dependencies on other opensource tools.
 ## Microsoft Visual C++ runtime ###############################################
 
 * download the runtime installer [vcredist] and copy to `c:\relax\` - note this
-    is the same as the one provided with VS2008 SP1 - this is IMPORTANT
+    is the same as the one provided with VS2008 SP1 - this is *critical*
+    to ensure that your compiled erlang, spidermonkey, couchdb all require
+    the same runtime that is bundled with your distribution. The MD5 should
+    be 2c79302d42817d54bb621216a6d4dc7f.
 
 ## set up hard links ##########################################################
 
@@ -196,6 +199,7 @@ or using mklink.exe
         set CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
         vcbuild /useenv  /platform:Win32 /M4 wx.sln "Unicode Release|Win32"
         vcbuild /useenv  /platform:Win32 /M4 wx.sln "Unicode Debug|Win32"
+        popd
 
 ### stc.dsw ###################################################################
 
@@ -206,6 +210,7 @@ or using mklink.exe
         set CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
         vcbuild /useenv /platform:Win32 /M4 stc.sln "Unicode Release|Win32"
         vcbuild /useenv /platform:Win32 /M4 stc.sln "Unicode Debug|Win32"
+        popd
 
 
 # Building Erlang #############################################################
@@ -224,7 +229,7 @@ or using mklink.exe
 
 * in a cygwin shell, using these new junction points:
 
-        cd /relax && tar xzf /relax/bits/otp_src_R14B01.tar.gz &
+        cd /relax && tar xzf /relax/bits/otp_src_R14B02.tar.gz &
 
 * then run from explorer, `%GLAZIER%\bin\relax.cmd`
 
@@ -282,11 +287,11 @@ Getting OTP to find vcredist_x86.exe is not easy. A simple solution is to hack `
 
 CouchDB has been built & tested against the following components successfully
 
-* Erlang OTP R14B01 including source
+* Erlang OTP R14B02 including source
 * ICU 4.2.1
 * Win32 OpenSSL 1.0.0d
-* Mozilla SpiderMonkey 1.8.5 or SeaMonkey 2.0.11 release
-* libcurl 7.21.3
+* Mozilla SpiderMonkey 1.8.5 or Firefox 4.0 release
+* libcurl 7.21.5
 
 ## Javascript #################################################################
 
@@ -297,9 +302,8 @@ below is also used on the Mac OS X homebrew build of CouchDB.
 * to build and install from SpiderMonkey get [spidermonkey_bits]
 * run `c:\mozilla-build\start-msvc9.bat` even if you are on a 64-bit platform.
 
-        cd $RELAX && mkdir spidermonkey-1.8.5
-        cd spidermonkey-1.8.5
-        tar xzf ../bits/57a6ad20eae9.tar.gz
+        cd $RELAX
+        tar xzf bits/tracemonkey-57a6ad20eae9.tar.gz
         cd ./tracemonkey-57a6ad20eae9/js/src
         autoconf-2.13
         ./configure
@@ -309,7 +313,7 @@ below is also used on the Mac OS X homebrew build of CouchDB.
 
 * Download from [inno_bits]
 * Install to c:\relax\inno5 & ensure its in the path
-* Install ispack-5.4.0-unicode.exe, optionally including additional components
+* Install ispack-5.4.2-unicode.exe, optionally including additional components
 
 ## OpenSSL ####################################################################
 
@@ -319,22 +323,22 @@ below is also used on the Mac OS X homebrew build of CouchDB.
 
 * Extract from cygwin shell if not already done
 
-        cd /relax && tar xf /relax/bits/curl-7*
+::        cd /relax && tar xf /relax/bits/curl-7*
 
 * run from a Visual Studio command shell:
 
         pushd %RELAX%\curl-7*
-        set OPENSSL_PATH=c:\openssl
+        set OPENSSL_PATH=%relax%\openssl
         set USE_SSLEAY=1
         set USE_OPENSSL=1
-        set INCLUDE=%INCLUDE%;%OPENSSL_PATH%\include\openssl;
+        set INCLUDE=%INCLUDE%;%OPENSSL_PATH%\include;%OPENSSL_PATH%\include\openssl;
         set LIBPATH=%LIBPATH%;%OPENSSL_PATH%\lib;
         set LIB=%LIB%;%OPENSSL_PATH%\lib;
 
         set CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
         vcbuild /useenv /upgrade /platform:Win32 lib\libcurl.vcproj
         vcbuild /useenv /platform:Win32 lib\libcurl.vcproj "Release|Win32"
-        xcopy lib\Release\libcurl.lib lib\ /y /f
+        xcopy lib\Release\libcurl.lib lib\ /y
         popd
 
 ## ICU ########################################################################
@@ -358,7 +362,7 @@ below is also used on the Mac OS X homebrew build of CouchDB.
         --with-msvc-redist-dir=/cygdrive/c/dir/with/vcredist_platform_executable \
         --prefix=$ERL_TOP/release/win32
 
-## using spidermonkey 1.8.5  ###################################################
+## using spidermonkey 1.8.x   ###################################################
 
 * This is the recommended config if you have used the above steps:
 
@@ -366,12 +370,13 @@ below is also used on the Mac OS X homebrew build of CouchDB.
         --prefix=$ERL_TOP/release/win32 \
         --with-erlang=$ERL_TOP/release/win32/usr/include \
         --with-win32-icu-binaries=/relax/icu \
-        --with-win32-curl=/relax/curl-7.21.3 \
+        --with-win32-curl=/relax/curl-7.21.5 \
         --with-openssl-bin-dir=/relax/openssl/bin \
         --with-msvc-redist-dir=/relax \
-        --with-js-lib=/relax/spidermonkey/js/src/dist/lib \
-        --with-js-include=/relax/spidermonkey/js/src/dist/include \
+        --with-js-lib=/relax/tracemonkey-57a6ad20eae9/js/src/dist/lib \
+        --with-js-include=/relax/tracemonkey-57a6ad20eae9/js/src/dist/include \
         2>&1 | tee $COUCH_TOP/build_configure.txt
+
 
 ********************************************************************************
 # Appendices
@@ -405,13 +410,73 @@ below is also used on the Mac OS X homebrew build of CouchDB.
 [mozbuild]:		http://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/MozillaBuildSetup-Latest.exe
 [notepadplus_bits]:	http://sourceforge.net/projects/notepad-plus/files/notepad%2B%2B%20releases%20binary/npp%205.8.7%20bin/npp.5.8.7.Installer.exe/download
 [nsis_bits]:		http://download.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
-[openssl_bits]:		http://www.slproweb.com/download/Win32OpenSSL-1_0_0d.exe
+[openssl_bits]:		http://cloud.github.com/downloads/wincouch/openssl/openssl-1.0.0d.zip
 [ramdisk]:		http://www.ltr-data.se/files/imdiskinst.exe
 [spidermonkey_bits]:	http://hg.mozilla.org/tracemonkey/archive/57a6ad20eae9.tar.gz
 [SEHOP]:		http://support.microsoft.com/kb/956607
-[vcredist]:		http://download.microsoft.com/download/d/d/9/dd9a82d0-52ef-40db-8dab-795376989c03/vcredist_x86.exe
+[vcredist]:
+# NB this is the same version as supplied with VS2008sp1 - EXEs and DLLs built against older vcredists can use the newer one successfully
+http://download.microsoft.com/download/d/d/9/dd9a82d0-52ef-40db-8dab-795376989c03/vcredist_x86.exe
 [win7sdk_32bit]:	http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDK_EN_DVD.iso
 [win7sdk_64bit]:	http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDKX_EN_DVD.iso
 [wxwidgets_bits]:	http://sourceforge.net/projects/wxwindows/files/2.8.11/wxMSW-2.8.11.zip
 [wxoverlay]:            https://github.com/dch/glazier/raw/master/bits/wxMSW-2.8.11_erlang_overlay.zip
 
+## notes for next release
+
+## zlib from vs2008 prompt please
+- get http://zlib.net/zlib-1.2.5.tar.gz
+7z x %relax%\bits\zlib-1.2.5.tar.gz -o%relax%\bits\
+7z x %relax%\bits\zlib-1.2.5.tar -o%relax%
+pushd %relax%\zlib*\contrib\masmx86\
+bld_ml32.bat
+cd ..\..
+vcbuild /rebuild contrib\vstudio\vc9\zlibvc.sln "Release|Win32"
+xcopy %relax%\zlib-1.2.5\contrib\vstudio\vc9\x86\ZlibStatRelease\zlibstat.lib %relax%\libraries\ /y
+xcopy %relax%\zlib-1.2.5\contrib\vstudio\vc9\x86\ZlibDllRelease\zlibwapi.lib %relax%\libraries\ /y
+popd
+
+# bugger that
+http://zlib.net/zlib125-dll.zip & unzip
+
+// TODO fix curl and zlib build scripts
+
+compile OpenSSL from scratch
+
+7z x %glazier%\bits\nasm-2.09.07-win32.zip -o%relax%\
+move %relax%\nasm* nasm
+7z x %glazier%\bits\strawberry-perl-5.12.2.0-portable.zip -o%relax%\strawberry
+7z x %glazier%\bits\openssl-1.0.0d.tar.gz -o%relax%\bits\
+
+[open a VC++ shell]
+path=%path%;%relax%\nasm;%relax%\strawberry\perl\bin;
+pushd %relax%\openssl-*
+perl Configure VC-WIN32 --prefix=c:\openssl --
+ms\do_nasm
+nmake -f ms\ntdll.mak
+
+nmake -f ms\ntdll.mak install
+
+- get http://www.nasm.us/pub/nasm/releasebuilds/2.09.07/win32/nasm-2.09.07-win32.zip
+- unzip to $RELAX/nasm & add to path
+- get http://strawberryperl.com/download/5.12.2.0/strawberry-perl-5.12.2.0-portable.zip
+- unzip to $RELAX/perl & add to path
+- download OpenSSL http://www.openssl.org/source/openssl-1.0.0d.tar.gz
+- unpack
+- do INSTALL.W32 stuff
+- install to /openssl
+
+compile ICU from scratch?
+no thanks..
+
+ aria2c.exe --force-sequential=false --max-connection-per-server=4  --check-certificate=false --auto-file-renaming=false bits.txt --max-concurrent-downloads=5 --dir=%GLAZIER%/bits --save-session=%GLAZIER%/a2session.txt
+ 
+ 
+# AWS
+ 
+Must use 2008R2 64-bit edition ami-ee926087
+m1.xlarge spot instances are a good deal
+create a 30GiB volume from relaxing snapshot
+this will provide backing store for the ram disk
+
+ 

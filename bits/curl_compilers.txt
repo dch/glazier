@@ -5,3 +5,4 @@ win7sdk_64bit	GRMSDKX_EN_DVD.iso	http://download.microsoft.com/download/2/E/9/2E
 cygwin_setup	setup.exe	http://www.cygwin.com/setup.exe
 visual_studio_express	VS2008ExpressWithSP1ENUX1504728.iso	http://download.microsoft.com/download/E/8/E/E8EEB394-7F42-4963-A2D8-29559B738298/VS2008ExpressWithSP1ENUX1504728.iso
 mozilla_build	MozillaBuildSetup-Latest.exe	http://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/MozillaBuildSetup-Latest.exe
+nasm nasm-2.09.07-win32.zip http://www.nasm.us/pub/nasm/releasebuilds/2.09.07/win32/nasm-2.09.07-win32.zip

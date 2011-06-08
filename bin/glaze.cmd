@@ -21,7 +21,7 @@ echo DONE	retrieving packages
 
 :: md5 checksums
 echo START	md5 checksums...
-md5sum.exe --check md5sums.txt || echo FAILED: please check any missing or failed files && goto eof
+::md5sum.exe --check md5sums.txt || echo FAILED: please check any missing or failed files && goto eof
 echo DONE	md5 checksums
 
 :: unpack stuff
@@ -46,11 +46,11 @@ echo DONE	unpacking ISOs in [%RELAX%\ISOs]
 echo START	installing compilers...
 echo START	MS VS2008 Express...
 :: TODO remove hackage that prevents installing MSSQL burning CPU and space
+mkdir dist
 pushd %RELAX%\ISOs\VS2008ExpressWithSP1ENUX1504728\VCExpress\WCU\ && rd /s/q dist > NUL: 2>&1
-::mkdir dist
-::for %%i in (Silverlight SMO SSE) do @move %%i dist\
+for %%i in (Silverlight SMO SSE) do @move %%i dist\
 cd .. && start /wait setup.exe /q /norestart
-::popd
+popd
 echo DONE	MS VS2008 Express
 
 echo START	installing Windows 7 SDK...
@@ -90,8 +90,6 @@ start /wait %RELAX%\7zip\7z.exe x %GLAZIER%\bits\wxMSW* -aoa -y -o%RELAX%\
 mkdir c:\cygwin\opt\local\pgm
 junction.exe c:\cygwin\opt\local\pgm\wxWidgets-2.8.11 c:\relax\wxMSW-2.8.11
 echo DONE	install wxWidgets
-::TODO tweak .h files
-
 
 echo START	install ICU...
 start /wait %RELAX%\7zip\7z.exe x %GLAZIER%\bits\icu* -aoa -o%RELAX%\
@@ -102,12 +100,20 @@ echo START	install vcredist...
 xcopy %GLAZIER%\bits\vcredist_x86.exe %RELAX%\ /y /f
 echo DONE	install vcredist
 
+echo START	install win32 assembler...
+7z x %glazier%\bits\nasm-2.09.07-win32.zip -o%relax%\ -y
+move %relax%\nasm* %relax%\nasm
+echo DONE	install win32 assembler
+
+echo START      install strawberry perl...
+7z x %glazier%\bits\strawberry-perl-5.12.2.0-portable.zip -o%relax%\strawberry\ -y
+echo DONE	install strawberry perl
 
 echo START	install win32 OpenSSL...
-start /wait %GLAZIER%\bits\Win32OpenSSL-1_0_0d.exe /silent /sp- /suppressmsgboxes /dir=c:\openssl
+:: now we build from source using %relax%/nasm and %relax%/strawberry later on
+mkdir c:\openssl
 junction.exe %RELAX%\openssl c:\openssl
 echo DONE	install win32 OpenSSL
-
 
 echo START	install NSIS...
 start /wait %GLAZIER%\bits\nsis-2.46-setup.exe /S /D=%RELAX%\nsis

@@ -1,6 +1,4 @@
-2d8cf22da82b30c36f47675a8486a3f3 *57a6ad20eae9.tar.gz
 fcd1b1472302fc7283147f4df471f402 *7z465.exe
-001cf286b72492617e9ffba271702a00 *apache-couchdb-1.0.1.tar.gz
 7ffbbe0f23f672181c89923c9f7a1de1 *apache-couchdb-1.0.2.tar.gz
 25e01bd051533f320c05ccbb0c52b246 *curl-7.21.3.tar.gz
 539d6ea0a145ea8f257fca682478f9dd *GRMSDK_EN_DVD.iso
@@ -12,7 +10,6 @@ f1f23d4df41c5da5444c97781ff2cab7 *junction.exe
 15ed342443781bd70d8a09f06a03d5d3 *MozillaBuildSetup-Latest.exe
 3768cfc7a8af33d7e3357d2af8fb7156 *npp.5.8.7.bin.minimalist.7z
 5e02441c7f3fa4da4f4928a2d42a07c3 *nsis-2.46-setup.exe
-ce595447571128bc66f630a8fa13339a *otp_src_R14B01.tar.gz
 229fb8f193b09ac04a57a9d7794349b7 *otp_src_R14B02.tar.gz
 f701a6f58b187a02c54165310a810ab2 *setenv.exe
 2ece86924bf59c82b3c1936760ef4631 *setup.exe
@@ -22,3 +19,4 @@ f701a6f58b187a02c54165310a810ab2 *setenv.exe
 ad14196b38470d927f438ab08e8f16b3 *wxMSW-2.8.11.zip
 17e778a5f83cff4f32a50999a46ce5b5 *wxMSW-2.8.11_erlang_overlay.zip
 1cba624d80f670d89b228db9bcf2cef2 *Win32OpenSSL-1_0_0d.exe
+a4574365938222adca0a6bd33329cb32 *js185-1.0.0.tar.gz

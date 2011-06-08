@@ -17,7 +17,11 @@ echo DONE. | tee -a $COUCH_TOP/build_dist.txt
 echo DONE.
 echo to move build files to release area run the following:
 echo pushd $COUCH_TOP/etc/windows/
-echo rename .exe _otp_$OTP_VER.exe setup-couchdb-*
+echo rename .exe _otp_$OTP_VER+OTP-9139.exe setup-couchdb-*
+echo WINCOUCH=\`ls -1 setup-*.exe\`
+echo rm \$WINCOUCH.*
+echo shasum \$WINCOUCH \> \$WINCOUCH.sha
+echo md5sum \$WINCOUCH \> \$WINCOUCH.md5
 echo mv setup-couchdb-* /relax/release
 echo popd
 

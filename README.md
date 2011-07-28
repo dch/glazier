@@ -306,7 +306,7 @@ below is also used on the Mac OS X homebrew build of CouchDB.
         tar xzf bits/tracemonkey-57a6ad20eae9.tar.gz
         cd ./tracemonkey-57a6ad20eae9/js/src
         autoconf-2.13
-        ./configure
+        ./configure --enable-static
         make
 
 ## Inno Installer #############################################################

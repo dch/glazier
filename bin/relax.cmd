@@ -43,7 +43,7 @@ echo setting up reparse points of new volumes
 
 :: add ICU, cURL and OpenSSL libraries for C compilers to find later on in CouchDB and Erlang
 set OPENSSL_PATH=%RELAX%\openssl
-set CURL_PATH=%RELAX%\curl-7.21.5
+set CURL_PATH=%RELAX%\curl
 set ICU_PATH=%RELAX%\icu
 set USE_SSLEAY=1
 set USE_OPENSSL=1

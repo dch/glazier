@@ -1,12 +1,10 @@
 ################################################################################
 # tools to support erlang and couchdb build
-#7zip	7z465.exe	http://downloads.sourceforge.net/sevenzip/7z465.exe
-#curl	curl-7.19.5-win32-ssl.zip	http://curl.haxx.se/download/curl-7.19.5-win32-ssl.zip
-#curl_static	curl-7.21.1-ssl-sspi-zlib-static-bin-w32.zip	http://www.gknw.net/mirror/curl/win32/curl-7.21.1-ssl-sspi-zlib-static-bin-w32.zip
+7zip	7z465.exe	http://downloads.sourceforge.net/sevenzip/7z465.exe
 ################################################################################
 # stuff we could use in future
 #bitvise_sshd_bits		WinSSHD5-Inst.exe	http://dl.bitvise.com/WinSSHD5-Inst.exe
-#ramdisk	imdiskinst.exe	http://www.ltr-data.se/files/imdiskinst.exe
+ramdisk	imdiskinst.exe	http://www.ltr-data.se/files/imdiskinst.exe
 notepadplus	npp.5.8.7.bin.minimalist.7z http://downloads.sourceforge.net/project/notepad-plus/notepad%2B%2B%20releases%20binary/npp%205.8.7%20bin/npp.5.8.7.bin.minimalist.7z
 junction	junction.exe	http://live.sysinternals.com/junction.exe
 setenv	setenv.exe	http://barnyard.syr.edu/~vefatica/ftpfiles/setenv.exe

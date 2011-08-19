@@ -47,17 +47,17 @@ Glazier requires 6 things to run successfully
         cd /relax
         CYGWIN="nontsec nodosfilewarning"
         CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
-        tar xzf /relax/bits/apache-couchdb-1.0.2.tar.gz &
-        tar xzf /relax/bits/curl-7.21.3.tar.gz &
-        tar xzf /relax/bits/otp_src_R14B02.tar.gz &
-        cd /relax/otp_src_R14B02 && tar xzf /relax/bits/tcltk85_win32_bin.tar.gz &
+        tar xzf /relax/bits/apache-couchdb-1.1.0.tar.gz &
+        tar xzf /relax/bits/curl-7.21.7.tar.gz &
+        tar xzf /relax/bits/otp_src_R14B03.tar.gz &
+        cd /relax/otp_src_R14B03 && tar xzf /relax/bits/tcltk85_win32_bin.tar.gz &
 
 * then run the following 4 scripts in order
 
-        erl_build.sh
         erl_config.sh
-        couchdb_build.sh
+        erl_build.sh
         couchdb_config.sh
+        couchdb_build.sh
 
 * each of these scripts leaves logfiles in the root folder. If you have issues
     during compilation phase, load these onto <http://friendpaste.com/>
@@ -229,7 +229,7 @@ or using mklink.exe
 
 * in a cygwin shell, using these new junction points:
 
-        cd /relax && tar xzf /relax/bits/otp_src_R14B02.tar.gz &
+        cd /relax && tar xzf /relax/bits/otp_src_R14B03.tar.gz &
 
 * then run from explorer, `%GLAZIER%\bin\relax.cmd`
 
@@ -248,20 +248,6 @@ or using mklink.exe
  sort them out manually. Refer to
  [relax.cmd](http://github.com/dch/glazier/bin/relax.cmd) and
  [relax.sh](http://github.com/dch/glazier/bin/relax.sh)
-
-Getting OTP to find vcredist_x86.exe is not easy. A simple solution is to hack `$ERL_TOP/erts/etc/win32/nsis/find_redist.sh` to look in `$ERL_TOP/..` first.
-                
-        # shortcut for locating vcredist_x86.exe is to put it into $ERL_TOP
-        if [ -f $ERL_TOP/vcredist_x86.exe ]; then
-            echo $ERL_TOP/vcredist_x86.exe
-            exit 0
-        fi
-        
-        # or $ERL_TOP/.. to share across multiple builds
-        if [ -f $ERL_TOP/../vcredist_x86.exe ]; then
-            echo $ERL_TOP/../vcredist_x86.exe
-            exit 0
-        fi
 
 * Build Erlang using `/relax/glazier/bin/erl_config.sh`
   and `/relax/glazier/bin/erl_build.sh`, or manually as follows
@@ -287,11 +273,11 @@ Getting OTP to find vcredist_x86.exe is not easy. A simple solution is to hack `
 
 CouchDB has been built & tested against the following components successfully
 
-* Erlang OTP R14B02 including source
-* ICU 4.2.1
-* Win32 OpenSSL 1.0.0d
+* Erlang OTP R14B03 including source
+* ICU 4.4.2
+* OpenSSL 1.0.0d
 * Mozilla SpiderMonkey 1.8.5 or Firefox 4.0 release
-* libcurl 7.21.5
+* libcurl 7.21.7
 
 ## Javascript #################################################################
 
@@ -303,10 +289,11 @@ below is also used on the Mac OS X homebrew build of CouchDB.
 * run `c:\mozilla-build\start-msvc9.bat` even if you are on a 64-bit platform.
 
         cd $RELAX
-        tar xzf bits/tracemonkey-57a6ad20eae9.tar.gz
+        tar xzf bits/57a6ad20eae9.tar.gz
         cd ./tracemonkey-57a6ad20eae9/js/src
         autoconf-2.13
-        ./configure --enable-static
+        export CXXFLAGS='-D_BIND_TO_CURRENT_VCLIBS_VERSION=1'
+        ./configure --enable-static --enable-shared-js
         make
 
 ## Inno Installer #############################################################
@@ -373,8 +360,8 @@ below is also used on the Mac OS X homebrew build of CouchDB.
         --with-win32-curl=/relax/curl-7.21.5 \
         --with-openssl-bin-dir=/relax/openssl/bin \
         --with-msvc-redist-dir=/relax \
-        --with-js-lib=/relax/tracemonkey-57a6ad20eae9/js/src/dist/lib \
-        --with-js-include=/relax/tracemonkey-57a6ad20eae9/js/src/dist/include \
+        --with-js-lib=/relax/57a6ad20eae9/js/src/dist/lib \
+        --with-js-include=/relax/57a6ad20eae9/js/src/dist/include \
         2>&1 | tee $COUCH_TOP/build_configure.txt
 
 
@@ -399,13 +386,12 @@ below is also used on the Mac OS X homebrew build of CouchDB.
 [cygwin]:		http://www.cygwin.com/setup.exe
 [DEP]:			http://support.microsoft.com/kb/875352
 [erlang_R14B01]:	http://www.erlang.org/download/otp_src_R14B01.tar.gz
-[erlang_R14B02]:	http://www.erlang.org/download/otp_src_R14B02.tar.gz
+[erlang_R14B03]:	http://www.erlang.org/download/otp_src_R14B03.tar.gz
 [icu_bits_curr]:	http://download.icu-project.org/files/icu4c/4.2/icu4c-4_2-Win32-msvc9.zip
-[icu_bits_latest]:	http://download.icu-project.org/files/icu4c/4.6/icu4c-4_6-Win32-msvc10.zip
 [inno_bits]:		http://www.jrsoftware.org/download.php/is-unicode.exe
 [inno_help]:		http://www.jrsoftware.org/ishelp/
 [libcurl_bits]:		http://curl.haxx.se/download/libcurl-7.19.3-win32-ssl-msvc.zip
-[libcurl_src]:		http://curl.haxx.se/download/curl-7.21.3.tar.gz
+[libcurl_src]:		http://curl.haxx.se/download/curl-7.21.7.tar.gz
 [msvc++]:		http://download.microsoft.com/download/E/8/E/E8EEB394-7F42-4963-A2D8-29559B738298/VS2008ExpressWithSP1ENUX1504728.iso
 [mozbuild]:		http://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/MozillaBuildSetup-Latest.exe
 [notepadplus_bits]:	http://sourceforge.net/projects/notepad-plus/files/notepad%2B%2B%20releases%20binary/npp%205.8.7%20bin/npp.5.8.7.Installer.exe/download

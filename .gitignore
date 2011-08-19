@@ -6,3 +6,5 @@ bits/*.bz2
 bits/setup.log*
 bits/http*
 bits/*.iso
+
+ftp%3a%2f%2f*

@@ -1,41 +1,23 @@
 ################################################################################
 # bits required to build erlang
-#erlang_R14B01	otp_src_R14B01.tar.gz	http://www.erlang.org/download/otp_src_R14B01.tar.gz
-erlang_R14B02	otp_src_R14B02.tar.gz	http://www.erlang.org/download/otp_src_R14B02.tar.gz
 erlang_R14B03	otp_src_R14B03.tar.gz	http://www.erlang.org/download/otp_src_R14B03.tar.gz
 nsis	nsis-2.46-setup.exe	http://download.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
-inno	isetup-5.4.0-unicode.exe	http://www.jrsoftware.org/download.php/is-unicode.exe
+inno	isetup-5.4.2-unicode.exe	http://www.jrsoftware.org/download.php/is-unicode.exe
 wxwidgets	wxMSW-2.8.11.zip	http://sourceforge.net/projects/wxwindows/files/2.8.11/wxMSW-2.8.11.zip
 erlang_tcl	tcltk85_win32_bin.tar.gz	http://www.erlang.org/download/tcltk85_win32_bin.tar.gz
 ################################################################################
 # bits required to build couch
-libicu	icu4c-4_2_1-Win32-msvc9.zip	http://download.icu-project.org/files/icu4c/4.2.1/icu4c-4_2_1-Win32-msvc9.zip
-###libicu	icu4c-4_6-Win32-msvc10.zip	http://download.icu-project.org/files/icu4c/4.6/icu4c-4_6-Win32-msvc10.zip
-libcurl	curl-7.21.3.tar.gz	http://curl.haxx.se/download/curl-7.21.3.tar.gz
+libicu	icu4c-4_4_2-src.zip http://download.icu-project.org/files/icu4c/4.4.2/icu4c-4_4_2-src.zip
 nsis	nsis-2.46-setup.exe	http://download.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
-#spidermonkey	57a6ad20eae9.tar.gz	http://hg.mozilla.org/tracemonkey/archive/57a6ad20eae9.tar.gz
+spidermonkey	57a6ad20eae9.tar.gz	http://hg.mozilla.org/tracemonkey/archive/57a6ad20eae9.tar.gz
 spidermonkey    js185-1.0.0.tar.gz  http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz
-#seamonkey	seamonkey-2.0.11.source.tar.bz2	http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/2.0.11/source/seamonkey-2.0.11.source.tar.bz2
 ################################################################################
 # bits required for both builds
-#vcredist is provided within VC++ bundle. here are a number of links for different versions ... go figure
-##vcredist	vcredist_x86.exe	http://download.microsoft.com/download/d/d/9/dd9a82d0-52ef-40db-8dab-795376989c03/vcredist_x86.exe
-## older vcredist - there are many to choose from ...
-## the reference site http://support.microsoft.com/kb/2019667
-## vs2008sp1_secfix: http://download.microsoft.com/download/9/7/7/977B481A-7BA6-4E30-AC40-ED51EB2028F2/vcredist_x64.exe
-## vs2008sp1_secfix: http://download.microsoft.com/download/9/7/7/977B481A-7BA6-4E30-AC40-ED51EB2028F2/vcredist_x86.exe
-## vs2008sp1: http://download.microsoft.com/download/d/d/9/dd9a82d0-52ef-40db-8dab-795376989c03/vcredist_x86.exe
-## http://www.microsoft.com/downloads/en/confirmation.aspx?FamilyID=9B2DA534-3E03-4391-8A4D-074B9F2BC1BF
-## http://download.microsoft.com/download/d/1/0/d10d210e-e0ad-4010-b547-bc5e395ef691/vcredist_x86.exe
-## the original: http://download.microsoft.com/download/1/1/1/1116b75a-9ec3-481a-a3c8-1777b5381140/vcredist_x86.exe
-## vs2005sp1: http://download.microsoft.com/download/e/1/c/e1c773de-73ba-494a-a5ba-f24906ecf088/vcredist_x86.exe
-## vs2005sp1_secfix: http://download.microsoft.com/download/6/B/B/6BB661D6-A8AE-4819-B79F-236472F6070C/vcredist_x86.exe
-## vs2005sp1_secfix: http://download.microsoft.com/download/6/B/B/6BB661D6-A8AE-4819-B79F-236472F6070C/vcredist_x64.exe
-#openssl	Win32OpenSSL-1_0_0d.exe	http://www.slproweb.com/download/Win32OpenSSL-1_0_0d.exe
+# vcredist needs to match the build chain - www.microsoft.com/download/en/details.aspx?id=26368
+vcredist        vcredist_x86.exe        http://download.microsoft.com/download/5/D/8/5D8C65CB-C849-4025-8E95-C3966CAFD8AE/vcredist_x86.exe
 openssl openssl-1.0.0d.tar.gz   http://www.openssl.org/source/openssl-1.0.0d.tar.gz
-zlib    zlib-1.2.5.tar.gz   http://zlib.net/zlib-1.2.5.tar.gz
-curl    curl-7.21.5.zip     http://curl.haxx.se/download/curl-7.21.5.zip
-## not auto redirect but original link is from http://www.apache.org/dyn/closer.cgi?path=/couchdb/1.0.1/apache-couchdb-1.0.1.tar.gz
-apache-couchdb-1.0.2	apache-couchdb-1.0.2.tar.gz	http://people.apache.org/~davisp/dist/1.0.2/apache-couchdb-1.0.2.tar.gz
-#apache-couchdb-1.0.3	apache-couchdb-1.0.3.tar.gz	http://people.apache.org/~davisp/dist/1.0.3/apache-couchdb-1.0.3.tar.gz
-#apache-couchdb-1.1.0	apache-couchdb-1.1.0.tar.gz	http://people.apache.org/~nslater/dist/1.1.0/apache-couchdb-1.1.0.tar.gz
+libcurl    curl-7.21.7.zip     http://curl.haxx.se/download/curl-7.21.7.zip
+##zlib    zlib125dll.zip      http://www.winimage.com/zLibDll/zlib125dll.zip
+## not auto redirect but original link is from http://www.apache.org/dyn/closer.cgi?path=/couchdb/1.x.y/apache-couchdb-1.x.y.tar.gz
+apache-couchdb-1.0.3	apache-couchdb-1.0.3.tar.gz	http://ftp.wayne.edu/apache/couchdb/1.0.3/apache-couchdb-1.0.3.tar.gz
+apache-couchdb-1.1.0	apache-couchdb-1.1.0.tar.gz	http://ftp.wayne.edu/apache/couchdb/1.1.0/apache-couchdb-1.1.0.tar.gz	

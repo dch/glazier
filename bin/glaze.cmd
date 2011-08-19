@@ -21,7 +21,7 @@ echo DONE	retrieving packages
 
 :: md5 checksums
 echo START	md5 checksums...
-::md5sum.exe --check md5sums.txt || echo FAILED: please check any missing or failed files && goto eof
+md5sum.exe --check md5sums.txt || echo FAILED: please check any missing or failed files && goto eof
 echo DONE	md5 checksums
 
 :: unpack stuff
@@ -41,18 +41,17 @@ mkdir %RELAX%\ISOs > NUL: 2>&1
 7z.exe x %GLAZIER%\bits\*.iso -aoa -o%RELAX%\ISOs\*
 xcopy %relax%\ISOs\VS2008ExpressWithSP1ENUX1504728\VCExpress\WCU\vcredist_x86.exe %glazier%\bits\ /y
 echo DONE	unpacking ISOs in [%RELAX%\ISOs]
-
+ 
 :: start installing stuff
 echo START	installing compilers...
 echo START	MS VS2008 Express...
 :: TODO remove hackage that prevents installing MSSQL burning CPU and space
-mkdir dist
 pushd %RELAX%\ISOs\VS2008ExpressWithSP1ENUX1504728\VCExpress\WCU\ && rd /s/q dist > NUL: 2>&1
-for %%i in (Silverlight SMO SSE) do @move %%i dist\
+mkdir dist && for %%i in (Silverlight SMO SSE) do @move %%i dist\
 cd .. && start /wait setup.exe /q /norestart
 popd
 echo DONE	MS VS2008 Express
-
+ 
 echo START	installing Windows 7 SDK...
 :: if we merge the 32 and 64 bit SDK folders first, Windows installs the right one
 :: automatically whether we are on 64 or 32 bit platform
@@ -95,7 +94,6 @@ echo START	install ICU...
 start /wait %RELAX%\7zip\7z.exe x %GLAZIER%\bits\icu* -aoa -o%RELAX%\
 echo DONE	install ICU
 
-
 echo START	install vcredist...
 xcopy %GLAZIER%\bits\vcredist_x86.exe %RELAX%\ /y /f
 echo DONE	install vcredist
@@ -121,7 +119,7 @@ echo DONE	install NSIS
 
 
 echo START	install Inno...
-start /wait %GLAZIER%\bits\isetup-5.4.0-unicode.exe /silent /dir="%RELAX%\inno5"
+start /wait %GLAZIER%\bits\isetup-5.4.2-unicode.exe /silent /dir="%RELAX%\inno5"
 echo DONE	install Inno
 
 echo START	install NotepadPlus...

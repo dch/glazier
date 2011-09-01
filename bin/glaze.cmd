@@ -87,7 +87,7 @@ echo DONE	unpacking tools in [%RELAX%]
 echo START	install wxWidgets...
 start /wait %RELAX%\7zip\7z.exe x %GLAZIER%\bits\wxMSW* -aoa -y -o%RELAX%\
 mkdir c:\cygwin\opt\local\pgm
-junction.exe c:\cygwin\opt\local\pgm\wxWidgets-2.8.11 c:\relax\wxMSW-2.8.11
+mklink.exe /d c:\cygwin\opt\local\pgm\wxWidgets-2.8.11 c:\relax\wxMSW-2.8.11
 echo DONE	install wxWidgets
 
 echo START	install ICU...
@@ -109,9 +109,9 @@ echo DONE	install strawberry perl
 
 echo START	install win32 OpenSSL...
 :: now we build from source using %relax%/nasm and %relax%/strawberry later on
-mkdir c:\openssl
-junction.exe %RELAX%\openssl c:\openssl
-echo DONE	install win32 OpenSSL
+mkdir %RELAX%\openssl
+mklink /d c:\openssl %RELAX%\openssl
+echo DONE	install win32 OpenSSL source
 
 echo START	install NSIS...
 start /wait %GLAZIER%\bits\nsis-2.46-setup.exe /S /D=%RELAX%\nsis

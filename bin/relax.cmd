@@ -1,57 +1,37 @@
 @echo off
-title Time to Relax.
+title Prepare to Relax.
 setlocal
-pushd %GLAZIER%\bin
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+pushd %relax%\bin
+set CYGWIN=nontsec nodosfilewarning
 
 :: our goal is to get the path set up in this order
 :: erlang and couchdb build helper scripts
-:: Microsoft VC9 compiler and SDK 7.0 (link.exe and cl.exe from VC9, and mc.exe from the SDK)
+:: Microsoft VC compiler and SDK (link, cl, mc, mt, link)
 :: cygwin path for other build tools like make
 :: the remaining windows system path
 
-:: this is complicated by the fact that on different builds of windows, VC installs to different places
+:: this is complicated by the fact that on different builds of windows
+:: VC installs various bits to different places
 :: C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\link.exe
 :: C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\cl.exe
 :: C:\Program Files\Microsoft SDKs\Windows\v7.0\mc.exe
 :: etc
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-set CYGWIN=nontsec nodosfilewarning
-set DIRCMD=/ogen /p
-::set JAVA_HOME=c:\Program Files\Java\jre1.6.0_01
-mkdir c:\tmp > NUL: 2>&1
-set TEMP=c:\tmp
-set TMP=c:\tmp
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:: get the VC9 path components set up
-:: this should work where-ever VC9 is installed
-:: but first clear out crud in current path
+:: first clear out crud in current path
 path=%windir%\system32;%windir%;%windir%\system32\wbem;%windir%\syswow64;
-call "%vs90comntools%\..\..\vc\vcvarsall.bat" x86
 
-:: now we can set up new paths as junction points
-echo setting up reparse points of new volumes
-
-::VS90ComnTools is the only variable set by the initial install of VC++ 9.0
-:: set up junction point to make finding stuff simpler
-:: the sysinternals tool works on all platforms incl XP & later
-%GLAZIER%\bits\junction.exe "%RELAX%\vs90" "%VS90COMNTOOLS%\..\.."  > NUL: 2>&1
-%GLAZIER%\bits\junction.exe "%RELAX%\SDKs" "%programfiles%\Microsoft SDKs\Windows"  > NUL: 2>&1
-%GLAZIER%\bits\junction.exe C:\mozilla-build\msys\relax "%RELAX%" > NUL: 2>&1
-%GLAZIER%\bits\junction.exe C:\cygwin\relax "%RELAX%" > NUL: 2>&1
-%GLAZIER%\bits\junction.exe "%RELAX%\openssl" c:\openssl > NUL: 2>&1
-
-:: add ICU, cURL and OpenSSL libraries for C compilers to find later on in CouchDB and Erlang
-set OPENSSL_PATH=%RELAX%\openssl
-set CURL_PATH=%RELAX%\curl
-set ICU_PATH=%RELAX%\icu
-set USE_SSLEAY=1
-set USE_OPENSSL=1
+:: LIB and INCLUDE are preset by Windows SDK and/or Visual C++ shells
+:: these are re-set manually here to ensure the *case* of the variable
+:: _name_ is correct so that in cygwin you are not confused by Lib/Include
+set LIB= && set LIB=%LIB%;%RELAX%\VC\VC\lib;%RELAX%\SDK\lib
+set INCLUDE= && SET INCLUDE=%INCLUDE%;%RELAX%\VC\VC\Include;%RELAX%\SDK\Include;%RELAX%\SDK\Include\gl;
 
 :: set path for curl & couch compilation later on
-set INCLUDE=%INCLUDE%;%OPENSSL_PATH%\include\openssl;%CURL_PATH%\include\curl;%ICU_PATH%\include;
-set LIBPATH=%LIBPATH%;%OPENSSL_PATH%\lib;%CURL_PATH%\lib;%ICU_PATH%\lib;
-set LIB=%LIB%;%OPENSSL_PATH%\lib;%CURL_PATH%\lib;%ICU_PATH%\lib;
+set INCLUDE=%INCLUDE%;%SSL_PATH%\include\openssl;%CURL_PATH%\include\curl;%ICU_PATH%\include;
+set LIBPATH=%LIBPATH%;%SSL_PATH%\lib;%CURL_PATH%\lib;%ICU_PATH%\lib;
+set LIB=%LIB%;%SSL_PATH%\lib;%CURL_PATH%\lib;%ICU_PATH%\lib;
 
 :: set LINK & CL to resolve manifest binding issues & virtualisation hack in ld.sh#171
 set CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1

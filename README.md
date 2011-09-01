@@ -20,8 +20,8 @@ Workflow
 
 * download source & tools using aria, and then check MD5 hashes:
 
-    aria2c.exe --force-sequential=false --max-connection-per-server=4  --check-certificate=false --auto-file-renaming=false --input-file=downloads.md --max-concurrent-downloads=5 --dir=bits --save-session=bits/a2session.txt
-     md5sum.exe --check md5sums.txt
+        aria2c.exe --force-sequential=false --max-connection-per-server=4  --check-certificate=false --auto-file-renaming=false --input-file=downloads.md --max-concurrent-downloads=5 --dir=bits --save-session=bits/a2session.txt
+         md5sum.exe --check md5sums.txt
 
 # Install Compilers    
 ################################################################################
@@ -31,8 +31,7 @@ mozilla & cygwin setup.
 ===== SKIP VC9 FOR THE MOMENT - WE SHOULD BE ABLE TO BUILD WITHOUT IT =====
 
 * Install Visual C++ 9 only, to the default locations, using the DVD ISO
-    [msvc++] excluding optional MSSSQL & Silverlight, or alternatively the
-    web installer [msvc++webstart]
+    [msvc++] excluding optional MSSSQL & Silverlight
 * Install Windows SDK 7.0 either 32 or 64bit for your platform
     [win7sdk_32bit] or [win7sdk_64bit]
 * Run Windows Update for latest patches
@@ -42,6 +41,12 @@ mozilla & cygwin setup.
     * devel: ALL
     * editors: vim or emacs 
     * utils: file
+
+[cygwin]: http://www.cygwin.com/setup.exe
+[msvc++]: http://download.microsoft.com/download/E/8/E/E8EEB394-7F42-4963-A2D8-29559B738298/VS2008ExpressWithSP1ENUX1504728.iso
+[win7sdk_32bit]:	http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDK_EN_DVD.iso
+[win7sdk_64bit]:	http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDKX_EN_DVD.iso
+[mozbuild]: http://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/MozillaBuildSetup-Latest.exe
 
 # Install downloaded tools
 ################################################################################
@@ -138,5 +143,3 @@ ce595447571128bc66f630a8fa13339a *otp_src_R14B01.tar.gz
 [vcredist]:
 # NB this is the same version as supplied with VS2008sp1 - EXEs and DLLs built against older vcredists can use the newer one successfully
 http://download.microsoft.com/download/d/d/9/dd9a82d0-52ef-40db-8dab-795376989c03/vcredist_x86.exe
-[win7sdk_32bit]:	http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDK_EN_DVD.iso
-[win7sdk_64bit]:	http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDKX_EN_DVD.iso

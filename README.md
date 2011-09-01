@@ -44,6 +44,8 @@ Glazier requires 6 things to run successfully
 * select the erlang version you wish to build from
 * the first time around you will need to unpack your erlang and couchdb tarballs
 
+#TODO needs work
+
         cd /relax
         CYGWIN="nontsec nodosfilewarning"
         CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
@@ -252,6 +254,7 @@ or using mklink.exe
 * Build Erlang using `/relax/glazier/bin/erl_config.sh`
   and `/relax/glazier/bin/erl_build.sh`, or manually as follows
 
+        eval `./otp_build env_win32`
         ./otp_build autoconf
         ./otp_build configure
         ./otp_build boot -a

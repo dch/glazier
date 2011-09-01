@@ -19,14 +19,15 @@ if defined openssl_ver rd /s/q %relax%\%openssl_ver%
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 pushd %relax%\%openssl_ver%
-:: from Erlang/OTP R14B03 onwards, OpenSSL is compiled in statically
-:: this requires adding enable-static-engine and using target nt.mak
-:: here are the older dynamic lib options commented out
 perl Configure VC-WIN32 --prefix=%RELAX%\openssl
 call ms\do_nasm
 nmake -f ms\ntdll.mak
 nmake -f ms\ntdll.mak test
 nmake -f ms\ntdll.mak install
+
+:: from Erlang/OTP R14B03 onwards, OpenSSL is compiled in statically
+:: this requires adding enable-static-engine and using target nt.mak
+:: here are the older dynamic lib options commented out
 
 ::perl Configure VC-WIN32 --prefix=%RELAX%\openssl enable-static-engine
 ::call ms\do_nasm

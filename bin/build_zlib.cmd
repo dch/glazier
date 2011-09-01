@@ -1,26 +1,26 @@
 setlocal
-call "%vs90comntools%\..\..\vc\vcvarsall.bat" x86
-path=%path%;%relax%\7zip;%relax%\nasm;%relax%\strawberry\perl\bin;%glazier%\bin;%glazier%\bits;
+path=%path%;%relax%\7zip;%relax%\nasm;%relax%\strawberry\perl\bin;
 
 set CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: clean up existing installs
 :: extract bundle and name
 :: stash SSL version
-pushd %glazier%\bits
-del /f/q zlib*.tar
-7z x zlib-*.tar.gz -y
-for %%i in (zlib-*tar) do set zlib_ver=%%~ni
+del /f/q "%TEMP%\zlib*.tar"
+7z x "%relax%\bits\zlib-*.tar.gz" -y -o"%TEMP%"
+for %%i in ("%TEMP%\zlib-*tar") do set zlib_ver=%%~ni
 if defined zlib_ver rd /s/q %relax%\%zlib_ver%
-.\setenv -u zlib_ver %zlib_ver%
-7z x zlib-*.tar -o%relax%\ -y
+setx zlib_ver %zlib_ver%
+7z x "%TEMP%\zlib-*.tar" -o%relax%\ -y
 popd
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+pushd %relax%\%zlib_ver%\contrib\masmx86
+call bld_ml32.bat
+popd
 pushd %relax%\%zlib_ver%
-:: enable-static-engine is now required for Erlang R14B03 to link against
-pushd contrib\masmx86 && call bld_ml32.bat && popd
 vcbuild /rebuild contrib\vstudio\vc9\zlibvc.sln "Release|Win32"
+:: TOOD these need to be put into $RELAX/zlib/
 copy contrib\vstudio\vc9\x86\ZlibStatRelease\zlibstat.lib .
 popd
 endlocal

@@ -1,8 +1,5 @@
-::setlocal
-call "%vs90comntools%\..\..\vc\vcvarsall.bat" x86
-path=%path%;%relax%\7zip;%glazier%\bin;%glazier%\bits;
+path=%path%;%relax%\7zip;
 
-pushd %glazier%\bits
 set ICU_PATH=%RELAX%\icu
 
 :: set path for ICU compilation later on
@@ -14,17 +11,29 @@ set LIB=%LIB%;%ICU_PATH%\lib
 set CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: clean up existing installs
-rd /s/q %icu_path%
-.\setenv -u icu_path %icu_path%
-7z x icu4c-*src.zip -o%RELAX% -y
-popd
+if exist "%icu_path%" rd /s/q %icu_path%
+setx icu_path %icu_path%
+7z x "%RELAX%\bits\icu4c-*src.zip" -o%RELAX% -y
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-pushd %icu_path%\source\allinone
+pushd "%icu_path%\source\allinone"
 vcbuild /useenv /platform:Win32 /M8 allinone.sln "Release|Win32" 
-::copy ..\builds\libcurl-release-static-ssl-dll-ipv6\bin\curl.exe %glazier%\bits;
-
-::endlocal
+:: can we try using --with-data-packaging=archive to reduce ICU size?
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 popd
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: trying this on cygwin instead of windows, to compile with
+:: current vclibs.
+:: use .tgz package & untar
+:: start SDK setenv.cmd /release /x86
+:: set CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
+:: call \cygwin\bin\bash.exe
+:: export PATH=$PATH:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin
+:: cd $RELAX/icu442/source
+:: ./runConfigureICU Cygwin/MSVC --prefix=$RELAX/icu442/build
+:: make
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

@@ -1,22 +1,22 @@
 @echo off
-echo Build CouchDB under Windows - Time to Relax v0.6
+echo Build CouchDB under Windows - Time to Relax v0.7
 
 :: install stuff to C:\relax unless otherwise requested
-if "%RELAX%" == "" set RELAX=C:\relax
+if "%relax%" == "" set relax=c:\relax
 
 :: find our source tree from one level up from current bin
-set GLAZIER=%~dp0..
-path=%~dp0;%~dp0..\bits;%RELAX%\7zip;%PATH%;
+path=%~dp0;%~dp0..\bits;%relax%\7zip;%relax%\bin;%path%;
 
 :: set these paths into the user environment for future usage
-setx GLAZIER %GLAZIER%
-setx RELAX %RELAX%
+setx RELAX %relax%
+
+:: set up folders
+cd %relax%
+mkdir bits bin release
 
 echo START	retrieving packages...
-pushd %GLAZIER%\bits
-call get_bits.cmd tools
-call get_bits.cmd compilers
-call get_bits.cmd source
+pushd bits
+aria2c.exe --force-sequential=false --max-connection-per-server=4  --check-certificate=false --auto-file-renaming=false --input-file=%relax%/downloads.md --max-concurrent-downloads=5 --dir=%relax%/bits --save-session=a2session.txt
 echo DONE	retrieving packages
 
 :: md5 checksums
@@ -25,105 +25,72 @@ md5sum.exe --check md5sums.txt || echo FAILED: please check any missing or faile
 echo DONE	md5 checksums
 
 :: unpack stuff
-echo START	unpacking tools in [%RELAX%]...
-mkdir %RELAX%\release > NUL: 2>&1
-junction.exe -accepteula > NUL: 2>&1
-pushd %RELAX%
+echo START	unpacking tools in [%relax%]...
+pushd %relax%
 
-:: 7zip is used for unpacking the ISO images
+:: 7zip is used for many things
 echo START	installing 7zip...
-start /wait %GLAZIER%\bits\7z465.exe /S /D=%RELAX%\7zip
+start /wait bits\7z465.exe /S /D=7zip\
 echo DONE	installing 7zip
 
-:: unpack the ISOs into %RELAX%\ISOs\{name}
-echo START	unpacking ISOs in [%RELAX%\ISOs] ...
-mkdir %RELAX%\ISOs > NUL: 2>&1
-7z.exe x %GLAZIER%\bits\*.iso -aoa -o%RELAX%\ISOs\*
-xcopy %relax%\ISOs\VS2008ExpressWithSP1ENUX1504728\VCExpress\WCU\vcredist_x86.exe %glazier%\bits\ /y
-echo DONE	unpacking ISOs in [%RELAX%\ISOs]
- 
-:: start installing stuff
-echo START	installing compilers...
-echo START	MS VS2008 Express...
-:: TODO remove hackage that prevents installing MSSQL burning CPU and space
-pushd %RELAX%\ISOs\VS2008ExpressWithSP1ENUX1504728\VCExpress\WCU\ && rd /s/q dist > NUL: 2>&1
-mkdir dist && for %%i in (Silverlight SMO SSE) do @move %%i dist\
-cd .. && start /wait setup.exe /q /norestart
-popd
-echo DONE	MS VS2008 Express
- 
-echo START	installing Windows 7 SDK...
-:: if we merge the 32 and 64 bit SDK folders first, Windows installs the right one
-:: automatically whether we are on 64 or 32 bit platform
-pushd %RELAX%\ISOs\
-rd /s/q Win7SDK > NUL: 2>&1
-rename GRMSDKX_EN_DVD Win7SDK
-xcopy GRMSDK_EN_DVD Win7SDK\ /e /y
-rd /s/q GRMSDK_EN_DVD
-start /wait win7sdk\setup.exe /q
-popd
-echo DONE	installing Windows 7 SDK
-
 echo START	installing cygwin...
-%GLAZIER%\bits\setup.exe
+bits\setup.exe
 :: c:\cygwin
 :: all users
 :: store bits in d:\glazier\bits\
 :: direct connection
-:: http uidaho
+:: http uidaho or ftp ucmirror.canterbury.ac.nz
 :: defaults + all DEVEL + UTILS/file
-junction.exe c:\cygwin\relax %RELAX%
-junction.exe %RELAX%\bin %GLAZIER%\bin
-junction.exe %RELAX%\bits %GLAZIER%\bits
+mklink /d c:\cygwin\relax %relax%
 echo END	installing cygwin
 
 echo START	installing latest mozilla build tools...
-start /wait %GLAZIER%\bits\mozillaBuildSetup-Latest.exe /S
+start /wait bits\mozillaBuildSetup-Latest.exe /S
 echo DONE	installing mozilla build tools
 
-echo DONE	unpacking tools in [%RELAX%]
-
-:unpack source
-echo START	install wxWidgets...
-start /wait %RELAX%\7zip\7z.exe x %GLAZIER%\bits\wxMSW* -aoa -y -o%RELAX%\
-mkdir c:\cygwin\opt\local\pgm
-mklink.exe /d c:\cygwin\opt\local\pgm\wxWidgets-2.8.11 c:\relax\wxMSW-2.8.11
-echo DONE	install wxWidgets
-
-echo START	install ICU...
-start /wait %RELAX%\7zip\7z.exe x %GLAZIER%\bits\icu* -aoa -o%RELAX%\
-echo DONE	install ICU
-
 echo START	install vcredist...
-xcopy %GLAZIER%\bits\vcredist_x86.exe %RELAX%\ /y /f
+:: patch in Erlang R14B03 will look for it here
+xcopy bits\vcredist_x86.exe %relax%\ /y /f
 echo DONE	install vcredist
 
 echo START	install win32 assembler...
-7z x %glazier%\bits\nasm-2.09.07-win32.zip -o%relax%\ -y
-move %relax%\nasm* %relax%\nasm
+7z x bits\nasm-2.09.07-win32.zip -o%relax%\ -y
+move nasm* nasm
 echo DONE	install win32 assembler
 
 echo START      install strawberry perl...
-7z x %glazier%\bits\strawberry-perl-5.12.2.0-portable.zip -o%relax%\strawberry\ -y
+7z x bits\strawberry-perl-5.12.2.0-portable.zip -o%relax%\strawberry\ -y
 echo DONE	install strawberry perl
+
+echo DONE	unpacking tools in [%relax%]
+
+:unpack source
+echo START	install wxWidgets...
+7z x bits\wxMSW* -aoa -y -o%relax%\
+mkdir c:\cygwin\opt\local\pgm
+mklink /d c:\cygwin\opt\local\pgm\wxWidgets-2.8.11 c:\relax\wxMSW-2.8.11
+echo DONE	install wxWidgets
+
+echo START	install ICU...
+start /wait 7z.exe x bits\icu* -aoa -o%relax%\
+echo DONE	install ICU
 
 echo START	install win32 OpenSSL...
 :: now we build from source using %relax%/nasm and %relax%/strawberry later on
-mkdir %RELAX%\openssl
-mklink /d c:\openssl %RELAX%\openssl
+mkdir %relax%\openssl
+mklink /d c:\openssl %relax%\openssl
 echo DONE	install win32 OpenSSL source
 
 echo START	install NSIS...
-start /wait %GLAZIER%\bits\nsis-2.46-setup.exe /S /D=%RELAX%\nsis
+start /wait bits\nsis-2.46-setup.exe /s /d=%relax%\nsis
 echo DONE	install NSIS
 
-
 echo START	install Inno...
-start /wait %GLAZIER%\bits\isetup-5.4.2-unicode.exe /silent /dir="%RELAX%\inno5"
+start /wait bits\isetup-5.4.2-unicode.exe /silent /dir="%relax%\inno5"
 echo DONE	install Inno
 
 echo START	install NotepadPlus...
-7z x -o%relax%\npp %GLAZIER%\bits\npp.5.8.7.bin.minimalist.7z 
+7z x  bits\npp.5.8.7.bin.minimalist.7z -o%relax%\npp
 echo DONE	install NotepadPlus
 
 :eof

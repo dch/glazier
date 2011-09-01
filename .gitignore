@@ -5,6 +5,10 @@ bits/*.zip
 bits/*.bz2
 bits/setup.log*
 bits/http*
+bits/ftp*
 bits/*.iso
-
-ftp%3a%2f%2f*
+bits/npp*.7z
+bits/icu4c*
+bits/openssl-*
+bits/otp_src_*
+bits/zlib-*

@@ -12,23 +12,24 @@ del /f/q "%TEMP%\openssl*.tar"
 :: get the version of OpenSSL into the environment
 for %%i in ("%TEMP%\openssl-*.tar") do set openssl_ver=%%~ni
 setx openssl_ver %openssl_ver%
+set SSL_PATH=%relax%\openssl
+setx SSL_PATH %ssl_path%
 
-if exist "%RELAX%\openssl" rd /s/q %RELAX%\openssl
+if exist "%ssl_path%" rd /s/q %ssl_path%
 if defined openssl_ver rd /s/q %relax%\%openssl_ver%
 7z x "%TEMP%\openssl-*.tar" -o%relax%\ -y
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 pushd %relax%\%openssl_ver%
-perl Configure VC-WIN32 --prefix=%RELAX%\openssl
+perl Configure VC-WIN32 --prefix=%ssl_path%
 call ms\do_nasm
 nmake -f ms\ntdll.mak
 nmake -f ms\ntdll.mak test
 nmake -f ms\ntdll.mak install
 
 :: from Erlang/OTP R14B03 onwards, OpenSSL is compiled in statically
-:: this requires adding enable-static-engine and using target nt.mak
-:: here are the older dynamic lib options commented out
-
+:: this may need  adding enable-static-engine and using target nt.mak
+:: but currently there seems to be an upstream bug to catch first...
 ::perl Configure VC-WIN32 --prefix=%RELAX%\openssl enable-static-engine
 ::call ms\do_nasm
 ::nmake -f ms\nt.mak

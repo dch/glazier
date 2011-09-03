@@ -35,8 +35,8 @@ echo setting up links to tools, SDK and VC++
 :: VS90COMNTOOLS=C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\Tools\
 :: the Windows SDK uses a different variable only after you've call SetEnv.cmd first
 :: VCINSTALLDIR=C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\
-if defined VCINSTALLDIR  mklink /d "%RELAX%\VC" "%VCINSTALLDIR%\.."
-if defined VS90COMNTOOLS mklink /d "%RELAX%\VC" "%VS90COMNTOOLS%\..\.."
+if defined VCINSTALLDIR  mklink /d "%RELAX%\VC" "%VCINSTALLDIR%.."
+if defined VS90COMNTOOLS mklink /d "%RELAX%\VC" "%VS90COMNTOOLS%..\.."
 if not exist "%RELAX%\SDK" mklink /d "%RELAX%\SDK" "%programfiles%\Microsoft SDKs\Windows\v7.0"
 if not exist "c:\cygwin\relax" mklink /d C:\cygwin\relax "%RELAX%"
 if not exist "C:\openssl" mklink /d c:\openssl "%RELAX%\openssl"

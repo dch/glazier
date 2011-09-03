@@ -3,8 +3,8 @@ Workflow
 .- openssl
 - erlang
 .- spidermonkey
-- libcurl
-- icu
+.- libcurl
+.- icu
 - zlib
 
 # Download Glazier scripts, tools, and source
@@ -28,10 +28,6 @@ Workflow
 Due to size, these are not downloaded in the bundle apart from
 mozilla & cygwin setup.
 
-===== SKIP VC9 FOR THE MOMENT - WE SHOULD BE ABLE TO BUILD WITHOUT IT =====
-
-* Install Visual C++ 9 only, to the default locations, using the DVD ISO
-    [msvc++] excluding optional MSSSQL & Silverlight
 * Install Windows SDK 7.0 either 32 or 64bit for your platform
     [win7sdk_32bit] or [win7sdk_64bit]
 * Run Windows Update for latest patches
@@ -52,17 +48,23 @@ mozilla & cygwin setup.
 ################################################################################
 The express solution is just to use 7zip to unpack [glazier tools](https://www.dropbox.com/s/jeifcxpbtpo78ak/Building_from_Source/glazier_tools.7z) inside `%relax%`. Or do it manually for the same result:
 
-* 7zip to `7zip` and add to the user environment PATH
-* Innosoft's isetup to `inno5`
-* Nullsoft Installer to `nsis`
-* using 7zip, extract nasm in `%relax%`
-* `mkdir strawberry && cd strawberry` then using 7zip, extract Strawberry Perl
-* copy vcredist to `%relax%`
+* Download [7zip] to `7zip` and add to the user environment PATH
+* Innosoft's [isetup] to `inno5` and add to PATH
+* [Nullsoft] Installer to `nsis` and add to PATH
+* using 7zip, extract [nasm] in `%relax%` and add to PATH
+* using 7zip, extract [cmake] to `cmake` and add `cmake/bin` to PATH
+* `mkdir strawberry && cd strawberry` then using 7zip, extract Strawberry [Perl] and add `strawberry\perl\bin` to PATH
+* copy [vcredist] to `%relax%`
+
+[perl]: http://strawberryperl.com/download/5.12.2.0/strawberry-perl-5.12.2.0-portable.zip
+[nasm]: http://www.nasm.us/pub/nasm/releasebuilds/2.09.07/win32/nasm-2.09.07-win32.zip
+[cmake]: http://www.cmake.org/files/v2.8/cmake-2.8.5-win32-x86.zip
+[vcredist]: http://download.microsoft.com/download/5/D/8/5D8C65CB-C849-4025-8E95-C3966CAFD8AE/vcredist_x86.exe
 
 ## wxWidgets
 ################################################################################
 * [wxWidgets] source and the glazier [overlay] are already downloaded
-* start an SDK shell via 'setenv.cmd /Release /x86'
+* start an SDK shell via `setenv.cmd /Release /x86`
 * run `c:\relax\bin\build_wx.cmd` to extract and build wxWidgets
 * NB Erlang build requires wxWidgets in `/opt/local/pgm/wxWidgets-2.8.11` so
   we set that up too

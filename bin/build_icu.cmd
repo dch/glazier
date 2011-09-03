@@ -1,5 +1,7 @@
 path=%path%;%relax%\7zip;
-
+:: obsolete for the moment, we build under cygwin to get a working
+:: BIND_TO_CURRENT_VCLIBS_VERSION during build of the icu data dll
+goto eof
 set ICU_PATH=%RELAX%\icu
 
 :: set path for ICU compilation later on
@@ -37,3 +39,4 @@ popd
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:eof

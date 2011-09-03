@@ -1,7 +1,7 @@
 ## wxWidgets
 
 * [wxWidgets] source and the glazier [overlay] are already downloaded
-* start an SDK shell via 'setenv.cmd /Release /x86'
+* start an SDK shell via `setenv.cmd /Release /x86`
 * run `c:\relax\bin\build_wx.cmd` to extract and build wxWidgets
 * NB Erlang build requires wxWidgets in `/opt/local/pgm/wxWidgets-2.8.11` so
   we set that up too

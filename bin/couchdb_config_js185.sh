@@ -15,5 +15,3 @@ export COUCH_TOP
 ### --enable-static \
 
 echo DONE. | tee -a $COUCH_TOP/build_configure.txt
-
-js-1.8.5/js/src

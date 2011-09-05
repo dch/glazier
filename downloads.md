@@ -41,8 +41,8 @@ http://curl.haxx.se/download/curl-7.21.7.zip
 ### bits required to build erlang
 http://www.erlang.org/download/otp_src_R14B03.tar.gz
 http://www.erlang.org/download/otp_src_R14B01.tar.gz
+### nsis	nsis-2.46-setup.exe
 http://download.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
-http://www.jrsoftware.org/download.php/is-unicode.exe
 http://www.erlang.org/download/tcltk85_win32_bin.tar.gz
 
 ################################################################################
@@ -51,8 +51,8 @@ http://www.erlang.org/download/tcltk85_win32_bin.tar.gz
 # http://download.icu-project.org/files/icu4c/4.4.2/icu4c-4_4_2-src.zip
 ### libicu	icu4c-4_4_2-src.tgz
 http://download.icu-project.org/files/icu4c/4.4.2/icu4c-4_4_2-src.tgz
-### nsis	nsis-2.46-setup.exe
-http://download.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
+### inno5_setup	isetup-5.4.2-unicode.exe
+http://www.jrsoftware.org/download.php/is-unicode.exe
 ### spidermonkey	57a6ad20eae9.tar.gz
 http://hg.mozilla.org/tracemonkey/archive/57a6ad20eae9.tar.gz
 ### spidermonkey    js185-1.0.0.tar.gz

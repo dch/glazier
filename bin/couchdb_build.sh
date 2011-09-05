@@ -16,7 +16,7 @@ echo DONE. | tee -a $COUCH_TOP/build_dist.txt
 
 echo DONE.
 echo to move build files to release area run the following:
-echo PATCH=_otp_$OTP_VER.exe
+echo PATCH=_otp_$OTP_REL.exe
 echo DEST=/relax/z/Dropbox/CouchDB/Snapshots/`date +%Y%m%d`
 echo pushd $COUCH_TOP/etc/windows/
 echo rename .exe \$PATCH setup-couchdb-*

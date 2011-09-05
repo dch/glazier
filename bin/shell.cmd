@@ -29,7 +29,8 @@ if not defined ZLIB_PATH set ZLIB_PATH=%RELAX%\zlib
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: LIB and INCLUDE are preset by Windows SDK and/or Visual C++ shells
 :: however VC++ uses LIB & INCLUDE and SDK uses Lib & Include. In Cygwin
-:: these are *NOT* the same
+:: these are *NOT* the same but when we shell out to CL.exe and LINK.exe
+:: all is well again
 
 set LIB=%RELAX%\VC\VC\lib;%RELAX%\SDK\lib;%LIB%
 SET INCLUDE=%RELAX%\VC\VC\Include;%RELAX%\SDK\Include;%RELAX%\SDK\Include\gl;%INCLUDE%
@@ -56,27 +57,27 @@ goto eof
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :R14B03
 set ERL_TOP=/relax/otp_src_R14B03
-set ERL_VER=5.8.4
-set OTP_VER=R14B03
+set ERTS_VSN=5.8.4
+set OTP_REL=R14B03
 goto unix_shell
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :R14B01
 set ERL_TOP=/relax/otp_src_R14B01
-set ERL_VER=5.8.2
-set OTP_VER=R14B01
+set ERTS_VSN=5.8.2
+set OTP_REL=R14B01
 goto unix_shell
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :R14B04
 set ERL_TOP=/relax/otp_src_R14B04
-set ERL_VER=5.8.5
-set OTP_VER=R14B04
+set ERTS_VSN=5.8.5
+set OTP_REL=R14B04
 goto unix_shell
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :unix_shell
-title Building in %ERL_TOP% with OTP %OTP_VER% and Erlang v%ERL_VER%
+title Building in %ERL_TOP% with OTP %OTP_REL% and Erlang v%ERTS_VSN%
 c:\cygwin\bin\bash %RELAX%\bin\relax.sh
 goto eof
 

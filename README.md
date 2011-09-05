@@ -1,27 +1,13 @@
-Workflow
-.- wxwidgets
-.- openssl
-- erlang
-.- spidermonkey
-.- libcurl
-.- icu
-- zlib
-
 # Download Glazier scripts, tools, and source
 ################################################################################
-* download and unzip [glazier latest zip](https://nodeload.github.com/dch/glazier/zipball/windows_sdk_7.0)
-* set where you plan to build in. I am using `C:\relax` so:
-
-        :: set in current shell and then user environment
-        set RELAX=c:\relax
-        setx RELAX %RELAX%
-        mklink /d c:\cygwin\relax %RELAX%
-        cd %RELAX%
-
+* download and unzip [glazier latest zip](https://nodeload.github.com/dch/glazier/zipball/master) into `c:\relax`
+* run `c:\relax\bin\setup.cmd` once to set up links and environment variables
 * download source & tools using aria, and then check MD5 hashes:
 
+        pushd %relax%
+        path=%path%;%relax%\bin;
         aria2c.exe --force-sequential=false --max-connection-per-server=4  --check-certificate=false --auto-file-renaming=false --input-file=downloads.md --max-concurrent-downloads=5 --dir=bits --save-session=bits/a2session.txt
-         md5sum.exe --check md5sums.txt
+         cd bits && md5sum.exe --check md5sums.txt
 
 # Install Compilers    
 ################################################################################
@@ -48,18 +34,21 @@ mozilla & cygwin setup.
 ################################################################################
 The express solution is just to use 7zip to unpack [glazier tools](https://www.dropbox.com/s/jeifcxpbtpo78ak/Building_from_Source/glazier_tools.7z) inside `%relax%`. Or do it manually for the same result:
 
-* Download [7zip] to `7zip` and add to the user environment PATH
-* Innosoft's [isetup] to `inno5` and add to PATH
-* [Nullsoft] Installer to `nsis` and add to PATH
-* using 7zip, extract [nasm] in `%relax%` and add to PATH
-* using 7zip, extract [cmake] to `cmake` and add `cmake/bin` to PATH
-* `mkdir strawberry && cd strawberry` then using 7zip, extract Strawberry [Perl] and add `strawberry\perl\bin` to PATH
-* copy [vcredist] to `%relax%`
+* Download [7zip] to `%relax%/7zip`
+* Innosoft's [isetup] to `%relax%/inno5`
+* Nullsoft [NSIS] Installer to `%relax%/nsis`
+* Add 7zip, Inno5, and nsis to the user environment PATH
+* using 7zip, extract and rename [nasm] to `%relax%/nasm`
+* using 7zip, extract and rename [cmake] to `%relax%/cmake`
+* `mkdir strawberry && cd strawberry` then using 7zip, extract Strawberry [Perl]
+* copy [vcredist] to `%relax%/` for later use by Erlang and CouchDB builds
 
 [perl]: http://strawberryperl.com/download/5.12.2.0/strawberry-perl-5.12.2.0-portable.zip
 [nasm]: http://www.nasm.us/pub/nasm/releasebuilds/2.09.07/win32/nasm-2.09.07-win32.zip
 [cmake]: http://www.cmake.org/files/v2.8/cmake-2.8.5-win32-x86.zip
 [vcredist]: http://download.microsoft.com/download/5/D/8/5D8C65CB-C849-4025-8E95-C3966CAFD8AE/vcredist_x86.exe
+[nsis]: http://download.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
+[isetup]: http://www.jrsoftware.org/download.php/is-unicode.exe
 
 ## wxWidgets
 ################################################################################
@@ -76,12 +65,12 @@ The express solution is just to use 7zip to unpack [glazier tools](https://www.d
 ## OpenSSL
 ################################################################################
 Erlang requires finding OpenSSL in `c:\OpenSSL` so that's where we build to,
-using mount point to keep things clean=ish.
+using mount point to keep things clean=ish under `%relax%`.
 
 * [OpenSSL] source has already been downloaded
-* start an SDK shell via 'setenv.cmd /Release /x86'
+* start an SDK shell via `setenv.cmd /Release /x86`
 * run `c:\relax\bin\build_openssl.cmd` to extract and build OpenSSL
-* it requires nasm, 7zip, strawberry perl all in the path
+* it requires nasm, 7zip, strawberry perl all in place
 * check for errors
 * ensure Erlang can locate SSL with `mklink /d c:\OpenSSL %relax%\OpenSSL`
 
@@ -92,14 +81,24 @@ using mount point to keep things clean=ish.
 Our goal is to get the path set up in this order:
 
 1. erlang and couchdb build helper scripts
-2. Microsoft VC compiler from Windows SDK 7.0
+2. Microsoft VC compiler, linker, etc from Windows SDK 7.0
 3. cygwin path for other build tools like make, autoconf, libtool
 4. the remaining windows system path
 
 Express start is to:
-* start an SDK shell via 'setenv.cmd /Release /x86'
-* `c:\relax\bin\setup.cmd` is only needed the first time round
+* start an SDK shell via `setenv.cmd /Release /x86`
+* launch a cygwin erl-ified shell via `c:\relax\bin\shell.cmd`
+* choose your preferred erlang version - R14B03 is recommended
+* after validating the path, I usually run these two scripts which
+can take several hours on slower machines:
 
+        erl_config.sh
+        erl_build.sh
+        
+* the output is logged into `$ERL_TOP/build_*.txt` if required
+* at this point I usually duplicate the OTP source tree for later
+
+        robocopy $ERL_TOP /relax/release/$OTP_REL -mir
 
 cfdc2ab751bf18049c5ef7866602d8ed *apache-couchdb-1.0.3.tar.gz
 907b763d3a14b6649bf0371ffa75a36b *apache-couchdb-1.1.0.tar.gz

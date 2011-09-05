@@ -11,14 +11,14 @@
 ## /cygdrive/c/src/otp_src_R13B04/erts/etc/win32/cygwin_tools/vc:/cygdrive/c/src/otp_src_R13B04/erts/etc/win32/cygwin_tools:/cygdrive/c/PROGRA~2/MICROS~1.0/Common7/IDE:/cygdrive/c/PROGRA~2/MICROS~1.0/VC/bin:/cygdrive/c/PROGRA~2/MICROS~1.0/Common7/Tools/:/cygdrive/c/Windows/MICROS~1.NET/FRAMEW~1/:/cygdrive/c/Windows/MICROS~1.NET/FRAMEW~1/:/cygdrive/c/Windows/MICROS~1.NET/FRAMEW~1/V20~1.507:/cygdrive/c/PROGRA~2/MICROS~1.0/VC/VCPACK~1:/cygdrive/c/PROGRA~1/MICROS~1/Windows/v6.0A/bin:/cygdrive/c/PROGRA~1/MICROS~1/Windows/v7.0/bin:/usr/local/bin:/usr/bin:/cygdrive/c/Windows/system32:/cygdrive/c/Windows:/cygdrive/c/Windows/System32/Wbem:/cygdrive/c/Windows/System32/WINDOW~1/v1.0/:/cygdrive/c/PROGRA~2/NSIS:/cygdrive/c/OpenSSL/bin
 
 # build for the right version of erlang
-echo Using Erlang $ERL_VER OTP $OTP_VER in $ERL_TOP
+echo Using Erlang $ERTS_VSN OTP $OTP_VER in $ERL_TOP
 echo
 
 echo doing sanity checks
 # here we want to see that junction points are set up and 
 # rebuild path from scratch as ./otp_build env_win32 gets it wrong
 # first up are erlang build helper scripts
-PATH=$ERL_TOP/release/win32/erts-$ERL_VER/bin:$ERL_TOP/erts/etc/win32/cygwin_tools/vc:$ERL_TOP/erts/etc/win32/cygwin_tools
+PATH=$ERL_TOP/release/win32/erts-$ERTS_VSN/bin:$ERL_TOP/erts/etc/win32/cygwin_tools/vc:$ERL_TOP/erts/etc/win32/cygwin_tools
 
 # then MSVC9 binaries using the new junction points
 ###PATH=$PATH:/cygdrive/c/PROGRA~2/MICROS~1.0/Common7/IDE:/cygdrive/c/PROGRA~2/MICROS~1.0/VC/BIN:/cygdrive/c/PROGRA~2/MICROS~1.0/Common7/Tools:/cygdrive/c/PROGRA~2/MICROS~1.0/VC/VCPACK~1
@@ -59,7 +59,7 @@ RC_SH_DEBUG_LOG=$TMP/rc_r$OTP_VER.log
 MD_SH_DEBUG_LOG=$TMP/md_r$OTP_VER.log
 MC_SH_DEBUG_LOG=$TMP/mc_r$OTP_VER.log
 
-export OVERRIDE_TARGET CC CXX AR RANLIB OVERRIDE_CONFIG_CACHE_STATIC OVERRIDE_CONFIG_CACHE INCLUDE LIB LIBPATH LINK CL PATH TMP CC_SH LD_SH RC_SH MD_SH MC_SH ERL_TOP ERL_VER OTP_VER SHELL RELAX GLAZIER
+export OVERRIDE_TARGET CC CXX AR RANLIB OVERRIDE_CONFIG_CACHE_STATIC OVERRIDE_CONFIG_CACHE INCLUDE LIB LIBPATH LINK CL PATH TMP CC_SH LD_SH RC_SH MD_SH MC_SH ERL_TOP ERTS_VSN OTP_VER SHELL RELAX GLAZIER
 
 # first change to $RELAX as if erlang tar.gz are not extracted the latter will fail
 cd $RELAX
@@ -74,7 +74,7 @@ echo please check the toolkit paths point to Microsoft versions:
 which mc; which lc; which cl; which link; which mt
 echo
 
-echo Ready to build Erlang and CouchDB using Erlang $ERL_VER OTP $OTP_VER in $ERL_TOP
+echo Ready to build Erlang and CouchDB using Erlang $ERTS_VSN OTP $OTP_VER in $ERL_TOP
 echo Time to Relax.
 
 bash -i

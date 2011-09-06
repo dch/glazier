@@ -1,11 +1,11 @@
 # Download Glazier scripts, tools, and source
 ################################################################################
-* download and unzip [glazier latest zip](https://nodeload.github.com/dch/glazier/zipball/master) into `c:\relax`
-* run `c:\relax\bin\setup.cmd` once to set up links and environment variables
+* download [glazier latest zip](https://nodeload.github.com/dch/glazier/zipball/master)
+* unpack it into `c:\relax` - you should have `c:\relax\bin` for example
 * download source & tools using aria, and then check MD5 hashes:
 
-        pushd %relax%
-        path=%path%;%relax%\bin;
+        pushd c:\relax
+        path=c:\relax\bin;%path%
         aria2c.exe --force-sequential=false --max-connection-per-server=4  --check-certificate=false --auto-file-renaming=false --input-file=downloads.md --max-concurrent-downloads=5 --dir=bits --save-session=bits/a2session.txt
          cd bits && md5sum.exe --check md5sums.txt
 
@@ -30,6 +30,11 @@ mozilla & cygwin setup.
 [win7sdk_64bit]:	http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDKX_EN_DVD.iso
 [mozbuild]: http://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/MozillaBuildSetup-Latest.exe
 
+# Initial Setup and Download "ze bits"
+################################################################################
+Now that we have 
+* run `c:\relax\bin\setup.cmd` once to set up links and environment variables
+
 # Install downloaded tools
 ################################################################################
 The express solution is just to use 7zip to unpack [glazier tools](https://www.dropbox.com/s/jeifcxpbtpo78ak/Building_from_Source/glazier_tools.7z) inside `%relax%`. Or do it manually for the same result:
@@ -49,6 +54,7 @@ The express solution is just to use 7zip to unpack [glazier tools](https://www.d
 [vcredist]: http://download.microsoft.com/download/5/D/8/5D8C65CB-C849-4025-8E95-C3966CAFD8AE/vcredist_x86.exe
 [nsis]: http://download.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
 [isetup]: http://www.jrsoftware.org/download.php/is-unicode.exe
+[7zip]: http://downloads.sourceforge.net/sevenzip/7z465.exe
 
 ## wxWidgets
 ################################################################################

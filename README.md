@@ -30,14 +30,30 @@ mozilla & cygwin setup.
 [win7sdk_64bit]:	http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDKX_EN_DVD.iso
 [mozbuild]: http://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/MozillaBuildSetup-Latest.exe
 
-# Initial Setup and Download "ze bits"
+# Initial Setup of Environment
 ################################################################################
-Now that we have 
+Now that the compilers are installed, we need to set a few things up first:
+
+* start an SDK shell via `setenv.cmd /Release /x86`
 * run `c:\relax\bin\setup.cmd` once to set up links and environment variables
+
+You should end up with something resembling this structure:
+
+        Directory of C:\relax
+        06/09/2011  10:41 p.m.    <DIR>          .
+        06/09/2011  10:41 p.m.    <DIR>          ..
+        06/09/2011  10:41 p.m.    <SYMLINKD>     bin [z:\r\glazier\bin]
+        06/09/2011  10:41 p.m.    <SYMLINKD>     bits [z:\r\glazier\bits]
+        03/09/2011  11:00 a.m.    <DIR>          release
+        06/09/2011  10:40 p.m.    <SYMLINKD>     SDK [C:\Program Files\Microsoft SDKs\Windows\v7.0]
+        06/09/2011  12:19 a.m.    <SYMLINKD>     tmp [C:\Users\couch\AppData\Local\Temp]
+        06/09/2011  10:40 p.m.    <SYMLINKD>     VC [c:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\..]
+
 
 # Install downloaded tools
 ################################################################################
-The express solution is just to use 7zip to unpack [glazier tools](https://www.dropbox.com/s/jeifcxpbtpo78ak/Building_from_Source/glazier_tools.7z) inside `%relax%`. Or do it manually for the same result:
+The express solution is just to use 7zip to unpack [glazier tools](https://github.com/downloads/dch/glazier/toolbox.7z)
+ inside `%relax%`. Or do it manually for the same result:
 
 * Download [7zip] to `%relax%/7zip`
 * Innosoft's [isetup] to `%relax%/inno5`

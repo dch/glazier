@@ -2,11 +2,12 @@
 COUCH_TOP=`pwd`
 export COUCH_TOP
 
+## --with-win32-curl=/relax/curl \
+
 ./configure \
 --prefix=$ERL_TOP/release/win32 \
 --with-erlang=$ERL_TOP/release/win32/usr/include \
 --with-win32-icu-binaries=/relax/icu \
---with-win32-curl=/relax/curl \
 --with-openssl-bin-dir=/relax/openssl/bin \
 --with-msvc-redist-dir=/relax \
 --with-js-lib=/relax/js-1.8.5/js/src/dist/lib \

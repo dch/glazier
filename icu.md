@@ -18,8 +18,8 @@ it doesn't. Instead we use cygwin make tools and VC++ compiler.
     make install
     cp $RELAX/icu/lib/*.dll $RELAX/icu/bin/
 
-* CouchDB still looks in icu/bin/ for the DLLs even though the build puts them
- in icu/lib/
+* the last line is because CouchDB still looks in icu/bin/ for the DLLs even though the build puts them
+ in icu/lib/. This should probably be changed in CouchDB
 * confirm that the resulting ICU DLLs have the appropriate manifests
 
 [icu442]: http://download.icu-project.org/files/icu4c/4.4.2/icu4c-4_4_2-src.tgz

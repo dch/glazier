@@ -8,15 +8,16 @@ it doesn't. Instead we use cygwin make tools and VC++ compiler.
 
     set CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
     call \cygwin\bin\bash.exe
-    
     export PATH=$PATH:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin
-    RELAX=/relax
-    cd $RELAX && tar xzf bits/icu4c-4_4_2-src.tgz
-    cd $RELAX/icu/source
-    ./runConfigureICU Cygwin/MSVC --prefix=$RELAX/icu
+
+    cd $RELAX
+    DEST=`pwd`/icu
+    tar xzf bits/icu4c-4_4_2-src.tgz
+    cd $DEST/source
+    ./runConfigureICU Cygwin/MSVC --prefix=$DEST
     make
     make install
-    cp $RELAX/icu/lib/*.dll $RELAX/icu/bin/
+    cp $DEST/lib/*.dll $DEST/bin/
 
 * the last line is because CouchDB still looks in icu/bin/ for the DLLs even though the build puts them
  in icu/lib/. This should probably be changed in CouchDB

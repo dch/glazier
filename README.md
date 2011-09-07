@@ -296,10 +296,10 @@ For CouchDB 1.1.0, the patch from [COUCHDB-1152] is required.
         /relax/bin/couchdb_config_js180.sh
         /relax/bin/couchdb_build.sh
 
-For CouchDB 1.2.x, most patches are already in trunk, apart from 1 patch, and a
-filthy hack. The hack is needed until `configure.ac` is updated to identify
-that curl is not required and that the cygwin library version of it should not
-be pulled into CouchDB by accident.
+For CouchDB 1.2.x, most patches are already in trunk, apart from 1 patch
+[COUCHDB-1197], and a filthy hack. The hack is needed until `configure.ac` is
+updated to identify that curl is not required and that the cygwin library version
+of it should not be pulled into CouchDB by accident.
 
         cd /relax && svn checkout https://svn.apache.org/repos/asf/couchdb/trunk
         cd trunk

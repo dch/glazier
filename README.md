@@ -6,7 +6,7 @@
 
         pushd c:\relax
         path=c:\relax\bin;%path%
-        aria2c.exe --force-sequential=false --max-connection-per-server=4  --check-certificate=false --auto-file-renaming=false --input-file=downloads.md --max-concurrent-downloads=5 --dir=bits --save-session=bits/a2session.txt
+        aria2c.exe --force-sequential=false --max-connection-per-server=1  --check-certificate=false --auto-file-renaming=false --input-file=downloads.md --max-concurrent-downloads=5 --dir=bits --save-session=bits/a2session.txt
          cd bits && md5sum.exe --check md5sums.txt
 
 # Install Compilers    
@@ -101,13 +101,14 @@ using mount point to keep things clean=ish under `%relax%`.
 ## Environment
 ################################################################################
 Our goal is to get the path set up in this order:
+    
+    1. erlang and couchdb build helper scripts
+    2. Microsoft VC compiler, linker, etc from Windows SDK 7.0
+    3. cygwin path for other build tools like make, autoconf, libtool
+    4. the remaining windows system path
 
-1. erlang and couchdb build helper scripts
-2. Microsoft VC compiler, linker, etc from Windows SDK 7.0
-3. cygwin path for other build tools like make, autoconf, libtool
-4. the remaining windows system path
+The express start is to:
 
-Express start is to:
 * start an SDK shell via `setenv.cmd /Release /x86`
 * launch a cygwin erl-ified shell via `c:\relax\bin\shell.cmd`
 * choose your preferred erlang version - R14B03 is recommended

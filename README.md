@@ -91,7 +91,7 @@ The express solution is just to use 7zip to unpack [glazier tools](https://githu
 [isetup]: http://www.jrsoftware.org/download.php/is-unicode.exe
 [7zip]: http://downloads.sourceforge.net/sevenzip/7z465.exe
 
-## wxWidgets
+# wxWidgets
 ################################################################################
 * [wxWidgets] source and the glazier [overlay] are already downloaded
 * start an SDK shell via `setenv.cmd /Release /x86`
@@ -103,7 +103,7 @@ The express solution is just to use 7zip to unpack [glazier tools](https://githu
 [wxwidgets]: http://sourceforge.net/projects/wxwindows/files/2.8.11/wxMSW-2.8.11.zip
 [overlay]:   https://raw.github.com/dch/glazier/master/bits/wxMSW-2.8.11_erlang_overlay.zip
 
-## OpenSSL
+# OpenSSL
 ################################################################################
 Erlang requires finding OpenSSL in `c:\OpenSSL` so that's where we build to,
 using mount point to keep things clean=ish under `%relax%`.
@@ -119,7 +119,7 @@ Erlang/OTP and therefore CouchDB as well.
 
 [openssl]: http://www.openssl.org/source/openssl-1.0.0d.tar.gz
 
-## Environment
+# Environment
 ################################################################################
 Our goal is to get the path set up in this order:
 
@@ -186,7 +186,7 @@ can take several hours on slower machines:
 
 [patches]: https://github.com/dch/otp/commit/d1e151a689f8e54cdc2d671e96e00beb86d2b571
 
-## ICU 4.4.2
+# ICU 4.4.2
 ################################################################################
 Ideally ICU would compile with current VC runtime using VC++ directly but
 it doesn't. Instead we use cygwin make tools and VC++ compiler.
@@ -216,7 +216,7 @@ via `setenv /release /x86` again
         couchdb_config.sh
         couchdb_build.sh
 
-## LibcURL
+# LibcURL
 ################################################################################
 LibcURL is only required for versions of CouchDB <= 1.10 where it is embedded
 in couchjs.exe. Trunk and future releases will have this as an optional include.
@@ -229,7 +229,7 @@ via `setenv /release /x86` again
 
 [libcurl]: http://curl.haxx.se/download/curl-7.21.7.zip
 
-## Javascript
+# Javascript
 ################################################################################
 The Javascript engine used by CouchDB is Mozilla Spidermonkey. Prior to 1.8.5
 [js185] there was no formal release for it, so you can build from anywhere on
@@ -268,3 +268,47 @@ Spidermonkey is used.
 
 [js185]: http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz
 [js18x]: http://hg.mozilla.org/tracemonkey/archive/57a6ad20eae9.tar.gz
+
+# Building CouchDB
+################################################################################
+
+Finally we are going to build Apache CouchDB... whew! Recapping, we should have:
+
+* erlang in `/relax/otp_src_R14B03/release/win32` with a copy stashed nearby
+* openssl in `/relax/openssl/lib/{lib,ssl}eay32.lib`
+* libcurl in `/relax/curl/lib/libcurl.lib`
+* two js libraries in `/relax/js-1.8.5/js/src/dist/{bin,lib}/mozjs185-1.0.*` and
+ `/relax/tracemonkey-57a6ad20eae9/js/src/dist/{bin,lib}/mozjs.*`
+* icu in `/relax/icu/bin/icu*.dll`
+
+There are three relevant scripts for building CouchDB:
+
+* `couchdb_config_js180.sh` for CouchDB 1.1.0 + js18x with libcurl
+* `couchdb_config_js185.sh` for CouchDB 1.2.0 + js185 without libcurl
+* `couchdb_build.sh` which compiles, and packages, CouchDB
+
+There are still some patches required against both released and trunk versions.
+For CouchDB 1.1.0, the patch from [COUCHDB-1152] is required.
+
+        cd /relax && tar xzf bits/apache-couchdb-1.1.0.tar.gz
+        cd apache-couchdb-1.1.0
+        patch -p0 < ../bits/COUCHDB-1152_move_to_ICU-4_4_2.patch
+        /relax/bin/couchdb_config_js180.sh
+        /relax/bin/couchdb_build.sh
+
+For CouchDB 1.2.x, most patches are already in trunk, apart from 1 patch, and a
+filthy hack. The hack is needed until `configure.ac` is updated to identify
+that curl is not required and that the cygwin library version of it should not
+be pulled into CouchDB by accident.
+
+        cd /relax && svn checkout https://svn.apache.org/repos/asf/couchdb/trunk
+        cd trunk
+        patch -p1 < ../bits/COUCHDB-1197_libtool_sed_hackery.patch
+        mv /usr/bin/curl-config /usr/bin/curl-config.dist
+        ./bootstrap
+        /relax/bin/couchdb_config_js185.sh
+        /relax/bin/couchdb_build.sh
+
+
+[COUCHDB-1152]: https://issues.apache.org/jira/secure/attachment/12481030/COUCHDB-1152_move_to_ICU-4_4_2.patch
+[COUCHDB-1197]: https://issues.apache.org/jira/secure/attachment/12493303/COUCHDB-1197_libtool_sed_hackery.patch

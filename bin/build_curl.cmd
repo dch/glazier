@@ -21,7 +21,7 @@ if defined curl_ver rd /s/q %curl_src%
 7z x "%RELAX%\bits\curl-*.zip" -o%RELAX% -y
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-pushd %relax%\curl-*\lib
+pushd %curl_src%
 :: settings for Compiler
 set USE_SSLEAY=1
 set USE_OPENSSL=1
@@ -29,10 +29,12 @@ set INCLUDE=%INCLUDE%;%SSL_PATH%\include;%SSL_PATH%\include\openssl;
 set LIBPATH=%LIBPATH%;%SSL_PATH%\lib;
 set LIB=%LIB%;%SSL_PATH%\lib;
 set CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
-::vcbuild /useenv /upgrade /platform:Win32 lib\libcurl.vcproj
-::vcbuild /useenv /platform:Win32 lib\libcurl.vcproj "Release|Win32"
-::xcopy lib\Release\libcurl.lib lib\ /y
-nmake /f Makefile.vc9 CFG=release-ssl
+vcbuild /useenv /upgrade /platform:Win32 lib\libcurl.vcproj
+vcbuild /useenv /platform:Win32 lib\libcurl.vcproj "Release|Win32"
+xcopy lib\Release\libcurl.lib lib\ /y
+:: nmake doesn't pull in SSL .libs correctly
+:: pushd %relax%\curl-*\lib
+:: nmake /f Makefile.vc9 CFG=release-ssl
 popd
 :: make this specific curl version available to CouchDB build script
 mklink /d %curl_path% %curl_src%

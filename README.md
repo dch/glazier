@@ -189,32 +189,18 @@ can take several hours on slower machines:
 # ICU 4.4.2
 ################################################################################
 Ideally ICU would compile with current VC runtime using VC++ directly but
-it doesn't. Instead we use cygwin make tools and VC++ compiler.
+it doesn't directly, so a stubdata.obj is built first, then the rest is compiled
+using the latest VC runtimes.
 
-* download ICU 4.4.2 unix source from [icu442]
+* Download ICU 4.4.2 windows source from [icu442]
 * either re-use the "shell.cmd" from before, or open a Windows SDK prompt
 via `setenv /release /x86` again
-    
-        cd $RELAX
-        DEST=`pwd`/icu
-        tar xzf bits/icu4c-4_4_2-src.tgz
-        cd $DEST/source
-        ./runConfigureICU Cygwin/MSVC --prefix=$DEST
-        make
-        make install
-        cp $DEST/lib/*.dll $DEST/bin/
 
-* the last line is because CouchDB still looks in icu/bin/ for the DLLs even though the build puts them
- in icu/lib/. This should probably be changed in CouchDB
+        %relax%\bin\build_icu.cmd
+
 * confirm that the resulting ICU DLLs have the appropriate manifests
 
-[icu442]: http://download.icu-project.org/files/icu4c/4.4.2/icu4c-4_4_2-src.tgz
-
-
-* then run the following 4 scripts in order
-
-        couchdb_config.sh
-        couchdb_build.sh
+[icu442]: http://download.icu-project.org/files/icu4c/4.4.2/icu4c-4_4_2-src.zip
 
 # LibcURL
 ################################################################################
@@ -296,14 +282,11 @@ For CouchDB 1.1.0, the patch from [COUCHDB-1152] is required.
         /relax/bin/couchdb_config_js180.sh
         /relax/bin/couchdb_build.sh
 
-For CouchDB 1.2.x, most patches are already in trunk, apart from 1 patch, and a
-filthy hack. The hack is needed until `configure.ac` is updated to identify
-that curl is not required and that the cygwin library version of it should not
-be pulled into CouchDB by accident.
+For CouchDB 1.2.x, patches are in trunk from a small, filthy hack, which
+is needed until `configure.ac` avoids detection of cygwin's curl.
 
         cd /relax && svn checkout https://svn.apache.org/repos/asf/couchdb/trunk
         cd trunk
-        patch -p1 < ../bits/COUCHDB-1197_libtool_sed_hackery.patch
         mv /usr/bin/curl-config /usr/bin/curl-config.dist
         ./bootstrap
         /relax/bin/couchdb_config_js185.sh

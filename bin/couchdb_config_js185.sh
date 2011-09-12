@@ -14,5 +14,6 @@ export COUCH_TOP
 --with-js-include=/relax/js-1.8.5/js/src/dist/include \
 2>&1 | tee $COUCH_TOP/build_configure.txt
 ### --enable-static \
+### --with-win32-curl=/relax/curl \
 
 echo DONE. | tee -a $COUCH_TOP/build_configure.txt

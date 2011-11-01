@@ -269,8 +269,8 @@ Finally we are going to build Apache CouchDB... whew! Recapping, we should have:
 
 There are three relevant scripts for building CouchDB:
 
-* `couchdb_config_js180.sh` for CouchDB 1.1.0 + js18x with libcurl
-* `couchdb_config_js185.sh` for CouchDB 1.2.0 + js185 without libcurl
+* `couchdb_config_js180.sh` for CouchDB 1.1.0 or older, using js180
+* `couchdb_config_js185.sh` for CouchDB 1.1.1 or newer, supporting js185
 * `couchdb_build.sh` which compiles, and packages, CouchDB
 
 There are still some patches required against both released and trunk versions.
@@ -282,12 +282,17 @@ For CouchDB 1.1.0, the patch from [COUCHDB-1152] is required.
         /relax/bin/couchdb_config_js180.sh
         /relax/bin/couchdb_build.sh
 
-For CouchDB 1.2.x, patches are in trunk from a small, filthy hack, which
-is needed until `configure.ac` avoids detection of cygwin's curl.
+For CouchDB 1.1.1 or newer, two small filthy hacks are required, which
+is needed until `configure.ac` avoids detection of cygwin's curl and avoids
+assuming that help2man will be useful on Windows.
 
-        cd /relax && svn checkout https://svn.apache.org/repos/asf/couchdb/trunk
-        cd trunk
+        cd /relax
+        git clone http://git-wip-us.apache.org/repos/asf/couchdb.git
+        git checkout 1.1.1
+        git clean -fdx
+        cd couchdb
         mv /usr/bin/curl-config /usr/bin/curl-config.dist
+        mv /usr/bin/help2man /usr/bin/help2man.dist
         ./bootstrap
         /relax/bin/couchdb_config_js185.sh
         /relax/bin/couchdb_build.sh

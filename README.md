@@ -28,26 +28,25 @@ consistent repeatable build environment.
         aria2c.exe --force-sequential=false --max-connection-per-server=1  --check-certificate=false --auto-file-renaming=false --input-file=downloads.md --max-concurrent-downloads=5 --dir=bits --save-session=bits/a2session.txt
          cd bits && md5sum.exe --check md5sums.txt
 
-# Install Compilers    
+# Install Compilers
 ################################################################################
 Due to size, these are not downloaded in the bundle apart from
 mozilla & cygwin setup.
 
-* Install Windows SDK 7.0 either 32 or 64bit for your platform
-    [win7sdk_32bit] or [win7sdk_64bit]
+* Install Windows SDK 7.1 either 32 or 64bit for your platform using
+[win71sdk_websetup] or a downloaded [win71sdk_iso]
 * Run Windows Update for latest patches
 * Reboot
 * Download Mozilla toolkit from [mozbuild] and install per defaults
 * Install [cygwin] components, at least:
     * devel: ALL
-    * editors: vim or emacs 
+    * editors: vim or emacs
     * utils: file
 
 [cygwin]: http://www.cygwin.com/setup.exe
-[msvc++]: http://download.microsoft.com/download/E/8/E/E8EEB394-7F42-4963-A2D8-29559B738298/VS2008ExpressWithSP1ENUX1504728.iso
-[win7sdk_32bit]:	http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDK_EN_DVD.iso
-[win7sdk_64bit]:	http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDKX_EN_DVD.iso
-[mozbuild]: http://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/MozillaBuildSetup-Latest.exe
+[win71sdk_websetup]: http://www.microsoft.com/download/en/confirmation.aspx?id=8279
+[win71sdk_iso]:	http://go.microsoft.com/fwlink/?LinkID=191420
+[mozbuild]: http://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/MozillaBuildSetup-1.6.exe
 
 # Initial Setup of Environment
 ################################################################################
@@ -64,32 +63,33 @@ You should end up with something resembling this structure:
         06/09/2011  10:41 p.m.    <SYMLINKD>     bin [z:\r\glazier\bin]
         06/09/2011  10:41 p.m.    <SYMLINKD>     bits [z:\r\glazier\bits]
         03/09/2011  11:00 a.m.    <DIR>          release
-        06/09/2011  10:40 p.m.    <SYMLINKD>     SDK [C:\Program Files\Microsoft SDKs\Windows\v7.0]
+        06/09/2011  10:40 p.m.    <SYMLINKD>     SDK [C:\Program Files\Microsoft SDKs\Windows\v7.1]
         06/09/2011  12:19 a.m.    <SYMLINKD>     tmp [C:\Users\couch\AppData\Local\Temp]
-        06/09/2011  10:40 p.m.    <SYMLINKD>     VC [c:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\..]
+        06/09/2011  10:40 p.m.    <SYMLINKD>     VC [c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\..]
 
 
 # Install downloaded tools
 ################################################################################
+
+* copy [vcredist] to `%relax%/` for later use by Erlang and CouchDB builds
+
 The express solution is just to use 7zip to unpack [glazier tools](https://github.com/downloads/dch/glazier/toolbox.7z)
  inside `%relax%`. Or do it manually for the same result:
 
-* Download [7zip] to `%relax%/7zip`
+* Add 7zip from `c:\mozilla-build\7zip` to your path
 * Innosoft's [isetup] to `%relax%/inno5`
 * Nullsoft [NSIS] Installer to `%relax%/nsis`
 * Add 7zip, Inno5, and nsis to the user environment PATH
 * using 7zip, extract and rename [nasm] to `%relax%/nasm`
 * using 7zip, extract and rename [cmake] to `%relax%/cmake`
 * `mkdir strawberry && cd strawberry` then using 7zip, extract Strawberry [Perl]
-* copy [vcredist] to `%relax%/` for later use by Erlang and CouchDB builds
 
 [perl]: http://strawberryperl.com/download/5.12.2.0/strawberry-perl-5.12.2.0-portable.zip
 [nasm]: http://www.nasm.us/pub/nasm/releasebuilds/2.09.07/win32/nasm-2.09.07-win32.zip
-[cmake]: http://www.cmake.org/files/v2.8/cmake-2.8.5-win32-x86.zip
-[vcredist]: http://download.microsoft.com/download/5/D/8/5D8C65CB-C849-4025-8E95-C3966CAFD8AE/vcredist_x86.exe
+[cmake]: http://www.cmake.org/files/v2.8/cmake-2.8.6-win32-x86.zip
+[vcredist]: http://download.microsoft.com/download/1/6/5/165255E7-1014-4D0A-B094-B6A430A6BFFC/vcredist_x86.exe
 [nsis]: http://download.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
 [isetup]: http://www.jrsoftware.org/download.php/is-unicode.exe
-[7zip]: http://downloads.sourceforge.net/sevenzip/7z465.exe
 
 # wxWidgets
 ################################################################################
@@ -124,7 +124,7 @@ Erlang/OTP and therefore CouchDB as well.
 Our goal is to get the path set up in this order:
 
 1. erlang and couchdb build helper scripts
-2. Microsoft VC compiler, linker, etc from Windows SDK 7.0
+2. Microsoft VC compiler, linker, etc from Windows SDK
 3. cygwin path for other build tools like make, autoconf, libtool
 4. the remaining windows system path
 
@@ -234,7 +234,6 @@ build of CouchDB.
         tar xzf bits/57a6ad20eae9.tar.gz
         cd ./tracemonkey-57a6ad20eae9/js/src
         autoconf-2.13
-        export CXXFLAGS='-D_BIND_TO_CURRENT_VCLIBS_VERSION=1'
         ./configure --enable-static --enable-shared-js
         make
 
@@ -245,7 +244,6 @@ build of CouchDB.
         tar xzf bits/js185-1.0.0.tar.gz
         cd ./js-1.8.5/js/src
         autoconf-2.13
-        export CXXFLAGS='-D_BIND_TO_CURRENT_VCLIBS_VERSION=1'
         ./configure --enable-static --enable-shared-js
         make
 

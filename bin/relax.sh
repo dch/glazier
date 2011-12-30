@@ -15,7 +15,7 @@ echo Using Erlang $ERTS_VSN OTP $OTP_VER in $ERL_TOP
 echo
 
 echo doing sanity checks
-# here we want to see that junction points are set up and 
+# here we want to see that junction points are set up and
 # rebuild path from scratch as ./otp_build env_win32 gets it wrong
 # first up are erlang build helper scripts
 PATH=$ERL_TOP/release/win32/erts-$ERTS_VSN/bin:$ERL_TOP/erts/etc/win32/cygwin_tools/vc:$ERL_TOP/erts/etc/win32/cygwin_tools
@@ -25,18 +25,23 @@ PATH=$ERL_TOP/release/win32/erts-$ERTS_VSN/bin:$ERL_TOP/erts/etc/win32/cygwin_to
 PATH=$PATH:/relax/vc/Common7/IDE:/relax/VC/VC/BIN:/relax/VC/Common7/Tools:/relax/VC/VC/vcPackages
 
 #### then .Net framework which we need to have clean manifests and SxS for Win7 x64
-PATH=$PATH:/cygdrive/c/WINDOWS/Microsoft.NET/Framework:/cygdrive/c/Microsoft.NET/Framework/v2.0.50727
+PATH=$PATH:/cygdrive/c/WINDOWS/Microsoft.NET/Framework:/cygdrive/c/Microsoft.NET/Framework/v4.0.30319:/cygdrive/c/Microsoft.NET/Framework/v3.5
 
 # then SDKs
 ###PATH=$PATH:/cygdrive/c/PROGRA~1/MICROS~1/Windows/v7.0/bin
 ###PATH=$PATH:/cygdrive/c/PROGRA~1/MICROS~1/Windows/v6.0A/bin
 PATH=$PATH:/relax/SDK/bin:/relax/SDK/bin/x64
 
+# some additional tools in SDK
+# C:\Program Files\Microsoft Windows Performance Toolkit;
+# C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\NETFX 4.0 Tools;
+PATH=$PATH:/cygdrive/c/Program\ Files/Microsoft\ Windows\ Performance\ Toolkit:/relax/SDK/bin/NETFX\ 4.0\ Tools
+
 # then erlang and couchdb build helper scripts
 PATH=$PATH:/relax/openssl:/relax/nsis:/relax/inno5
 
 # then cygwin tools
-PATH=$PATH:/usr/local/bin:/usr/bin:/bin	
+PATH=$PATH:/usr/local/bin:/usr/bin:/bin
 
 # then glazier tools
 PATH=$PATH:/relax/bin:/relax/bits

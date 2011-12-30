@@ -1,7 +1,6 @@
 setlocal
 path=%path%;%relax%\7zip;%relax%\nasm;%relax%\strawberry\perl\bin;
 
-set CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: clean up existing installs
 :: extract bundle and name

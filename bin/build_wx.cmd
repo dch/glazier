@@ -10,7 +10,6 @@ mklink /d c:\cygwin\opt\local\pgm\wxWidgets-2.8.11 c:\relax\wxMSW-2.8.11
 
 :build
 pushd %RELAX%\wxMSW*\build\msw
-set CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
 vcbuild /useenv  /platform:Win32 /M4 wx.sln "Unicode Release|Win32"
 vcbuild /useenv  /platform:Win32 /M4 wx.sln "Unicode Debug|Win32"
 popd

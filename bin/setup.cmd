@@ -9,14 +9,9 @@ title Prepare to Relax.
 
 :: our goal is to get the path set up in this order:
 :: erlang and couchdb build helper scripts
-:: Microsoft VC compiler and SDK 7.0
+:: Microsoft VC compiler and SDK
 :: cygwin path for other build tools like make
 :: the remaining windows system path
-
-:: C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\link.exe
-:: C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\cl.exe
-:: C:\Program Files\Microsoft SDKs\Windows\v7.0\mc.exe
-:: etc
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :: find our source tree from one level up from current bin
@@ -31,20 +26,61 @@ setx RELAX %RELAX%
 echo setting up links to tools, SDK and VC++
 
 :: set up junction point to make finding stuff simpler in unix path
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: what build environment are we using?
+:: check for VC10/SDK7.1
+:: SDK 7.1 on Windows 7 x64:
+:: VS100COMNTOOLS=C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\Tools\
+:: sdkdir=C:\Program Files\Microsoft SDKs\Windows\v7.1\
+:: where link.exe mc.exe cl.exe mt.exe lc.exe
+:: C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe
+:: C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\MC.Exe
+:: C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\cl.exe
+:: C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\mt.exe
+:: C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\NETFX 4.0 Tools\lc.exe
+:: C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\lc.exe
+if defined WindowsSDKVersionOverride mklink /d "%RELAX%\SDK" "%programfiles%\Microsoft SDKs\Windows\%WindowsSDKVersionOverride%"
+if defined SDKdir mklink /d "%RELAX%\SDK" "%sdkdir%"
+if defined VS100COMNTOOLS mklink /d "%RELAX%\VC" "%VS100COMNTOOLS%..\.."
+
+:: VS2010/SDK7.1
+
+:: VC90/SDK7.0
 :: VS90ComnTools is the only variable set by the initial install of VC++ 9.0
 :: VS90COMNTOOLS=C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\Tools\
 :: the Windows SDK uses a different variable only after you've call SetEnv.cmd first
 :: VCINSTALLDIR=C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\
-if defined VCINSTALLDIR  mklink /d "%RELAX%\VC" "%VCINSTALLDIR%.."
+:: VCRoot=c:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\
+:: SdkSetupDir=C:\Program Files\Microsoft SDKs\Windows\v7.0\Setup
+:: C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\link.exe
+:: C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\cl.exe
+:: C:\Program Files\Microsoft SDKs\Windows\v7.0\mc.exe
+:: etc.
 if defined VS90COMNTOOLS mklink /d "%RELAX%\VC" "%VS90COMNTOOLS%..\.."
+if defined VCINSTALLDIR  mklink /d "%RELAX%\VC" "%VCINSTALLDIR%.."
+if defined SdkSetupDir mklink /d "%RELAX%\VC" "%SdkSetupDir%\.."
 if not exist "%RELAX%\SDK" mklink /d "%RELAX%\SDK" "%programfiles%\Microsoft SDKs\Windows\v7.0"
+
+:: last chance
+if defined VCINSTALLDIR  mklink /d "%RELAX%\VC" "%VCINSTALLDIR%\.."
+if defined WindowsSDKDir mklink /d "%RELAX%\SDK" "%WindowsSDKDir%"
+
+::TODO
+if not exist %relax%\sdk goto fail
+if not exist %relax%\vc goto fail
+
+:: components
 if not exist "c:\cygwin\relax" mklink /d C:\cygwin\relax "%RELAX%"
 if not exist "C:\openssl" mklink /d c:\openssl "%RELAX%\openssl"
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 goto eof
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
+:fail
+echo [ERROR] unable to determine SDK and VC++ install locations
+exit /b 1
+goto eof
 rem :: example relevant environment variables from a
 rem windows 7 enterprise x64 install
 rem ::::: SDK vars
@@ -54,9 +90,9 @@ rem Include=c:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\Include;C:\Pro
 rem Lib=c:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\Lib;C:\Program Files\Microsoft SDKs\Windows\v7.0\Lib;
 rem MSSdk=C:\Program Files\Microsoft SDKs\Windows\v7.0
 rem NODEBUG=1
-rem ORIGINALPATH=C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;c:\relax\winmerge;c:\relax\7zip;c:\relax\cmake\bin;c:\relax\bin;Z:\Dropbox\tools\pstools;c:\erlang\bin;C:\NuGet\bin;
+rem ORIGINALPATH=C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;c:\relax\winmerge;c:\mozilla-build\7zip;c:\relax\cmake\bin;c:\relax\bin;Z:\Dropbox\tools\pstools;c:\erlang\bin;C:\NuGet\bin;
 rem OS=Windows_NT
-rem Path=c:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\Bin;c:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\vcpackages;C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE;C:\Program Files\Microsoft SDKs\Windows\v7.0\Bin\x64;C:\Program Files\Microsoft SDKs\Windows\v7.0\Bin;C:\Windows\Microsoft.NET\Framework\v3.5;C:\Windows\Microsoft.NET\Framework\v2.0.50727;C:\Program Files\Microsoft SDKs\Windows\v7.0\Setup;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;c:\relax\winmerge;c:\relax\7zip;c:\relax\cmake\bin;c:\relax\bin;Z:\Dropbox\tools\pstools;c:\erlang\bin;C:\NuGet\bin;
+rem Path=c:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\Bin;c:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\vcpackages;C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE;C:\Program Files\Microsoft SDKs\Windows\v7.0\Bin\x64;C:\Program Files\Microsoft SDKs\Windows\v7.0\Bin;C:\Windows\Microsoft.NET\Framework\v3.5;C:\Windows\Microsoft.NET\Framework\v2.0.50727;C:\Program Files\Microsoft SDKs\Windows\v7.0\Setup;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;c:\relax\winmerge;c:\mozilla-build\7zip;c:\relax\cmake\bin;c:\relax\bin;Z:\Dropbox\tools\pstools;c:\erlang\bin;C:\NuGet\bin;
 rem RegKeyPath=HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\VisualStudio\SxS\VC7
 rem SdkSetupDir=C:\Program Files\Microsoft SDKs\Windows\v7.0\Setup
 rem SdkTools=C:\Program Files\Microsoft SDKs\Windows\v7.0\Bin\x64;C:\Program Files\Microsoft SDKs\Windows\v7.0\Bin
@@ -64,7 +100,7 @@ rem TARGETOS=WINNT
 rem VCINSTALLDIR=c:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\
 rem VCRoot=c:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\
 rem VSRegKeyPath=HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\VisualStudio\SxS\VS7
-rem 
+rem
 rem :: base env vars
 rem ALLUSERSPROFILE=C:\ProgramData
 rem APPDATA=C:\Users\couch\AppData\Roaming
@@ -81,7 +117,7 @@ rem LOCALAPPDATA=C:\Users\couch\AppData\Local
 rem LOGONSERVER=\\RELAX
 rem NUMBER_OF_PROCESSORS=2
 rem OS=Windows_NT
-rem Path=C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;c:\relax\winmerge;c:\relax\7zip;c:\relax\cmake\bin;c:\relax\bin;Z:\Dropbox\tools\pstools;c:\erlang\bin;C:\NuGet\bin;
+rem Path=C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;c:\relax\winmerge;c:\mozilla-build\7zip;c:\relax\cmake\bin;c:\relax\bin;Z:\Dropbox\tools\pstools;c:\erlang\bin;C:\NuGet\bin;
 rem PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
 rem PROCESSOR_ARCHITECTURE=AMD64
 rem PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 42 Stepping 7, GenuineIntel
@@ -108,5 +144,5 @@ rem VS100COMNTOOLS=c:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\T
 rem windir=C:\Windows
 rem windows_tracing_flags=3
 rem windows_tracing_logfile=C:\BVTBin\Tests\installpackage\csilogfile.log
-rem 
+rem
 :eof

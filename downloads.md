@@ -6,8 +6,8 @@ https://raw.github.com/dch/glazier/master/bits/wxMSW-2.8.11_erlang_overlay.zip
 
 ################################################################################
 ### tools to support erlang and couchdb build
-http://downloads.sourceforge.net/sevenzip/7z465.exe
-
+# http://downloads.sourceforge.net/sevenzip/7z465.exe
+# http://msysgit.googlecode.com/files/Git-1.7.8-preview20111206.exe
 ################################################################################
 ### stuff you might find useful
 #bitvise_sshd_bits		WinSSHD5-Inst.exe	http://dl.bitvise.com/WinSSHD5-Inst.exe
@@ -18,19 +18,14 @@ http://downloads.sourceforge.net/sevenzip/7z465.exe
 ### compilers and SDKs
 http://strawberryperl.com/download/5.12.2.0/strawberry-perl-5.12.2.0-portable.zip
 http://www.nasm.us/pub/nasm/releasebuilds/2.09.07/win32/nasm-2.09.07-win32.zip
-http://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/MozillaBuildSetup-Latest.exe
+http://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/MozillaBuildSetup-1.6.exe
 http://www.cygwin.com/setup.exe
-http://www.cmake.org/files/v2.8/cmake-2.8.5-win32-x86.zip
+http://www.cmake.org/files/v2.8/cmake-2.8.6-win32-x86.zip
+### vc10 sdk 7.1 sp1 please http://www.microsoft.com/download/en/confirmation.aspx?id=8279
+http://download.microsoft.com/download/A/6/A/A6AC035D-DA3F-4F0C-ADA4-37C8E5D34E3D/winsdk_web.exe
 ### vcredist is very carefully chosen to match SDK and VC++ latest patches
- www.microsoft.com/download/en/details.aspx?id=26368
-http://download.microsoft.com/download/5/D/8/5D8C65CB-C849-4025-8E95-C3966CAFD8AE/vcredist_x86.exe
-
-### win7sdk_32bit	GRMSDK_EN_DVD.iso
-#http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDK_EN_DVD.iso
-### win7sdk_64bit	GRMSDKX_EN_DVD.iso
-#http://download.microsoft.com/download/2/E/9/2E911956-F90F-4BFB-8231-E292A7B6F287/GRMSDKX_EN_DVD.iso
-### visual_studio_express	VS2008ExpressWithSP1ENUX1504728.iso
-#http://download.microsoft.com/download/E/8/E/E8EEB394-7F42-4963-A2D8-29559B738298/VS2008ExpressWithSP1ENUX1504728.iso
+# http://www.microsoft.com/download/en/details.aspx?id=26999 for vc10
+http://download.microsoft.com/download/1/6/5/165255E7-1014-4D0A-B094-B6A430A6BFFC/vcredist_x86.exe
 
 ################################################################################
 ### OpenSSL and libcURL

@@ -6,16 +6,6 @@ if not exist c:\tmp mkdir c:\tmp
 set TEMP=c:\tmp
 set TMP=c:\tmp
 
-::path=%windir%\system32;%windir%;%windir%\system32\wbem;%windir%\syswow64;
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:: various compilation settings from SDKs, VC compiler/linker, etc
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:: set LINK & CL to resolve manifest binding issues & virtualisation hack in ld.sh#171
-set CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
-:: SETting LINK buggers up couchdb/src/couchdb/priv libtool and subsequent driver creation
-:: set LINK=/manifestuac:"level=asInvoker uiAccess=false"
-
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: following settings allow Erlang build to locate openssl correctly
 :: and CouchDB to find ICU, Curl, and SSL if required

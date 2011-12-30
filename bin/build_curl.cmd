@@ -28,7 +28,6 @@ set USE_OPENSSL=1
 set INCLUDE=%INCLUDE%;%SSL_PATH%\include;%SSL_PATH%\include\openssl;
 set LIBPATH=%LIBPATH%;%SSL_PATH%\lib;
 set LIB=%LIB%;%SSL_PATH%\lib;
-set CL=/D_BIND_TO_CURRENT_VCLIBS_VERSION=1
 vcbuild /useenv /upgrade /platform:Win32 lib\libcurl.vcproj
 vcbuild /useenv /platform:Win32 lib\libcurl.vcproj "Release|Win32"
 xcopy lib\Release\libcurl.lib lib\ /y

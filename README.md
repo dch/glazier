@@ -211,28 +211,13 @@ via `setenv /release /x86` again
 
 # Javascript
 ################################################################################
-The Javascript engine used by CouchDB is Mozilla Spidermonkey. Prior to 1.8.5
-[js185] there was no formal release for it, so you can build from anywhere on
-trunk. The 1.8.x source below [js18x] is also used on the Mac OS X homebrew
-build of CouchDB.
+The Javascript engine used by CouchDB is Mozilla Spidermonkey v1.8.5 [js185].
 
 * to build and install SpiderMonkey we use the mozilla tools chain.
-* run `c:\mozilla-build\start-msvc9.bat` even if you are on a 64-bit platform.
+* run `c:\mozilla-build\start-msvc10.bat` even if you are on a 64-bit platform.
 * do a sanity check to confirm the MS build compilers are present via
  `which cl link mc lc mt`
 * you may need to fudge the path if `cl.exe` can't be found using `PATH=$PATH:/c/relax/VC/VC/bin/:/c/relax/SDK/bin:/c/relax/VC/Common7/IDE:/c/relax/VC/VC/bin/amd64/:/c/relax/VC/VC/bin/x86_ia64/`
-
-* to build Spidermonkey JS 1.8.x [js18x]
- 
-        cd /c/relax
-        tar xzf bits/57a6ad20eae9.tar.gz
-        cd ./tracemonkey-57a6ad20eae9/js/src
-        autoconf-2.13
-        ./configure --enable-static --enable-shared-js
-        make
-
-
-* alternatively to build Spidermonkey JS 1.8.5 [js185]
 
         cd /c/relax
         tar xzf bits/js185-1.0.0.tar.gz
@@ -241,11 +226,7 @@ build of CouchDB.
         ./configure --enable-static --enable-shared-js
         make
 
-The CouchDB configure script is used later on to select which version of
-Spidermonkey is used.
-
 [js185]: http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz
-[js18x]: http://hg.mozilla.org/tracemonkey/archive/57a6ad20eae9.tar.gz
 
 # Building CouchDB
 ################################################################################
@@ -255,14 +236,12 @@ Finally we are going to build Apache CouchDB... whew! Recapping, we should have:
 * erlang in `/relax/otp_src_R14B03/release/win32` with a copy stashed nearby
 * openssl in `/relax/openssl/lib/{lib,ssl}eay32.lib`
 * libcurl in `/relax/curl/lib/libcurl.lib`
-* two js libraries in `/relax/js-1.8.5/js/src/dist/{bin,lib}/mozjs185-1.0.*` and
- `/relax/tracemonkey-57a6ad20eae9/js/src/dist/{bin,lib}/mozjs.*`
+* js library in `/relax/js-1.8.5/js/src/dist/{bin,lib}/mozjs185-1.0.*`
 * icu in `/relax/icu/bin/icu*.dll`
 
-There are three relevant scripts for building CouchDB:
+There are two relevant scripts for building CouchDB:
 
-* `couchdb_config_js180.sh` for CouchDB 1.1.0 or older, using js180
-* `couchdb_config_js185.sh` for CouchDB 1.1.1 or newer, supporting js185
+* `couchdb_config.sh` for CouchDB 1.1.1 or newer, supporting js185 only
 * `couchdb_build.sh` which compiles, and packages, CouchDB
 
 There are still some patches required against both released and trunk versions.
@@ -286,7 +265,6 @@ assuming that help2man will be useful on Windows.
         mv /usr/bin/curl-config /usr/bin/curl-config.dist
         mv /usr/bin/help2man /usr/bin/help2man.dist
         ./bootstrap
-        /relax/bin/couchdb_config_js185.sh
         /relax/bin/couchdb_build.sh
 
 

@@ -1,5 +1,5 @@
 ::setlocal
-path=%path%;%relax%\cmake\bin;%relax%\7zip;%relax%\openssl\bin;
+path=%path%;%relax%\cmake\bin;c:\mozilla-build\7zip;%relax%\openssl\bin;
 
 for %%i in ("%RELAX%\bits\curl-*.zip") do set curl_ver=%%~ni
 setx CURL_VER %curl_ver%
@@ -22,18 +22,15 @@ if defined curl_ver rd /s/q %curl_src%
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 pushd %curl_src%
-:: settings for Compiler
+:: ensure curl can find OpenSSL libraries
 set USE_SSLEAY=1
 set USE_OPENSSL=1
+set OPENSSL_PATH=%SSL_PATH%
 set INCLUDE=%INCLUDE%;%SSL_PATH%\include;%SSL_PATH%\include\openssl;
 set LIBPATH=%LIBPATH%;%SSL_PATH%\lib;
 set LIB=%LIB%;%SSL_PATH%\lib;
-vcbuild /useenv /upgrade /platform:Win32 lib\libcurl.vcproj
-vcbuild /useenv /platform:Win32 lib\libcurl.vcproj "Release|Win32"
-xcopy lib\Release\libcurl.lib lib\ /y
-:: nmake doesn't pull in SSL .libs correctly
-:: pushd %relax%\curl-*\lib
-:: nmake /f Makefile.vc9 CFG=release-ssl
+pushd %curl_src%
+nmake VC=vc10 vc-ssl
 popd
 :: make this specific curl version available to CouchDB build script
 mklink /d %curl_path% %curl_src%

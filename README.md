@@ -198,7 +198,7 @@ via `setenv /release /x86` again
 
 # LibcURL
 ################################################################################
-LibcURL is only required for versions of CouchDB <= 1.10 where it is embedded
+LibcURL is only required for versions of CouchDB < 1.1.1 where it is embedded
 in couchjs.exe. Trunk and future releases will have this as an optional include.
 
 * download [LibcURL] source from (http://curl.haxx.se/)
@@ -207,7 +207,7 @@ via `setenv /release /x86` again
 
         %relax%\bin\build_curl.cmd
 
-[libcurl]: http://curl.haxx.se/download/curl-7.21.7.zip
+[libcurl]: http://curl.haxx.se/download/curl-7.23.1.zip
 
 # Javascript
 ################################################################################

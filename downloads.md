@@ -51,5 +51,4 @@ http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz
 ################################################################################
 ## CouchDB source
 ## not auto redirect but original link is from http://www.apache.org/dyn/closer.cgi?path=/couchdb/1.x.y/apache-couchdb-1.x.y.tar.gz
-http://ftp.wayne.edu/apache/couchdb/1.0.3/apache-couchdb-1.0.3.tar.gz
-http://ftp.wayne.edu/apache/couchdb/1.1.0/apache-couchdb-1.1.0.tar.gz	
+http://ftp.wayne.edu/apache/couchdb/1.1.1/apache-couchdb-1.1.1.tar.gz

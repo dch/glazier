@@ -233,8 +233,8 @@ The Javascript engine used by CouchDB is Mozilla Spidermonkey v1.8.5 [js185].
 
 Finally we are going to build Apache CouchDB... whew! Recapping, we should have:
 
-* erlang in `/relax/otp_src_R14B03/release/win32` with a copy stashed nearby
-* openssl in `/relax/openssl/lib/{lib,ssl}eay32.lib`
+* erlang in `/relax/otp_src_R14B04/release/win32` with a copy stashed nearby
+* openssl in `/relax/openssl/{bin,lib}/{lib,ssl}eay32.{bin,lib}`
 * libcurl in `/relax/curl/lib/libcurl.lib`
 * js library in `/relax/js-1.8.5/js/src/dist/{bin,lib}/mozjs185-1.0.*`
 * icu in `/relax/icu/bin/icu*.dll`
@@ -244,15 +244,7 @@ There are two relevant scripts for building CouchDB:
 * `couchdb_config.sh` for CouchDB 1.1.1 or newer, supporting js185 only
 * `couchdb_build.sh` which compiles, and packages, CouchDB
 
-There are still some patches required against both released and trunk versions.
-For CouchDB 1.1.0, the patch from [COUCHDB-1152] is required.
-
-        cd /relax && tar xzf bits/apache-couchdb-1.1.0.tar.gz
-        cd apache-couchdb-1.1.0
-        patch -p0 < ../bits/COUCHDB-1152_move_to_ICU-4_4_2.patch
-        /relax/bin/couchdb_config_js180.sh
-        /relax/bin/couchdb_build.sh
-
+There are still some patches required against both released and master versions.
 For CouchDB 1.1.1 or newer, two small filthy hacks are required, which
 is needed until `configure.ac` avoids detection of cygwin's curl and avoids
 assuming that help2man will be useful on Windows.
@@ -266,7 +258,3 @@ assuming that help2man will be useful on Windows.
         mv /usr/bin/help2man /usr/bin/help2man.dist
         ./bootstrap
         /relax/bin/couchdb_build.sh
-
-
-[COUCHDB-1152]: https://issues.apache.org/jira/secure/attachment/12481030/COUCHDB-1152_move_to_ICU-4_4_2.patch
-[COUCHDB-1197]: https://issues.apache.org/jira/secure/attachment/12493303/COUCHDB-1197_libtool_sed_hackery.patch

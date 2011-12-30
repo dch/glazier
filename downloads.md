@@ -43,7 +43,7 @@ http://www.erlang.org/download/tcltk85_win32_bin.tar.gz
 # bits required to build couch
 ### libicu	icu4c-4_6_1-src.zip
 http://download.icu-project.org/files/icu4c/4.6.1/icu4c-4_6_1-src.zip
-### inno5_setup	isetup-5.4.2-unicode.exe
+### inno5_setup	isetup-5.4.3-unicode.exe
 http://www.jrsoftware.org/download.php/is-unicode.exe
 ### spidermonkey    js185-1.0.0.tar.gz
 http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz

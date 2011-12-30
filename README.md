@@ -116,7 +116,7 @@ using mount point to keep things clean=ish under `%relax%`.
 * the resulting DLLs in `c:\relax\openssl\bin` need to be distributed with
 Erlang/OTP and therefore CouchDB as well.
 
-[openssl]: http://www.openssl.org/source/openssl-1.0.0d.tar.gz
+[openssl]: http://www.openssl.org/source/openssl-0.9.8r.tar.gz
 
 # Environment
 ################################################################################

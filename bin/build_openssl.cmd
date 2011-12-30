@@ -1,5 +1,5 @@
 setlocal
-path=%path%;%relax%\7zip;%relax%\nasm;%relax%\strawberry\perl\bin;
+path=%path%;c:\mozilla-build\7zip;%relax%\nasm;%relax%\strawberry\perl\bin;
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: clean up existing installs

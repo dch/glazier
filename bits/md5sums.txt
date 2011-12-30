@@ -17,3 +17,4 @@ dd6c2a4807551b4a8a536067bde31d73 *otp_src_R15B.tar.gz
 1801436936e64598bab5b87b37dc7f87 *vcredist_x86.exe
 acda3682dd57e13fcb09da2de0a288be *winsdk_web.exe
 b6f4be9dd32090c42994765ff0a832cb *wxMSW-2.8.12.zip
+d6f1eef40a2dd3f17c63d24d8ca402c8 *zlib125.zip

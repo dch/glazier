@@ -30,6 +30,7 @@ http://download.microsoft.com/download/1/6/5/165255E7-1014-4D0A-B094-B6A430A6BFF
 ### OpenSSL and libcURL
 http://www.openssl.org/source/openssl-0.9.8r.tar.gz
 http://curl.haxx.se/download/curl-7.23.1.zip
+http://zlib.net/zlib125.zip
 ################################################################################
 ### bits required to build erlang
 http://www.erlang.org/download/otp_src_R15B.tar.gz

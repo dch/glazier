@@ -1,16 +1,11 @@
 setlocal
-path=%path%;%relax%\7zip;%relax%\nasm;%relax%\strawberry\perl\bin;
-
+path=%path%;c:\mozilla-build\7zip;%relax%\nasm;%relax%\strawberry\perl\bin;
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: clean up existing installs
-:: extract bundle and name
-:: stash SSL version
-del /f/q "%TEMP%\zlib*.tar"
-7z x "%relax%\bits\zlib-*.tar.gz" -y -o"%TEMP%"
-for %%i in ("%TEMP%\zlib-*tar") do set zlib_ver=%%~ni
+7z x "%relax%\bits\zlib-*.zip" -y -o%relax%
+for %%i in ("%") do set zlib_ver=%%~ni
 if defined zlib_ver rd /s/q %relax%\%zlib_ver%
 setx zlib_ver %zlib_ver%
-7z x "%TEMP%\zlib-*.tar" -o%relax%\ -y
 popd
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -18,9 +13,9 @@ pushd %relax%\%zlib_ver%\contrib\masmx86
 call bld_ml32.bat
 popd
 pushd %relax%\%zlib_ver%
-vcbuild /rebuild contrib\vstudio\vc9\zlibvc.sln "Release|Win32"
-:: TOOD these need to be put into $RELAX/zlib/
-copy contrib\vstudio\vc9\x86\ZlibStatRelease\zlibstat.lib .
+nmake -f win32\Makefile.msc
+nmake -f win32\Makefile.msc test
+:: copy contrib\vstudio\vc9\x86\ZlibStatRelease\zlibstat.lib .
 popd
 endlocal
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

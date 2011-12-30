@@ -93,15 +93,14 @@ The express solution is just to use 7zip to unpack [glazier tools](https://githu
 
 # wxWidgets
 ################################################################################
-* [wxWidgets] source and the glazier [overlay] are already downloaded
+* [wxWidgets] source should already be downloaded into `%relax%/bits/`
 * start an SDK shell via `setenv.cmd /Release /x86`
 * run `c:\relax\bin\build_wx.cmd` to extract and build wxWidgets
-* NB Erlang build requires wxWidgets in `/opt/local/pgm/wxWidgets-2.8.11` so
+* NB Erlang build requires softlinked wxWidgets in `/opt/local/pgm/wxWidgets-2.8.12` so
   we set that up too
 * check for errors
 
-[wxwidgets]: http://sourceforge.net/projects/wxwindows/files/2.8.11/wxMSW-2.8.11.zip
-[overlay]:   https://raw.github.com/dch/glazier/master/bits/wxMSW-2.8.11_erlang_overlay.zip
+[wxwidgets]: http://sourceforge.net/projects/wxwindows/files/2.8.12/wxMSW-2.8.12.zip
 
 # OpenSSL
 ################################################################################

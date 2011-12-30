@@ -1,0 +1,8 @@
+#undef  wxUSE_GRAPHICS_CONTEXT
+#define wxUSE_GRAPHICS_CONTEXT 1
+#undef  wxUSE_GLCANVAS
+#define wxUSE_GLCANVAS 1
+#undef  wxUSE_POSTSCRIPT
+#define wxUSE_POSTSCRIPT 1
+#undef  wxUSE_OPENGL
+#define wxUSE_OPENGL 1

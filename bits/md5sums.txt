@@ -14,6 +14,6 @@ ce595447571128bc66f630a8fa13339a *otp_src_R14B01.tar.gz
 41881cc6a7503748c9ea2b1580af2fd0 *strawberry-perl-5.12.2.0-portable.zip
 5b39aa309baf8633b475f25e23b75677 *tcltk85_win32_bin.tar.gz
 0f2490f78d880ec184d9233df97ab83d *tracemonkey-57a6ad20eae9.tar.gz
-17e778a5f83cff4f32a50999a46ce5b5 *wxMSW-2.8.11_erlang_overlay.zip
 1801436936e64598bab5b87b37dc7f87 *vcredist_x86.exe
 acda3682dd57e13fcb09da2de0a288be *winsdk_web.exe
+b6f4be9dd32090c42994765ff0a832cb *wxMSW-2.8.12.zip

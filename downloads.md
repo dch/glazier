@@ -1,8 +1,7 @@
 ### list of all files needed for build chain ###################################
 ################################################################################
-### wxWidgets and Erlang overlay
-http://sourceforge.net/projects/wxwindows/files/2.8.11/wxMSW-2.8.11.zip
-https://raw.github.com/dch/glazier/master/bits/wxMSW-2.8.11_erlang_overlay.zip
+### wxWidgets
+http://prdownloads.sourceforge.net/wxwindows/wxMSW-2.8.12.zip
 
 ################################################################################
 ### tools to support erlang and couchdb build

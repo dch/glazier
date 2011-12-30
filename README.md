@@ -183,13 +183,10 @@ can take several hours on slower machines:
         robocopy $ERL_TOP /relax/release/$OTP_REL -mir
 
 
-# ICU 4.4.2
+# ICU 4.6.1
 ################################################################################
-Ideally ICU would compile with current VC runtime using VC++ directly but
-it doesn't directly, so a stubdata.obj is built first, then the rest is compiled
-using the latest VC runtimes.
 
-* Download ICU 4.4.2 windows source from [icu442]
+* Download ICU 4.6.1 windows source from [icu461]
 * either re-use the "shell.cmd" from before, or open a Windows SDK prompt
 via `setenv /release /x86` again
 
@@ -197,7 +194,7 @@ via `setenv /release /x86` again
 
 * confirm that the resulting ICU DLLs have the appropriate manifests
 
-[icu442]: http://download.icu-project.org/files/icu4c/4.4.2/icu4c-4_4_2-src.zip
+[icu461]: http://download.icu-project.org/files/icu4c/4.6.1/icu4c-4_6_1-src.zip
 
 # LibcURL
 ################################################################################

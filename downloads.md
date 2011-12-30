@@ -40,10 +40,8 @@ http://www.erlang.org/download/tcltk85_win32_bin.tar.gz
 
 ################################################################################
 # bits required to build couch
-### libicu	icu4c-4_4_2-src.zip
-# http://download.icu-project.org/files/icu4c/4.4.2/icu4c-4_4_2-src.zip
-### libicu	icu4c-4_4_2-src.tgz (unix variant for cygwin wrapped build)
-## http://download.icu-project.org/files/icu4c/4.4.2/icu4c-4_4_2-src.tgz
+### libicu	icu4c-4_6_1-src.zip
+http://download.icu-project.org/files/icu4c/4.6.1/icu4c-4_6_1-src.zip
 ### inno5_setup	isetup-5.4.2-unicode.exe
 http://www.jrsoftware.org/download.php/is-unicode.exe
 ### spidermonkey	57a6ad20eae9.tar.gz

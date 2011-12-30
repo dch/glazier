@@ -1,8 +1,8 @@
 907b763d3a14b6649bf0371ffa75a36b *apache-couchdb-1.1.0.tar.gz
 8e0411224c978aaa449210637165072c *curl-7.21.7.zip
-314e582264c36b3735466c522899aa07 *icu4c-4_4_2-src.tgz
 018e04dfd1539529b05b43d5a932f7a4 *isetup-5.4.2-unicode.exe
 aafbb7a9773aae4ae06a7304197843ff *cmake-2.8.6-win32-x86.zip
+eb0d2dcca17c0c05480cbb114dffb83f *icu4c-4_6_1-src.zip
 a4574365938222adca0a6bd33329cb32 *js185-1.0.0.tar.gz
 998d7ec6d9f07237fe0d54e5c7ffc4ae *MozillaBuildSetup-1.6.exe
 23edf89e61f43dd9f47b01fa7fd7c3bd *nasm-2.09.07-win32.zip

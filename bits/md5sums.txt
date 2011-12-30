@@ -7,9 +7,9 @@ a4574365938222adca0a6bd33329cb32 *js185-1.0.0.tar.gz
 998d7ec6d9f07237fe0d54e5c7ffc4ae *MozillaBuildSetup-1.6.exe
 23edf89e61f43dd9f47b01fa7fd7c3bd *nasm-2.09.07-win32.zip
 5e02441c7f3fa4da4f4928a2d42a07c3 *nsis-2.46-setup.exe
-ce595447571128bc66f630a8fa13339a *otp_src_R14B01.tar.gz
-7979e662d11476b97c462feb7c132fb7 *otp_src_R14B03.tar.gz
 0352932ea863bc02b056cda7c9ac5b79 *openssl-0.9.8r.tar.gz
+4b469729f103f52702bfb1fb24529dc0 *otp_src_R14B04.tar.gz
+dd6c2a4807551b4a8a536067bde31d73 *otp_src_R15B.tar.gz
 6f819070a9461ff442c708312c919aa5 *setup.exe
 41881cc6a7503748c9ea2b1580af2fd0 *strawberry-perl-5.12.2.0-portable.zip
 5b39aa309baf8633b475f25e23b75677 *tcltk85_win32_bin.tar.gz

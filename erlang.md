@@ -5,7 +5,7 @@
 * start a new cygwin shell via `c:\relax\bin\shell.cmd`
 * in a cygwin shell:
 
-        cd /relax && tar xzf /relax/bits/otp_src_R14B03.tar.gz &
+        cd /relax && tar xzf /relax/bits/otp_src_R14B04.tar.gz &
 
 * include optional components - used for debugger and java interfaces
 

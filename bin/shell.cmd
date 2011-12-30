@@ -36,11 +36,9 @@ set /p choice=press 1 for R14b01, 3 for R14b03, 4 for R14b04, 0 (or wait) to exi
 :: then get to unix goodness as fast as possible
 if /i "%choice%"=="0" goto win_shell
 ::::if /i "%choice%"=="2" goto R......
-if /i "%choice%"=="1" goto R14B01
-if /i "%choice%"=="2" goto R14B02
 if /i "%choice%"=="3" goto R14B03
 if /i "%choice%"=="4" goto R14B04
-if /i "%choice%"=="5" goto R14B05
+if /i "%choice%"=="5" goto R15B
 :: else
 goto eof
 
@@ -52,10 +50,10 @@ set OTP_REL=R14B03
 goto unix_shell
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:R14B01
-set ERL_TOP=/relax/otp_src_R14B01
-set ERTS_VSN=5.8.2
-set OTP_REL=R14B01
+:R15B
+set ERL_TOP=/relax/otp_src_R15B
+set ERTS_VSN=5.9
+set OTP_REL=R15B
 goto unix_shell
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

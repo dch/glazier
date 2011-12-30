@@ -25,8 +25,8 @@ consistent repeatable build environment.
 
         pushd c:\relax
         path=c:\relax\bin;%path%
-        aria2c.exe --force-sequential=false --max-connection-per-server=1  --check-certificate=false --auto-file-renaming=false --input-file=downloads.md --max-concurrent-downloads=5 --dir=bits --save-session=bits/a2session.txt
-         cd bits && md5sum.exe --check md5sums.txt
+        aria2c.exe --force-sequential=false --max-connection-per-server=1 --check-certificate=false --auto-file-renaming=false --input-file=downloads.md --max-concurrent-downloads=5 --dir=bits --save-session=bits/a2session.txt
+        cd bits && md5sum.exe --check ..\downloads.md5
 
 # Install Compilers
 ################################################################################
@@ -163,9 +163,8 @@ More details are at [erlang INSTALL-Win32.md on github](http://github.com/erlang
 * launch a cygwin erl-ified shell via `c:\relax\bin\shell.cmd`
 * choose your erlang version - R14B03 is strongly advised
 * unpack erlang source by `cd $RELAX && tar xzf bits/otp_src_R14B03.tar.gz`
-* apply additional [patches] to allow building with OpenSSL again
 * customise Erlang by excluding unneeded Java interface and old GS GUI:
-    
+
         cd $ERL_TOP
         tar xvzf /relax/bits/tcltk85_win32_bin.tar.gz
         echo "skipping gs" > lib/gs/SKIP
@@ -177,13 +176,12 @@ can take several hours on slower machines:
 
         erl_config.sh
         erl_build.sh
-        
+
 * the output is logged into `$ERL_TOP/build_*.txt` if required
 * at this point I usually duplicate the OTP source tree for later
 
         robocopy $ERL_TOP /relax/release/$OTP_REL -mir
 
-[patches]: https://github.com/dch/otp/commit/d1e151a689f8e54cdc2d671e96e00beb86d2b571
 
 # ICU 4.4.2
 ################################################################################

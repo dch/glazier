@@ -32,8 +32,8 @@ http://curl.haxx.se/download/curl-7.21.7.zip
 http://www.openssl.org/source/openssl-0.9.8r.tar.gz
 ################################################################################
 ### bits required to build erlang
-http://www.erlang.org/download/otp_src_R14B03.tar.gz
-http://www.erlang.org/download/otp_src_R14B01.tar.gz
+http://www.erlang.org/download/otp_src_R15B.tar.gz
+http://www.erlang.org/download/otp_src_R14B04.tar.gz
 ### nsis	nsis-2.46-setup.exe
 http://download.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
 http://www.erlang.org/download/tcltk85_win32_bin.tar.gz

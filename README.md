@@ -161,8 +161,8 @@ More details are at [erlang INSTALL-Win32.md on github](http://github.com/erlang
 
 * start an SDK shell via `setenv.cmd /Release /x86`
 * launch a cygwin erl-ified shell via `c:\relax\bin\shell.cmd`
-* choose your erlang version - R14B03 is strongly advised
-* unpack erlang source by `cd $RELAX && tar xzf bits/otp_src_R14B03.tar.gz`
+* choose your erlang version - R14B04 is strongly advised
+* unpack erlang source by `cd $RELAX && tar xzf bits/otp_src_R14B04.tar.gz`
 * customise Erlang by excluding unneeded Java interface and old GS GUI:
 
         cd $ERL_TOP
@@ -239,22 +239,27 @@ Finally we are going to build Apache CouchDB... whew! Recapping, we should have:
 * js library in `/relax/js-1.8.5/js/src/dist/{bin,lib}/mozjs185-1.0.*`
 * icu in `/relax/icu/bin/icu*.dll`
 
+For CouchDB 1.1.1 or newer, two small filthy hacks are required, which
+is needed until `configure.ac` avoids detection of cygwin's curl and avoids
+assuming that help2man will be useful on Windows.
+
+* start an SDK shell via `setenv.cmd /Release /x86`
+* launch a cygwin erl-ified shell via `c:\relax\bin\shell.cmd`
+* apply the work-arounds:
+
+        mv /usr/bin/curl-config /usr/bin/curl-config.dist
+        mv /usr/bin/help2man /usr/bin/help2man.dist
+
+
 There are two relevant scripts for building CouchDB:
 
 * `couchdb_config.sh` for CouchDB 1.1.1 or newer, supporting js185 only
 * `couchdb_build.sh` which compiles, and packages, CouchDB
 
-There are still some patches required against both released and master versions.
-For CouchDB 1.1.1 or newer, two small filthy hacks are required, which
-is needed until `configure.ac` avoids detection of cygwin's curl and avoids
-assuming that help2man will be useful on Windows.
+Let's pull the CouchDB source from git repo:
 
-        cd /relax
-        git clone http://git-wip-us.apache.org/repos/asf/couchdb.git
-        git checkout 1.1.1
-        git clean -fdx
-        cd couchdb
-        mv /usr/bin/curl-config /usr/bin/curl-config.dist
-        mv /usr/bin/help2man /usr/bin/help2man.dist
+        git clone http://git-wip-us.apache.org/repos/asf/couchdb.git \
+          /relax/couchdb
+        pushd /relax/couchdb && git checkout -b 1.1.1 && git clean -fdx
         ./bootstrap
-        /relax/bin/couchdb_build.sh
+        /relax/bin/couchdb_config.sh && /relax/bin/couchdb_build.sh

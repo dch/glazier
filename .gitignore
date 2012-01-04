@@ -7,8 +7,6 @@ bits/setup.log*
 bits/http*
 bits/ftp*
 bits/*.iso
-bits/npp*.7z
-bits/icu4c*
-bits/openssl-*
-bits/otp_src_*
-bits/zlib-*
+bits/*.7z
+bits/*.patch
+bits/a2session.txt

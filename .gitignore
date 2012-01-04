@@ -9,3 +9,6 @@ bits/ftp*
 bits/*.iso
 bits/*.7z
 
+
+bits/*.patch
+bits/a2session.txt

@@ -25,7 +25,7 @@ consistent repeatable build environment.
 
         pushd c:\relax
         path=c:\relax\bin;%path%
-        aria2c.exe --force-sequential=false --max-connection-per-server=1 --check-certificate=false --auto-file-renaming=false --input-file=downloads.md --max-concurrent-downloads=5 --dir=bits --save-session=bits/a2session.txt
+        aria2c.exe --force-sequential=false --max-connection-per-server=5 --check-certificate=false --auto-file-renaming=false --input-file=downloads.md --max-concurrent-downloads=5 --dir=bits --save-session=bits/a2session.txt
         cd bits && md5sum.exe --check ..\downloads.md5
 
 # Install Compilers
@@ -33,19 +33,23 @@ consistent repeatable build environment.
 Due to size, these are not downloaded in the bundle apart from
 mozilla & cygwin setup.
 
-* Install Windows SDK 7.1 either 32 or 64bit for your platform using
-[win71sdk_websetup] or a downloaded [win71sdk_iso]
+* Install one of either Windows SDK 7.0, or 7.1, in either 32 or 64bit
+as appropriate for your platform using:
+    * SDK 7.0 [win70sdk_websetup] or a downloaded [win70sdk_iso]
+    * SDK 7.1 [win71sdk_websetup] or a downloaded [win71sdk_iso]
 * Run Windows Update for latest patches
 * Reboot
 * Download Mozilla toolkit from [mozbuild] and install per defaults
 * Install [cygwin] components, at least:
-    * devel: ALL
+    * devel: ALL (or just the GCC and GCC C++ compilers and GNU auto*)
     * editors: vim or emacs
     * utils: file
 
 [cygwin]: http://www.cygwin.com/setup.exe
 [win71sdk_websetup]: http://www.microsoft.com/download/en/confirmation.aspx?id=8279
 [win71sdk_iso]:	http://go.microsoft.com/fwlink/?LinkID=191420
+[win70sdk_websetup]: http://www.microsoft.com/download/en/details.aspx?id=3138
+[win70sdk_iso]:	http://go.microsoft.com/fwlink/?LinkID=150216
 [mozbuild]: http://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/MozillaBuildSetup-1.6.exe
 
 # Initial Setup of Environment
@@ -71,7 +75,11 @@ You should end up with something resembling this structure:
 # Install downloaded tools
 ################################################################################
 
-* copy [vcredist] to `%relax%/` for later use by Erlang and CouchDB builds
+The Microsoft Visual C++ runtime redistributales are bundled with Erlang
+and CouchDB by default.
+
+* for Windows SDK 7.1, copy [vcredist_sdk71] to `%relax%/`
+* for Windows SDK 7.0, copy [vcredist_sdk70] to `%relax%/`
 
 The express solution is just to use 7zip to unpack [glazier tools](https://github.com/downloads/dch/glazier/toolbox.7z)
  inside `%relax%`. Or do it manually for the same result:
@@ -87,7 +95,7 @@ The express solution is just to use 7zip to unpack [glazier tools](https://githu
 [perl]: http://strawberryperl.com/download/5.12.2.0/strawberry-perl-5.12.2.0-portable.zip
 [nasm]: http://www.nasm.us/pub/nasm/releasebuilds/2.09.07/win32/nasm-2.09.07-win32.zip
 [cmake]: http://www.cmake.org/files/v2.8/cmake-2.8.6-win32-x86.zip
-[vcredist]: http://download.microsoft.com/download/1/6/5/165255E7-1014-4D0A-B094-B6A430A6BFFC/vcredist_x86.exe
+[vcredist_sdk71]: http://download.microsoft.com/download/1/6/5/165255E7-1014-4D0A-B094-B6A430A6BFFC/vcredist_x86.exe
 [nsis]: http://download.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
 [isetup]: http://www.jrsoftware.org/download.php/is-unicode.exe
 
@@ -186,7 +194,7 @@ can take several hours on slower machines:
 # ICU 4.6.1
 ################################################################################
 
-* Download ICU 4.6.1 windows source from [icu461]
+* Download ICU 4.6.1 windows source from [icu461zip]
 * either re-use the "shell.cmd" from before, or open a Windows SDK prompt
 via `setenv /release /x86` again
 
@@ -194,7 +202,19 @@ via `setenv /release /x86` again
 
 * confirm that the resulting ICU DLLs have the appropriate manifests
 
-[icu461]: http://download.icu-project.org/files/icu4c/4.6.1/icu4c-4_6_1-src.zip
+[icu461zip]: http://download.icu-project.org/files/icu4c/4.6.1/icu4c-4_6_1-src.zip
+[icu461tgz]: http://download.icu-project.org/files/icu4c/4.6.1/icu4c-4_6_1-src.tgz
+
+* NB for MSVC9 is supported only via cygwin; use [icu461tgz] instead and
+
+        cd $RELAX
+        DEST=`pwd`/icu
+        tar xzf bits/icu4c-4_4_2-src.tgz
+        cd $DEST/source && ./runConfigureICU Cygwin/MSVC --prefix=$DEST
+        make && make install
+        cp $DEST/lib/*.dll $DEST/bin/
+
+* compiling under cygwin is likely also to work for MSVC10
 
 # LibcURL
 ################################################################################
@@ -202,6 +222,7 @@ LibcURL is only required for versions of CouchDB < 1.1.1 where it is embedded
 in couchjs.exe. Trunk and future releases will have this as an optional include.
 
 * download [LibcURL] source from (http://curl.haxx.se/)
+* NB when using SDK7.0 I needed to `copy %windir%\system32\notepad.exe c:\relax\bin\bscmake.exe`
 * either re-use the "shell.cmd" from before, or open a Windows SDK prompt
 via `setenv /release /x86` again
 

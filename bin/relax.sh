@@ -68,10 +68,10 @@ MC_SH_DEBUG_LOG=$TMP/mc_r$OTP_VER.log
 
 export OVERRIDE_TARGET CC CXX AR RANLIB OVERRIDE_CONFIG_CACHE_STATIC OVERRIDE_CONFIG_CACHE INCLUDE LIB LIBPATH LINK CL PATH TMP CC_SH LD_SH RC_SH MD_SH MC_SH ERL_TOP ERTS_VSN OTP_VER SHELL RELAX GLAZIER WIN32_WRAPPER_PATH OVERRIDE_TARGET
 
+# ensure we have an ERL_TOP to go to
+mkdir -p $ERL_TOP > /dev/null 2>&1
+chdir $ERL_TOP
 
-# first change to $RELAX as if erlang tar.gz are not extracted the latter will fail
-cd $RELAX
-cd $ERL_TOP
 # this shouldn't change anything really
 ### eval `./otp_build env_win32`
 

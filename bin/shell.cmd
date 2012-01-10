@@ -32,13 +32,19 @@ set LIB=%LIB%;%SSL_PATH%\lib;%CURL_PATH%\lib;%ICU_PATH%\lib;%ZLIB_PATH%\lib;
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::check which version of erlang setup we want
 :: choice.exe exists on all windows platforms since MSDOS but not on XP
-set /p choice=press 1 for R14b01, 3 for R14b03, 4 for R14b04, 0 (or wait) to exit to the shell
+echo select:
+echo       3 for R14b03
+echo       4 for R14b04
+echo       5 for R15B
+echo       1 for R15b01
+set /p choice=or 0 to exit to the shell.
 :: then get to unix goodness as fast as possible
 if /i "%choice%"=="0" goto win_shell
 ::::if /i "%choice%"=="2" goto R......
 if /i "%choice%"=="3" goto R14B03
 if /i "%choice%"=="4" goto R14B04
 if /i "%choice%"=="5" goto R15B
+if /i "%choice%"=="1" goto R15B01
 :: else
 goto eof
 
@@ -54,6 +60,13 @@ goto unix_shell
 set ERL_TOP=/relax/otp_src_R15B
 set ERTS_VSN=5.9
 set OTP_REL=R15B
+goto unix_shell
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:R15B01
+set ERL_TOP=/relax/otp_src_R15B01
+set ERTS_VSN=5.9.1
+set OTP_REL=R15B01
 goto unix_shell
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

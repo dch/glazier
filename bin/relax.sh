@@ -18,7 +18,7 @@ echo doing sanity checks
 # here we want to see that junction points are set up and
 # rebuild path from scratch as ./otp_build env_win32 gets it wrong
 # first up are erlang build helper scripts
-PATH=$ERL_TOP/release/win32/erts-$ERTS_VSN/bin:$ERL_TOP/erts/etc/win32/cygwin_tools/vc:$ERL_TOP/erts/etc/win32/cygwin_tools
+PATH=$ERL_TOP/bootstrap/bin:$ERL_TOP/release/win32/erts-$ERTS_VSN/bin:$ERL_TOP/erts/etc/win32/cygwin_tools/vc:$ERL_TOP/erts/etc/win32/cygwin_tools
 
 # then MSVC9 binaries using the new junction points
 ###PATH=$PATH:/cygdrive/c/PROGRA~2/MICROS~1.0/Common7/IDE:/cygdrive/c/PROGRA~2/MICROS~1.0/VC/BIN:/cygdrive/c/PROGRA~2/MICROS~1.0/Common7/Tools:/cygdrive/c/PROGRA~2/MICROS~1.0/VC/VCPACK~1
@@ -57,6 +57,8 @@ AR="ar.sh"
 RANLIB="true"
 OVERRIDE_CONFIG_CACHE="$ERL_TOP/erts/autoconf/win32.config.cache"
 OVERRIDE_CONFIG_CACHE_STATIC="$ERL_TOP/erts/autoconf/win32.config.cache.static"
+OVERRIDE_TARGET="win32"
+WIN32_WRAPPER_PATH="$ERL_TOP/erts/etc/win32/cygwin_tools/vc:$ERL_TOP/erts/etc/win32/cygwin_tools"
 
 CC_SH_DEBUG_LOG=$TMP/cc_r$OTP_VER.log
 LD_SH_DEBUG_LOG=$TMP/ld_r$OTP_VER.log
@@ -64,7 +66,8 @@ RC_SH_DEBUG_LOG=$TMP/rc_r$OTP_VER.log
 MD_SH_DEBUG_LOG=$TMP/md_r$OTP_VER.log
 MC_SH_DEBUG_LOG=$TMP/mc_r$OTP_VER.log
 
-export OVERRIDE_TARGET CC CXX AR RANLIB OVERRIDE_CONFIG_CACHE_STATIC OVERRIDE_CONFIG_CACHE INCLUDE LIB LIBPATH LINK CL PATH TMP CC_SH LD_SH RC_SH MD_SH MC_SH ERL_TOP ERTS_VSN OTP_VER SHELL RELAX GLAZIER
+export OVERRIDE_TARGET CC CXX AR RANLIB OVERRIDE_CONFIG_CACHE_STATIC OVERRIDE_CONFIG_CACHE INCLUDE LIB LIBPATH LINK CL PATH TMP CC_SH LD_SH RC_SH MD_SH MC_SH ERL_TOP ERTS_VSN OTP_VER SHELL RELAX GLAZIER WIN32_WRAPPER_PATH OVERRIDE_TARGET
+
 
 # first change to $RELAX as if erlang tar.gz are not extracted the latter will fail
 cd $RELAX

@@ -209,17 +209,19 @@ via `setenv /release /x86` again
 
         cd $RELAX
         DEST=`pwd`/icu
-        tar xzf bits/icu4c-4_4_2-src.tgz
+        tar xzf bits/icu4c-4_6_1-src.tgz
         cd $DEST/source && ./runConfigureICU Cygwin/MSVC --prefix=$DEST
         make && make install
         cp $DEST/lib/*.dll $DEST/bin/
 
-* compiling under cygwin is likely also to work for MSVC10
+* compiling under cygwin is likely also to work for MSVC10 if a unified
+  build process is required.
 
 # LibcURL
 ################################################################################
 LibcURL is only required for versions of CouchDB < 1.1.1 where it is embedded
 in couchjs.exe. Trunk and future releases will have this as an optional include.
+
 
 * download [LibcURL] source from (http://curl.haxx.se/)
 * NB when using SDK7.0 I needed to `copy %windir%\system32\notepad.exe c:\relax\bin\bscmake.exe`

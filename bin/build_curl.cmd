@@ -1,7 +1,7 @@
 ::setlocal
-path=%path%;%relax%\cmake\bin;c:\mozilla-build\7zip;%relax%\openssl\bin;
+path=%path%;%opt%\cmake\bin;c:\mozilla-build\7zip;%relax%\openssl\bin;
 
-for %%i in ("%RELAX%\bits\curl-*.zip") do set curl_ver=%%~ni
+for %%i in ("%glazier%\bits\curl-*.zip") do set curl_ver=%%~ni
 setx CURL_VER %curl_ver%
 set CURL_SRC=%RELAX%\%curl_ver%
 setx CURL_SRC %curl_src%
@@ -30,6 +30,7 @@ set INCLUDE=%INCLUDE%;%SSL_PATH%\include;%SSL_PATH%\include\openssl;
 set LIBPATH=%LIBPATH%;%SSL_PATH%\lib;
 set LIB=%LIB%;%SSL_PATH%\lib;
 pushd %curl_src%
+:: same makefile works for vc9 heh heh
 nmake VC=vc10 vc-ssl
 popd
 :: make this specific curl version available to CouchDB build script

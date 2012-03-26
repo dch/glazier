@@ -3,16 +3,16 @@ path=%path%;c:\mozilla-build\7zip;
 :: read the version of wxWidgets from the wxMSW source distribution
 :: wx_ver is used later on only in this script to set up a softlink
 :: so that Erlang finds it in the correct location
-for %%i in ("%RELAX%\bits\wxMSW*.zip") do set wx_src=%%~ni
+for %%i in ("%glazier%\bits\wxMSW*.zip") do set wx_src=%%~ni
 set wx_ver=%wx_src:wxmsw=wxWidgets%
 setx wx_ver %wx_ver%
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 if exist c:\cygwin\opt\local\pgm\%wx_ver% goto build
 if exist %relax%\%wx_src% goto build
-7z.exe x %RELAX%\bits\wxMSW* -aoa -y -o%RELAX%\
+7z.exe x %glazier%\bits\wxMSW* -aoa -y -o%relax%\
 mkdir c:\cygwin\opt\local\pgm > NUL: 2>&1
-mklink /d c:\cygwin\opt\local\pgm\%wx_ver% c:\relax\%wx_src%
+mklink /d c:\cygwin\opt\local\pgm\%wx_ver% %relax%\%wx_src%
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :build
@@ -21,7 +21,7 @@ mklink /d c:\cygwin\opt\local\pgm\%wx_ver% c:\relax\%wx_src%
 ::  lib\vc_lib\msw\wx\setup.h          VC++ static, wxMSW
 ::  lib\vc_lib\mswud\wx\setup.h        VC++ static, wxMSW, Unicode, debug
 ::  lib\vc_lib\mswunivd\wx\setup.h     VC++ static, wxUniversal, debug
-type %relax%\bits\wxwidgets_setup.h >> %relax%\%wx_src%\include\wx\msw\setup.h
+type %glazier%\bits\wxwidgets_setup.h >> %relax%\%wx_src%\include\wx\msw\setup.h
 
 nmake BUILD=release SHARED=0 UNICODE=1 USE_OPENGL=1 USE_GDIPLUS=1 DIR_SUFFIX_CPU= -f makefile.vc
 pushd %RELAX%\%wx_src%\build\msw

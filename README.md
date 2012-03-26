@@ -186,9 +186,7 @@ can take several hours on slower machines:
         erl_build.sh
 
 * the output is logged into `$ERL_TOP/build_*.txt` if required
-* at this point I usually duplicate the OTP source tree for later, as
-Running the same command swapping the parameters will clean out
-the build tree completely.
+* at this point I usually duplicate the OTP source tree for later
 
         robocopy $ERL_TOP /relax/release/$OTP_REL -mir
 

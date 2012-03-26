@@ -17,15 +17,16 @@ echo DONE. | tee -a $COUCH_TOP/build_dist.txt
 echo DONE.
 echo to move build files to release area run the following:
 echo PATCH=_otp_$OTP_REL.exe
-echo DEST=/relax/z/Dropbox/CouchDB/Snapshots/`date +%Y%m%d`
+echo DEST=/cygdrive/d/release/CouchDB/Snapshots/`date +%Y%m%d`
 echo pushd $COUCH_TOP/etc/windows/
 echo rename .exe \$PATCH setup-couchdb-*
 echo WINCOUCH=\`ls -1 setup-*.exe\`
 echo rm \$WINCOUCH.*
 echo shasum \$WINCOUCH \> \$WINCOUCH.sha
 echo md5sum \$WINCOUCH \> \$WINCOUCH.md5
-echo mkdir -p \$DEST
+echo mkdir -p \$DEST/
 echo mv setup-couchdb-* \$DEST/
+echo tar cvzf \$DEST/\$WINCOUCH.build_logs.tgz $COUCH_TOP/bui\*.txt
 echo popd
 
 echo DONE.

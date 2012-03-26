@@ -22,8 +22,21 @@ if not defined ZLIB_PATH set ZLIB_PATH=%RELAX%\zlib
 :: these are *NOT* the same but when we shell out to CL.exe and LINK.exe
 :: all is well again
 
-set LIB=%RELAX%\VC\VC\lib;%RELAX%\SDK\lib;%LIB%
-SET INCLUDE=%RELAX%\VC\VC\Include;%RELAX%\SDK\Include;%RELAX%\SDK\Include\gl;%INCLUDE%
+:: opt is for build tools
+:: glazier our scripts
+:: relax for couchdb
+:: werldir for building erlang
+
+if not defined OPT set OPT=c:\opt
+if not defined GLAZIER set GLAZIER=%~dp0
+if not defined RELAX set RELAX=%d0\relax
+if not defined WERLDIR set WERLDIR=%d0\werl
+setx OPT %OPT% > NUL:
+setx GLAZIER %GLAZIER% > NUL:
+setx RELAX %RELAX% > NUL:
+
+set LIB=%OPT%\VC\VC\lib;%OPT%\SDK\lib;%LIB%
+SET INCLUDE=%OPT%\VC\VC\Include;%OPT%\SDK\Include;%OPT%\SDK\Include\gl;%INCLUDE%
 
 set INCLUDE=%INCLUDE%;%SSL_PATH%\include\openssl;%SSL_PATH%\include;%CURL_PATH%\include\curl;%ICU_PATH%\include;%ZLIB_PATH%\include;
 set LIBPATH=%LIBPATH%;%SSL_PATH%\lib;%CURL_PATH%\lib;%ICU_PATH%\lib;%ZLIB_PATH%\lib;
@@ -50,36 +63,36 @@ goto eof
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :R14B03
-set ERL_TOP=/relax/otp_src_R14B03
 set ERTS_VSN=5.8.4
 set OTP_REL=R14B03
 goto unix_shell
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :R15B
-set ERL_TOP=/relax/otp_src_R15B
 set ERTS_VSN=5.9
 set OTP_REL=R15B
 goto unix_shell
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :R15B01
-set ERL_TOP=/relax/otp_src_R15B01
 set ERTS_VSN=5.9.1
 set OTP_REL=R15B01
 goto unix_shell
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :R14B04
-set ERL_TOP=/relax/otp_src_R14B04
 set ERTS_VSN=5.8.5
 set OTP_REL=R14B04
 goto unix_shell
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :unix_shell
+color
 title Building in %ERL_TOP% with OTP %OTP_REL% and Erlang v%ERTS_VSN%
-c:\cygwin\bin\bash %RELAX%\bin\relax.sh
+pushd %WERL%\
+for /f "usebackq" %%i in (`c:\cygwin\bin\cygpath.exe %WERLDIR%`) do @set WERL_PATH=%%i
+set ERL_TOP=%WERL_PATH%/otp_src_%OTP_REL%
+c:\cygwin\bin\bash %GLAZIER%\bin\shell.sh
 goto eof
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

@@ -40,9 +40,9 @@ echo setting up links to tools, SDK and VC++
 :: C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\mt.exe
 :: C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\NETFX 4.0 Tools\lc.exe
 :: C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\lc.exe
-if defined WindowsSDKVersionOverride mklink /d "%RELAX%\SDK" "%programfiles%\Microsoft SDKs\Windows\%WindowsSDKVersionOverride%"
-if defined SDKdir mklink /d "%RELAX%\SDK" "%sdkdir%"
-if defined VS100COMNTOOLS mklink /d "%RELAX%\VC" "%VS100COMNTOOLS%..\.."
+if defined WindowsSDKVersionOverride mklink /d "%OPT%\SDK" "%programfiles%\Microsoft SDKs\Windows\%WindowsSDKVersionOverride%"
+if defined SDKdir mklink /d "%OPT%\SDK" "%sdkdir%"
+if defined VS100COMNTOOLS mklink /d "%OPT%\VC" "%VS100COMNTOOLS%..\.."
 
 :: VS2010/SDK7.1
 
@@ -57,22 +57,21 @@ if defined VS100COMNTOOLS mklink /d "%RELAX%\VC" "%VS100COMNTOOLS%..\.."
 :: C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\cl.exe
 :: C:\Program Files\Microsoft SDKs\Windows\v7.0\mc.exe
 :: etc.
-if defined VS90COMNTOOLS mklink /d "%RELAX%\VC" "%VS90COMNTOOLS%..\.."
-if defined VCINSTALLDIR  mklink /d "%RELAX%\VC" "%VCINSTALLDIR%.."
-if defined SdkSetupDir mklink /d "%RELAX%\VC" "%SdkSetupDir%\.."
-if not exist "%RELAX%\SDK" mklink /d "%RELAX%\SDK" "%programfiles%\Microsoft SDKs\Windows\v7.0"
+if defined VS90COMNTOOLS mklink /d "%OPT%\VC" "%VS90COMNTOOLS%..\.."
+if defined VCINSTALLDIR  mklink /d "%OPT%\VC" "%VCINSTALLDIR%.."
+if defined SdkSetupDir mklink /d "%OPT%\VC" "%SdkSetupDir%\.."
+if not exist "%OPT%\SDK" mklink /d "%OPT%\SDK" "%programfiles%\Microsoft SDKs\Windows\v7.0"
 
 :: last chance
-if defined VCINSTALLDIR  mklink /d "%RELAX%\VC" "%VCINSTALLDIR%\.."
-if defined WindowsSDKDir mklink /d "%RELAX%\SDK" "%WindowsSDKDir%"
+if defined VCINSTALLDIR  mklink /d "%OPT%\VC" "%VCINSTALLDIR%\.."
+if defined WindowsSDKDir mklink /d "%OPT%\SDK" "%WindowsSDKDir%"
 
 ::TODO
-if not exist %relax%\sdk goto fail
-if not exist %relax%\vc goto fail
+if not exist %OPT%\sdk goto fail
+if not exist %OPT%\vc goto fail
 
 :: components
-if not exist "c:\cygwin\relax" mklink /d C:\cygwin\relax "%RELAX%"
-if not exist "C:\openssl" mklink /d c:\openssl "%RELAX%\openssl"
+if not exist "c:\cygwin\relax" mklink /d C:\cygwin\relax "%relax%"
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 goto eof

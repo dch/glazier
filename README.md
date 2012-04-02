@@ -1,5 +1,4 @@
 # Why Glazier?
-################################################################################
 
 I first got involved with CouchDB around 0.7, and liked what I saw. Only
 having a low-spec Windows PC to develop on, and no CouchDB Cloud provider
@@ -16,20 +15,22 @@ It's not fully automated but most of the effort is only required once.
 I hope it simplifies using Erlang and CouchDB for you by giving you a
 consistent repeatable build environment.
 
-# Download Glazier scripts, tools, and source
-################################################################################
+## Download Glazier scripts, tools, and source
 
-* download [glazier latest zip](https://nodeload.github.com/dch/glazier/zipball/master)
+* download [glazier latest](https://nodeload.github.com/dch/glazier/zipball/master)
 * unpack it into `c:\relax` - you should have `c:\relax\bin` for example
 * download source & tools using aria, and then check MD5 hashes:
 
         pushd c:\relax
         path=c:\relax\bin;%path%
-        aria2c.exe --force-sequential=false --max-connection-per-server=5 --check-certificate=false --auto-file-renaming=false --input-file=downloads.md --max-concurrent-downloads=5 --dir=bits --save-session=bits/a2session.txt
+        aria2c.exe --force-sequential=false --max-connection-per-server=5 \
+            --check-certificate=false --auto-file-renaming=false \
+            --input-file=downloads.md --max-concurrent-downloads=5 \
+            --dir=bits --save-session=bits/a2session.txt
         cd bits && md5sum.exe --check ..\downloads.md5
 
-# Install Compilers
-################################################################################
+## Install Compilers
+
 Due to size, these are not downloaded in the bundle apart from
 mozilla & cygwin setup.
 
@@ -41,7 +42,7 @@ as appropriate for your platform using:
 * Reboot
 * Download Mozilla toolkit from [mozbuild] and install per defaults
 * Install [cygwin] components, at least:
-    * devel: ALL (or just the GCC and GCC C++ compilers and GNU auto*)
+    * devel: ALL (or just the GCC and GCC C++ compilers and GNU auto)
     * editors: vim or emacs
     * utils: file
 
@@ -52,8 +53,8 @@ as appropriate for your platform using:
 [win70sdk_iso]:	http://go.microsoft.com/fwlink/?LinkID=150216
 [mozbuild]: http://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/MozillaBuildSetup-1.6.exe
 
-# Initial Setup of Environment
-################################################################################
+## Initial Setup of Environment
+
 Now that the compilers are installed, we need to set a few things up first:
 
 * start an SDK shell via `setenv.cmd /Release /x86`
@@ -72,8 +73,7 @@ You should end up with something resembling this structure:
         06/09/2011  10:40 p.m.    <SYMLINKD>     VC [c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\..]
 
 
-# Install downloaded tools
-################################################################################
+## Install downloaded tools
 
 The Microsoft Visual C++ runtime redistributales are bundled with Erlang
 and CouchDB by default.
@@ -99,8 +99,8 @@ The express solution is just to use 7zip to unpack [glazier tools](https://githu
 [nsis]: http://download.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
 [isetup]: http://www.jrsoftware.org/download.php/is-unicode.exe
 
-# wxWidgets
-################################################################################
+## wxWidgets
+
 * [wxWidgets] source should already be downloaded into `%relax%/bits/`
 * start an SDK shell via `setenv.cmd /Release /x86`
 * run `c:\relax\bin\build_wx.cmd` to extract and build wxWidgets
@@ -110,8 +110,8 @@ The express solution is just to use 7zip to unpack [glazier tools](https://githu
 
 [wxwidgets]: http://sourceforge.net/projects/wxwindows/files/2.8.12/wxMSW-2.8.12.zip
 
-# OpenSSL
-################################################################################
+## OpenSSL
+
 Erlang requires finding OpenSSL in `c:\OpenSSL` so that's where we build to,
 using mount point to keep things clean=ish under `%relax%`.
 
@@ -126,8 +126,8 @@ Erlang/OTP and therefore CouchDB as well.
 
 [openssl]: http://www.openssl.org/source/openssl-0.9.8r.tar.gz
 
-# Environment
-################################################################################
+## Environment
+
 Our goal is to get the path set up in this order:
 
 1. erlang and couchdb build helper scripts
@@ -164,8 +164,8 @@ Overall, the desired order for your $PATH is:
 
 More details are at [erlang INSTALL-Win32.md on github](http://github.com/erlang/otp/blob/dev/INSTALL-WIN32.md)
 
-# Erlang
-################################################################################
+## Erlang
+
 
 * start an SDK shell via `setenv.cmd /Release /x86`
 * launch a cygwin erl-ified shell via `c:\relax\bin\shell.cmd`
@@ -191,8 +191,7 @@ can take several hours on slower machines:
         robocopy $ERL_TOP /relax/release/$OTP_REL -mir
 
 
-# ICU 4.6.1
-################################################################################
+## ICU 4.6.1
 
 * Download ICU 4.6.1 windows source from [icu461zip]
 * either re-use the "shell.cmd" from before, or open a Windows SDK prompt
@@ -217,13 +216,13 @@ via `setenv /release /x86` again
 * compiling under cygwin is likely also to work for MSVC10 if a unified
   build process is required.
 
-# LibcURL
-################################################################################
-LibcURL is only required for versions of CouchDB < 1.1.1 where it is embedded
+## libcurl
+
+libcurl is only required for versions of CouchDB below 1.1.1 where it is embedded
 in couchjs.exe. Trunk and future releases will have this as an optional include.
 
 
-* download [LibcURL] source from (http://curl.haxx.se/)
+* download [libcurl] source from (http://curl.haxx.se/)
 * NB when using SDK7.0 I needed to `copy %windir%\system32\notepad.exe c:\relax\bin\bscmake.exe`
 * either re-use the "shell.cmd" from before, or open a Windows SDK prompt
 via `setenv /release /x86` again
@@ -232,8 +231,8 @@ via `setenv /release /x86` again
 
 [libcurl]: http://curl.haxx.se/download/curl-7.23.1.zip
 
-# Javascript
-################################################################################
+## Javascript
+
 The Javascript engine used by CouchDB is Mozilla Spidermonkey v1.8.5 [js185].
 
 * to build and install SpiderMonkey we use the mozilla tools chain.
@@ -251,8 +250,7 @@ The Javascript engine used by CouchDB is Mozilla Spidermonkey v1.8.5 [js185].
 
 [js185]: http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz
 
-# Building CouchDB
-################################################################################
+## Building CouchDB
 
 Finally we are going to build Apache CouchDB... whew! Recapping, we should have:
 
@@ -283,6 +281,10 @@ Let's pull the CouchDB source from git repo:
 
         git clone http://git-wip-us.apache.org/repos/asf/couchdb.git \
           /relax/couchdb
-        pushd /relax/couchdb && git checkout -b 1.1.1 && git clean -fdx
+        pushd /relax/couchdb && git checkout -b 1.2.0
+        git clean -fdx && git reset --hard
         ./bootstrap
         /relax/bin/couchdb_config.sh && /relax/bin/couchdb_build.sh
+
+A few minutes later, the release binaries should be made available.
+

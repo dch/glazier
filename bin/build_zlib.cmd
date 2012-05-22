@@ -2,7 +2,7 @@ setlocal
 path=%path%;c:\mozilla-build\7zip;%opt%\nasm;%opt%\strawberry\perl\bin;
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: clean up existing installs
-7z x "%glazier%\bits\zlib-*.zip" -y -o%glazier%
+7z x "%relax%\bits\zlib-*.zip" -y -o%relax%
 for %%i in ("%") do set zlib_ver=%%~ni
 if defined zlib_ver rd /s/q %relax%\%zlib_ver%
 setx zlib_ver %zlib_ver%

@@ -28,11 +28,9 @@ if not defined ZLIB_PATH set ZLIB_PATH=%RELAX%\zlib
 :: werldir for building erlang
 
 if not defined OPT set OPT=c:\opt
-if not defined GLAZIER set GLAZIER=%~dp0
-if not defined RELAX set RELAX=%d0\relax
-if not defined WERLDIR set WERLDIR=%d0\werl
+if not defined RELAX set RELAX=c:\relax
+if not defined WERLDIR set WERLDIR=c:\werl
 setx OPT %OPT% > NUL:
-setx GLAZIER %GLAZIER% > NUL:
 setx RELAX %RELAX% > NUL:
 
 set LIB=%OPT%\VC\VC\lib;%OPT%\SDK\lib;%LIB%
@@ -92,7 +90,7 @@ title Building in %ERL_TOP% with OTP %OTP_REL% and Erlang v%ERTS_VSN%
 pushd %WERL%\
 for /f "usebackq" %%i in (`c:\cygwin\bin\cygpath.exe %WERLDIR%`) do @set WERL_PATH=%%i
 set ERL_TOP=%WERL_PATH%/otp_src_%OTP_REL%
-c:\cygwin\bin\bash %GLAZIER%\bin\shell.sh
+c:\cygwin\bin\bash %relax%\bin\shell.sh
 goto eof
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

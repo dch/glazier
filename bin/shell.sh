@@ -44,10 +44,10 @@ PATH=$PATH:/cygdrive/c/openssl/bin:/cygdrive/c/opt/nsis:/cygdrive/c/opt/inno5
 PATH=$PATH:/usr/local/bin:/usr/bin:/bin
 
 # then glazier tools
-PATH=$PATH:`/usr/bin/cygpath $GLAZIER`/bin:`/usr/bin/cygpath $GLAZIER`/bits
+PATH=$PATH:`/usr/bin/cygpath $RELAX`/bin:`/usr/bin/cygpath $RELAX`/bits
 
 # then windows
-PATH=$PATH:`/usr/bin/cygpath $WINDIR`/system32:`/usr/bin/cygpath $WINDIR`:`/usr/bin/cygpath $WINDIR`/System32/Wbem:/cygdrive/c/Windows/System32/WindowsPowerShell/v1.0
+PATH=$PATH:`/usr/bin/cygpath $WINDIR`/system32:`/usr/bin/cygpath $WINDIR`:`/usr/bin/cygpath $WINDIR`/System32/Wbem:`/usr/bin/cygpath $WINDIR`/system32/WindowsPowerShell/v1.0
 
 # remaining settings from otp_build env_win32 script
 OVERRIDE_TARGET="win32"
@@ -66,7 +66,7 @@ RC_SH_DEBUG_LOG=$TMP/rc_r$OTP_VER.log
 MD_SH_DEBUG_LOG=$TMP/md_r$OTP_VER.log
 MC_SH_DEBUG_LOG=$TMP/mc_r$OTP_VER.log
 
-export OVERRIDE_TARGET CC CXX AR RANLIB OVERRIDE_CONFIG_CACHE_STATIC OVERRIDE_CONFIG_CACHE INCLUDE LIB LIBPATH LINK CL PATH TMP CC_SH LD_SH RC_SH MD_SH MC_SH ERL_TOP ERTS_VSN OTP_VER SHELL RELAX GLAZIER WIN32_WRAPPER_PATH OVERRIDE_TARGET
+export OVERRIDE_TARGET CC CXX AR RANLIB OVERRIDE_CONFIG_CACHE_STATIC OVERRIDE_CONFIG_CACHE INCLUDE LIB LIBPATH LINK CL PATH TMP CC_SH LD_SH RC_SH MD_SH MC_SH ERL_TOP ERTS_VSN OTP_VER SHELL RELAX WIN32_WRAPPER_PATH OVERRIDE_TARGET
 
 # ensure we have an ERL_TOP to go to
 mkdir -p $ERL_TOP > /dev/null 2>&1

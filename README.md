@@ -85,12 +85,12 @@ The express solution is just to use 7zip to unpack [glazier tools](https://githu
  inside `%relax%`. Or do it manually for the same result:
 
 * Add 7zip from `c:\mozilla-build\7zip` to your path
-* Innosoft's [isetup] to `%relax%/inno5`
-* Nullsoft [NSIS] Installer to `%relax%/nsis`
+* Innosoft's [isetup] to `c:\opt\inno5`
+* Nullsoft [NSIS] Installer to `c:\opt\nsis`
 * Add 7zip, Inno5, and nsis to the user environment PATH
-* using 7zip, extract and rename [nasm] to `%relax%/nasm`
-* using 7zip, extract and rename [cmake] to `%relax%/cmake`
-* `mkdir strawberry && cd strawberry` then using 7zip, extract Strawberry [Perl]
+* using 7zip, extract and rename [nasm] to `c:\opt\nasm`
+* using 7zip, extract and rename [cmake] to `c:\opt\cmake`
+* `mkdir c:\opt\strawberry && cd c:\opt\strawberry` then using 7zip, extract Strawberry [Perl]
 
 [perl]: http://strawberryperl.com/download/5.12.2.0/strawberry-perl-5.12.2.0-portable.zip
 [nasm]: http://www.nasm.us/pub/nasm/releasebuilds/2.09.07/win32/nasm-2.09.07-win32.zip
@@ -287,4 +287,3 @@ Let's pull the CouchDB source from git repo:
         /relax/bin/couchdb_config.sh && /relax/bin/couchdb_build.sh
 
 A few minutes later, the release binaries should be made available.
-

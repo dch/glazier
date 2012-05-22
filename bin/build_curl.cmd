@@ -1,7 +1,7 @@
 ::setlocal
 path=%path%;%opt%\cmake\bin;c:\mozilla-build\7zip;%relax%\openssl\bin;
 
-for %%i in ("%glazier%\bits\curl-*.zip") do set curl_ver=%%~ni
+for %%i in ("%relax%\bits\curl-*.zip") do set curl_ver=%%~ni
 setx CURL_VER %curl_ver%
 set CURL_SRC=%RELAX%\%curl_ver%
 setx CURL_SRC %curl_src%

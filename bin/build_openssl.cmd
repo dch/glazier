@@ -1,5 +1,5 @@
 setlocal
-path=%path%;c:\mozilla-build\7zip;%opt%\nasm;%opt%\strawberry\perl\bin;
+path=%path%;c:\mozilla-build\7zip;%relax%\nasm;c:\strawberry\perl\bin;
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: clean up existing installs
@@ -14,10 +14,9 @@ setx openssl_ver %openssl_ver%
 set SSL_PATH=%relax%\openssl
 setx SSL_PATH %ssl_path%
 
-pause
-if exist "%ssl_path%" rd /s/q %ssl_path%
+if exist "%ssl_path%" rd /s/q "%ssl_path%"
 :: set up a softlink for openssl as Erlang seems to dumb to find it
-if not exist c:\openssl mklink /d c:\openssl "%relax%\openssl"
+if not exist c:\openssl mklink /j c:\openssl "%relax%\openssl"
 if defined openssl_ver rd /s/q %relax%\%openssl_ver%
 7z x "%TEMP%\openssl-*.tar" -o%relax%\ -y
 
@@ -25,9 +24,9 @@ if defined openssl_ver rd /s/q %relax%\%openssl_ver%
 pushd %relax%\%openssl_ver%
 perl Configure VC-WIN32 --prefix=%ssl_path%
 call ms\do_nasm
-nmake -f ms\ntdll.mak
-nmake -f ms\ntdll.mak test
-nmake -f ms\ntdll.mak install
+nmake -f ms\nt.mak
+nmake -f ms\nt.mak test
+nmake -f ms\nt.mak install
 
 :: from Erlang/OTP R14B03 onwards, OpenSSL is compiled in statically
 :: this may need  adding enable-static-engine and using target nt.mak

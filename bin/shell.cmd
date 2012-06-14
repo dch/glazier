@@ -22,23 +22,20 @@ if not defined ZLIB_PATH set ZLIB_PATH=%RELAX%\zlib
 :: these are *NOT* the same but when we shell out to CL.exe and LINK.exe
 :: all is well again
 
-:: opt is for build tools
-:: glazier our scripts
 :: relax for couchdb
 :: werldir for building erlang
 
-if not defined OPT set OPT=c:\opt
 if not defined RELAX set RELAX=c:\relax
 if not defined WERLDIR set WERLDIR=c:\werl
-setx OPT %OPT% > NUL:
+setx WERLDIR %WERLDIR% > NUL:
 setx RELAX %RELAX% > NUL:
 
-set LIB=%OPT%\VC\VC\lib;%OPT%\SDK\lib;%LIB%
-SET INCLUDE=%OPT%\VC\VC\Include;%OPT%\SDK\Include;%OPT%\SDK\Include\gl;%INCLUDE%
+set LIB=%RELAX%\VC\VC\lib;%RELAX%\SDK\lib;%LIB%
+SET INCLUDE=%RELAX%\VC\VC\Include;%RELAX%\SDK\Include;%RELAX%\SDK\Include\gl;%INCLUDE%
 
-set INCLUDE=%INCLUDE%;%SSL_PATH%\include\openssl;%SSL_PATH%\include;%CURL_PATH%\include\curl;%ICU_PATH%\include;%ZLIB_PATH%\include;
-set LIBPATH=%LIBPATH%;%SSL_PATH%\lib;%CURL_PATH%\lib;%ICU_PATH%\lib;%ZLIB_PATH%\lib;
-set LIB=%LIB%;%SSL_PATH%\lib;%CURL_PATH%\lib;%ICU_PATH%\lib;%ZLIB_PATH%\lib;
+set INCLUDE=%INCLUDE%;%SSL_PATH%\include\openssl;%SSL_PATH%\include;%CURL_PATH%\include\curl;%ICU_PATH%\include;
+set LIBPATH=%LIBPATH%;%SSL_PATH%\lib;%CURL_PATH%\lib;%ICU_PATH%\lib;
+set LIB=%LIB%;%SSL_PATH%\lib;%CURL_PATH%\lib;%ICU_PATH%\lib;
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::check which version of erlang setup we want

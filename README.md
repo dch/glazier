@@ -1,132 +1,214 @@
 # Why Glazier?
 
-I first got involved with CouchDB around 0.7, and liked what I saw. Only
-having a low-spec Windows PC to develop on, and no CouchDB Cloud provider
-being available, I tried to build CouchDB myself. It was hard going, and
-most of the frustration was trying to get the core Erlang environment set
-up and working without needing to buy Microsoft's expensive but excellent
-Visual Studio tools myself. Once Erlang was working I found many of the
-pre-requisite modules such as cURL, Zlib, OpenSSL, Mozilla's SpiderMonkey
-JavaScript engine, and IBM's ICU were not available at a consistent
-compiler and VC runtime release.
+I first got involved with CouchDB around 0.7. Only having a low-spec Windows
+PC to develop on, and no CouchDB Cloud provider being available, I tried
+to build CouchDB myself. It was hard going, and most of the frustration was
+trying to get the core Erlang environment set up and compiling without needing
+to buy Microsoft's expensive but excellent Visual Studio tools myself. Once
+Erlang was working I found many of the pre-requisite modules such as cURL,
+Zlib, OpenSSL, Mozilla's SpiderMonkey JavaScript engine, and IBM's ICU were
+not available at a consistent compiler and VC runtime release.
 
 Glazier is a set of related scripts and toolchains to ease that pain.
 It's not fully automated but most of the effort is only required once.
 I hope it simplifies using Erlang and CouchDB for you by giving you a
 consistent repeatable build environment.
 
-## Download Glazier scripts, tools, and source
+There is a branch of glazier that was used to build each CouchDB release.
+I'm in the process of migrating a large portion of the setup scripts to
+use [Chocolatey] for installing pre-requisites, and then to roll most of
+the code into the CouchDB autotools scripts.
 
-* download [glazier latest](https://nodeload.github.com/dch/glazier/zipball/master)
-* unpack it into `c:\relax` - you should have `c:\relax\bin` for example
-* download source & tools using aria, and then check MD5 hashes:
+# Big Picture
 
-        pushd c:\relax
-        path=c:\relax\bin;%path%
-        aria2c.exe --force-sequential=false --max-connection-per-server=5 \
-            --check-certificate=false --auto-file-renaming=false \
-            --input-file=downloads.md --max-concurrent-downloads=5 \
-            --dir=bits --save-session=bits/a2session.txt
-        cd bits && md5sum.exe --check ..\downloads.md5
+When I build Erlang/OTP from source, or CouchDB, I typically spend 80% of my
+time faffing around getting dependencies right. I want to make this as easy as
+`aptitude install -y <list_of_packages>`.
 
-## Install Compilers
+Here's the general approach:
 
-Due to size, these are not downloaded in the bundle apart from
-mozilla & cygwin setup.
+- 64-bit Windows + 64-bit SDK 7.1 + optionally Visual Studio 2012
+- chocolatey packages for remaining dev tool dependencies
+- Cygwin latest development tools
 
-* Install one of either Windows SDK 7.0, or 7.1, in either 32 or 64bit
-as appropriate for your platform using:
-    * SDK 7.0 [win70sdk_websetup] or a downloaded [win70sdk_iso]
-    * SDK 7.1 [win71sdk_websetup] or a downloaded [win71sdk_iso]
-* Run Windows Update for latest patches
-* Reboot
-* Download Mozilla toolkit from [mozbuild] and install per defaults
-* Install [cygwin] components, at least:
-    * devel: ALL (or just the GCC and GCC C++ compilers and GNU auto)
-    * editors: vim or emacs
-    * utils: file
+Onwards!
 
-[cygwin]: http://www.cygwin.com/setup.exe
-[win71sdk_websetup]: http://www.microsoft.com/download/en/confirmation.aspx?id=8279
-[win71sdk_iso]:	http://go.microsoft.com/fwlink/?LinkID=191420
-[win70sdk_websetup]: http://www.microsoft.com/download/en/details.aspx?id=3138
-[win70sdk_iso]:	http://go.microsoft.com/fwlink/?LinkID=150216
-[mozbuild]: http://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/MozillaBuildSetup-1.6.exe
+# Windows and SDKs
 
-## Initial Setup of Environment
+While any 64-bit Windows will likely do, I use specifically:
 
-Now that the compilers are installed, we need to set a few things up first:
+- 64-bit Windows 8 Enterprise N (the Euro version without media player etc) from MSDN [en-gb_windows_8_enterprise_n_x64_dvd_918053.iso](https://msdn.microsoft.com/en-us/subscriptions/securedownloads/#FileId=50201)
+- Install the full [Microsoft .Net Framework 4](http://www.microsoft.com/en-us/download/details.aspx?id=17851)
+- reboot and run updates
+- Install [Windows SDK 7.1](http://www.microsoft.com/download/en/confirmation.aspx?id=8279)
+- Optionally, Install `Visual Studio 2012 Ultimate` via the web installer for a nice UI & debugger interface
+- Install the [NuGet Package Manager](http://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c)
+- Install [Chocolatey]:
 
-* start an SDK shell via `setenv.cmd /Release /x86`
-* run `c:\relax\bin\setup.cmd` once to set up links and environment variables
+	@powershell -NoProfile -ExecutionPolicy unrestricted -Command "iex ((new-object net.webclient).DownloadString('https://raw.github.com/chocolatey/chocolatey/master/chocolateyInstall/InstallChocolatey.ps1'))" && SET PATH=%PATH%;%systemdrive%\chocolatey\bin
+- Apply Windows Updates and Reboot until Done.
 
-You should end up with something resembling this structure:
+Typically here I shutdown & snapshot my VM as past this point its going to
+evolve a lot over time. Many of the downstream chocolatey packages still
+prompt you to run their installers, which arguably defeats the purpose, but
+hey its still marginally easier.
 
-        Directory of C:\relax
-        06/09/2011  10:41 p.m.    <DIR>          .
-        06/09/2011  10:41 p.m.    <DIR>          ..
-        06/09/2011  10:41 p.m.    <SYMLINKD>     bin [z:\r\glazier\bin]
-        06/09/2011  10:41 p.m.    <SYMLINKD>     bits [z:\r\glazier\bits]
-        03/09/2011  11:00 a.m.    <DIR>          release
-        06/09/2011  10:40 p.m.    <SYMLINKD>     SDK [C:\Program Files\Microsoft SDKs\Windows\v7.1]
-        06/09/2011  12:19 a.m.    <SYMLINKD>     tmp [C:\Users\couch\AppData\Local\Temp]
-        06/09/2011  10:40 p.m.    <SYMLINKD>     VC [c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\..]
+[Chocolatey]: http://chocolatey.org/
+[NuGet]: http://nuget.org/
+
+# Install Packages with Chocolatey
+
+## clean installs
+
+These packages install silently, without intervention. Cut and paste them
+into a command prompt, leave it running, and open another one for the next
+section.
+
+    cinst git
+    cinst 7zip.commandline
+    cinst sublimetext2
+    cinst StrawberryPerl
+    cinst nsis
+    cinst MozillaBuild
+    cinst nasm
+    cinst InnoSetup
+
+## Optional but useful
+
+    cinst sysinternals
+    cinst dependencywalker
+    cinst cmake
+    cinst SourceCodePro
+    cinst firefox
+    cinst GoogleChrome.Canary
+    cinst ChocolateyPackageUpdater
+    cinst MicrosoftSecurityEssentials
+    cinst msicuu2
 
 
-## Install downloaded tools
+## Cygwin
 
-The Microsoft Visual C++ runtime redistributales are bundled with Erlang
-and CouchDB by default.
+Download and run [Cygwin Setup](http://cygwin.com/setup.exe)
 
-* for Windows SDK 7.1, copy [vcredist_sdk71] to `%relax%/`
-* for Windows SDK 7.0, copy [vcredist_sdk70] to `%relax%/`
+Confirm you have:
 
-The express solution is just to use 7zip to unpack [glazier tools](https://github.com/downloads/dch/glazier/toolbox.7z)
- inside `%relax%`. Or do it manually for the same result:
+        ARCHIVE/
+        - p7zip
 
-* Add 7zip from `c:\mozilla-build\7zip` to your path
-* Innosoft's [isetup] to `c:\opt\inno5`
-* Nullsoft [NSIS] Installer to `c:\opt\nsis`
-* Add 7zip, Inno5, and nsis to the user environment PATH
-* using 7zip, extract and rename [nasm] to `c:\opt\nasm`
-* using 7zip, extract and rename [cmake] to `c:\opt\cmake`
-* `mkdir c:\opt\strawberry && cd c:\opt\strawberry` then using 7zip, extract Strawberry [Perl]
+        DEVEL/
+        - auto*
+        - binutils
+        - bison
+        - gcc-core
+        - gcc-g++
+        - gcc4-core
+        - gcc4-g++
+        - gdb
+        - git
+        - libtool
+        - make
+        - patchutils
+        - pkgconfig
+        - readline
 
-[perl]: http://strawberryperl.com/download/5.12.2.0/strawberry-perl-5.12.2.0-portable.zip
-[nasm]: http://www.nasm.us/pub/nasm/releasebuilds/2.09.07/win32/nasm-2.09.07-win32.zip
-[cmake]: http://www.cmake.org/files/v2.8/cmake-2.8.6-win32-x86.zip
-[vcredist_sdk71]: http://download.microsoft.com/download/1/6/5/165255E7-1014-4D0A-B094-B6A430A6BFFC/vcredist_x86.exe
-[nsis]: http://download.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
-[isetup]: http://www.jrsoftware.org/download.php/is-unicode.exe
+        EDITORS/
+        - vim
 
-## wxWidgets
+        INTERPRETERS/
+        - M4
+        - perl
+        - python
 
-* [wxWidgets] source should already be downloaded into `%relax%/bits/`
-* start an SDK shell via `setenv.cmd /Release /x86`
-* run `c:\relax\bin\build_wx.cmd` to extract and build wxWidgets
-* NB Erlang build requires softlinked wxWidgets in `/opt/local/pgm/wxWidgets-2.8.12` so
-  we set that up too
-* check for errors
+        NET/
+        - aria2
 
-[wxwidgets]: http://sourceforge.net/projects/wxwindows/files/2.8.12/wxMSW-2.8.12.zip
+        UTILS/
+        - file
+        - gnupg
+        - rename
+        - socat
+        - time
+        - tree
+        - util-linux
 
-## OpenSSL
+        WEB/
+        - wget
 
-Erlang requires finding OpenSSL in `c:\OpenSSL` so that's where we build to,
-using mount point to keep things clean=ish under `%relax%`.
+        Ensure you DON'T have:
+        - help2man
+        - curl
 
-* [OpenSSL] source has already been downloaded
-* start an SDK shell via `setenv.cmd /Release /x86`
-* run `c:\relax\bin\build_openssl.cmd` to extract and build OpenSSL
-* it requires nasm, 7zip, strawberry perl all in place
-* check for errors
-* ensure Erlang can locate SSL with `mklink /d c:\OpenSSL %relax%\OpenSSL`
-* the resulting DLLs in `c:\relax\openssl\bin` need to be distributed with
-Erlang/OTP and therefore CouchDB as well.
+Then advance & install!
 
-[openssl]: http://www.openssl.org/source/openssl-0.9.8r.tar.gz
+# Setting up the kit
 
-## Environment
+	git clone git://github.com/dch/glazier.git c:\relax
+	pushd c:\relax && path=c:\relax\bin;%PATH%;
+	aria2c.exe --force-sequential=false --max-connection-per-server=5 --check-certificate=false --auto-file-renaming=false --input-file=downloads.md --max-concurrent-downloads=5 --dir=bits --save-session=bits/a2session.txt
+
+# set up links
+
+	pushd c:\relax && rd SDK VC nasm inno5 nsis strawberry
+	mklink /j c:\relax\SDK "C:\Program Files\Microsoft SDKs\Windows\v7.1"
+	mklink /j c:\relax\VC "C:\Program Files (x86)\Microsoft Visual Studio 10.0"
+	mklink /j nasm "c:\Program Files (x86)\nasm"
+	mklink /j c:\relax\inno5 "c:\Program Files (x86)\Inno Setup 5"
+	mklink /j c:\relax\nsis "c:\Program Files\NSIS"
+
+	:: these ones are for the picky software packagers
+	mklink /j c:\cygwin\relax c:\relax
+	mklink /j c:\openssl c:\relax\openssl
+
+# set up vars
+
+	setx RELAX c:\relax
+	set RELAX=c:\relax
+
+Close all open command prompts. Now!!
+
+# make a new prompt
+
+Make a new shortcut on the desktop, targeted at
+`cmd.exe /E:ON /V:ON /T:0E /K "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x86 /release`
+and I suggest you pin it to the start menu. We'll use this all the time,
+referred to as `the SDK prompt`. Right-click on the icon, click the `advanced`
+button, and tick the `Run as Administrator` button. We do need this so that
+`cp -P` works within autotools on Windows8.
+
+When you launch one, the text will be an unreadable green. Type `color` to
+fix it. Color takes parameters if you hate yellow. Borland users will like
+`color 1f`. Let's confirm we have the right bits with
+`echo %RELAX% && where cl mc mt link lc rc nmake`:
+
+	c:\relax
+	C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\cl.exe
+	C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\MC.Exe
+	C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\mt.exe
+	C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe
+	C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\NETFX 4.0 Tools\lc.exe
+	C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\lc.exe
+	C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\RC.Exe
+	C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\nmake.exe
+
+Stop here if it's not *identical*. Not Visual Studio 11.0. Not SDK v8.0a,
+or 7.0, or 7.0a, or any other satanic god-forsaken combination not listed here.
+Seriously. Identical.
+
+# Build wxWidgets
+
+Open a new SDK prompt. Check that it has `/x86 /Release Build` in the title bar.
+
+	pushd %RELAX%\bin && build_wx.cmd
+
+# Build OpenSSL
+
+	pushd %RELAX%\bin && build_openssl.cmd
+
+# Build ICU
+
+	pushd %RELAX%\bin && build_icu.cmd
+
+# Start a UNIX-friendly shell
 
 Our goal is to get the path set up in this order:
 
@@ -135,11 +217,13 @@ Our goal is to get the path set up in this order:
 3. cygwin path for other build tools like make, autoconf, libtool
 4. the remaining windows system path
 
-The express start is to:
+It seems this is a challenge for most environments, so `glazier` just
+assumes you're using [chocolatey] and takes care of the rest.
 
-* start an SDK shell via `setenv.cmd /Release /x86`
-* launch a cygwin erl-ified shell via `c:\relax\bin\shell.cmd`
-* go to next section to compile Erlang/OTP
+- start your `SDK prompt` as above
+- launch a cygwin erl-ified shell via `c:\relax\bin\shell.cmd`
+- select R14B04 unless you know what you are doing
+- go to next section to compile Erlang/OTP
 
 Alternatively, you can launch your own cmd prompt, and ensure that your system
 path is correct first in the win32 side before starting cygwin. Once in cygwin
@@ -147,143 +231,108 @@ go to the root of where you installed erlang, and run the Erlang/OTP script:
 
         eval `./otp_build env_win32`
         echo $PATH | /bin/sed 's/:/\n/g'
-        which cl link mc lc mt
+        which cl link mc lc mt nmake rc
 
 Confirm that output of `which` returns only MS versions from VC++ or the SDK.
 This is critical and if not correct will cause confusing errors much later on.
 Overall, the desired order for your $PATH is:
 
-* Erlang build helper scripts
-* Windows SDK tools, .Net framework
-* Visual C++ if installed
-* Ancillary Erlang and CouchDB packaging tools
-* Usual cygwin unix tools such as make, gcc
-* Ancillary glazier/relax tools for building dependent libraries
-* Usual Windows folders `%windir%;%windir%\system32` etc
-* Various settings form the `otp_build` script
+- Erlang build helper scripts
+- Windows SDK tools, .Net framework
+- Visual C++ if installed
+- Ancillary Erlang and CouchDB packaging tools
+- Usual cygwin unix tools such as make, gcc
+- Ancillary glazier/relax tools for building dependent libraries
+- Usual Windows folders `%windir%;%windir%\system32` etc
+- Various settings form the `otp_build` script
 
 More details are at [erlang INSTALL-Win32.md on github](http://github.com/erlang/otp/blob/dev/INSTALL-WIN32.md)
 
-## Erlang
+# Unpack Erlang/OTP
 
+	cd .. && tar xzf /relax/bits/otp_src_R14B04.tar.gz
+	cd $ERL_TOP
+	cp /relax/SDK/Redist/VC/vcredist_x86.exe /cygdrive/c/werl/
+	cp /relax/SDK/Redist/VC/vcredist_x86.exe /cygdrive/c/relax/
 
-* start an SDK shell via `setenv.cmd /Release /x86`
-* launch a cygwin erl-ified shell via `c:\relax\bin\shell.cmd`
-* choose your erlang version - R14B04 is strongly advised
-* unpack erlang source by `cd $RELAX && tar xzf bits/otp_src_R14B04.tar.gz`
-* customise Erlang by excluding unneeded Java interface and old GS GUI:
+# Configure and Build Erlang/OTP
 
-        cd $ERL_TOP
-        tar xvzf /relax/bits/tcltk85_win32_bin.tar.gz
-        echo "skipping gs" > lib/gs/SKIP
-        echo "skipping jinterface" > lib/jinterface/SKIP
+	echo "skipping gs" > lib/gs/SKIP
+	echo "skipping ic" > lib/ic/SKIP
+	echo "skipping jinterface" > lib/jinterface/SKIP
+	erl_config.sh && erl_build.sh
 
+# Spidermonkey
 
-* after validating the path, I usually run these two scripts which
-can take several hours on slower machines:
+Spidermonkey needs to be compiled with the Mozilla Build chain. This requires special and careful incantations.
+Launch your `SDK prompt` again.
 
-        erl_config.sh
-        erl_build.sh
+    color
+    call c:\mozilla-build\start-msvc10.bat
+    which cl link
+    # /c/Program Files (x86)/Microsoft Visual Studio 10.0/VC/Bin/cl.exe
+    # /c/Program Files (x86)/Microsoft Visual Studio 10.0/VC/Bin/link.exe
+    export INCLUDE='c:\relax\SDK\include;c:\relax\VC\VC\Include;c:\relax\VC\VC\Include\Sys;'
+    export LIB='c:\Program Files\Microsoft SDKs\Windows\v7.1\Lib;c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib;c:\mozilla-build\atlthunk_compat'
+    export PATH=/c/relax/SDK/Bin:/c/relax/VC/VC/bin:$PATH
+    which cl lc link mt rc make
+    # /c/relax/VC/VC/bin/cl.exe
+    # /c/relax/SDK/Bin/lc.exe
+    # /c/relax/VC/VC/bin/link.exe
+    # /c/relax/SDK/Bin/mt.exe
+    # /c/relax/SDK/Bin/rc.exe
+    # /usr/local/bin/make
+    cd /c/relax
+    tar xzf bits/js185-1.0.0.tar.gz
+    cd /c/relax/js-1.8.5/js/src
+    autoconf-2.13
+    ./configure --enable-static --enable-shared-js --enable-debug --enable-debug-symbols
+    make
+    make check # optional, takes a while, check-date-format-tofte.js fails
+    exit
 
-* the output is logged into `$ERL_TOP/build_*.txt` if required
-* at this point I usually duplicate the OTP source tree for later
+Note: the above PATH and LIB hacks are a workaround for having both
+VS2012 + SDK7.1 installed side by side. It seems that having both of
+these installed breaks compilation of js-185. If you're building with
+the SDK 7.1 alone this is not required.
 
-        robocopy $ERL_TOP /relax/release/$OTP_REL -mir
+# Update AutoConf Archives
 
+Launch the `SDK prompt` again, and start cygwin again using
+`c:\relax\bin\shell`. Pick (4) to be configured for OTP R14B04.
 
-## ICU 4.6.1
+    cd /relax/bits
+    wget http://ftpmirror.gnu.org/autoconf-archive/autoconf-archive-2012.09.08.tar.gz
+    tar zxf autoconf-archive-2012.09.08.tar.gz
+    cd autoconf-archive-2012.09.08
+    ./configure --prefix=/usr && make && make install
 
-* Download ICU 4.6.1 windows source from [icu461zip]
-* either re-use the "shell.cmd" from before, or open a Windows SDK prompt
-via `setenv /release /x86` again
+# Install Python easy_install and Sphinx for Documentation Builds
 
-        %relax%\bin\build_icu.cmd
+start `SDK prompt`, shell (4) for R14B04.
 
-* confirm that the resulting ICU DLLs have the appropriate manifests
+    cd /relax/bits
+    wget http://pypi.python.org/packages/2.6/s/setuptools/setuptools-0.6c11-py2.6.egg#md5=bfa92100bd772d5a213eedd356d64086
+    sh setuptools-0.6c11-py2.6.egg
+    easy_install sphinx docutils pygments
+    # check its working
+    sphinx-build -h
 
-[icu461zip]: http://download.icu-project.org/files/icu4c/4.6.1/icu4c-4_6_1-src.zip
-[icu461tgz]: http://download.icu-project.org/files/icu4c/4.6.1/icu4c-4_6_1-src.tgz
+# CouchDB
 
-* NB for MSVC9 is supported only via cygwin; use [icu461tgz] instead and
+start `SDK prompt`, shell (4) for R14B04.
 
-        cd $RELAX
-        DEST=`pwd`/icu
-        tar xzf bits/icu4c-4_6_1-src.tgz
-        cd $DEST/source && ./runConfigureICU Cygwin/MSVC --prefix=$DEST
-        make && make install
-        cp $DEST/lib/*.dll $DEST/bin/
+    cd /relax && git clone http://git-wip-us.apache.org/repos/asf/couchdb.git
+    git checkout --track origin/1.3.x ## or suitable tag here
+    git clean -fdx && git reset --hard
+    ./bootstrap && couchdb_config.sh && couchdb_build.sh
 
-* compiling under cygwin is likely also to work for MSVC10 if a unified
-  build process is required.
+This will produce a working CouchDB installation inside
+`$ERL_TOP/release/win32` that you can run directly, and also a full
+installer inside `$COUCH_TOP/etc/windows/` to transfer to other
+systems, without the build chain dependencies.
 
-## libcurl
-
-libcurl is only required for versions of CouchDB below 1.1.1 where it is embedded
-in couchjs.exe. Trunk and future releases will have this as an optional include.
-
-
-* download [libcurl] source from (http://curl.haxx.se/)
-* NB when using SDK7.0 I needed to `copy %windir%\system32\notepad.exe c:\relax\bin\bscmake.exe`
-* either re-use the "shell.cmd" from before, or open a Windows SDK prompt
-via `setenv /release /x86` again
-
-        %relax%\bin\build_curl.cmd
-
-[libcurl]: http://curl.haxx.se/download/curl-7.23.1.zip
-
-## Javascript
-
-The Javascript engine used by CouchDB is Mozilla Spidermonkey v1.8.5 [js185].
-
-* to build and install SpiderMonkey we use the mozilla tools chain.
-* run `c:\mozilla-build\start-msvc10.bat` even if you are on a 64-bit platform.
-* do a sanity check to confirm the MS build compilers are present via
- `which cl link mc lc mt`
-* you may need to fudge the path if `cl.exe` can't be found using `PATH=$PATH:/c/relax/VC/VC/bin/:/c/relax/SDK/bin:/c/relax/VC/Common7/IDE:/c/relax/VC/VC/bin/amd64/:/c/relax/VC/VC/bin/x86_ia64/`
-
-        cd /c/relax
-        tar xzf bits/js185-1.0.0.tar.gz
-        cd ./js-1.8.5/js/src
-        autoconf-2.13
-        ./configure --enable-static --enable-shared-js
-        make
-
-[js185]: http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz
-
-## Building CouchDB
-
-Finally we are going to build Apache CouchDB... whew! Recapping, we should have:
-
-* erlang in `/relax/otp_src_R14B04/release/win32` with a copy stashed nearby
-* openssl in `/relax/openssl/{bin,lib}/{lib,ssl}eay32.{bin,lib}`
-* libcurl in `/relax/curl/lib/libcurl.lib`
-* js library in `/relax/js-1.8.5/js/src/dist/{bin,lib}/mozjs185-1.0.*`
-* icu in `/relax/icu/bin/icu*.dll`
-
-For CouchDB 1.1.1 or newer, two small filthy hacks are required, which
-is needed until `configure.ac` avoids detection of cygwin's curl and avoids
-assuming that help2man will be useful on Windows.
-
-* start an SDK shell via `setenv.cmd /Release /x86`
-* launch a cygwin erl-ified shell via `c:\relax\bin\shell.cmd`
-* apply the work-arounds:
-
-        mv /usr/bin/curl-config /usr/bin/curl-config.dist
-        mv /usr/bin/help2man /usr/bin/help2man.dist
-
-
-There are two relevant scripts for building CouchDB:
-
-* `couchdb_config.sh` for CouchDB 1.1.1 or newer, supporting js185 only
-* `couchdb_build.sh` which compiles, and packages, CouchDB
-
-Let's pull the CouchDB source from git repo:
-
-        git clone http://git-wip-us.apache.org/repos/asf/couchdb.git \
-          /relax/couchdb
-        pushd /relax/couchdb && git checkout -b 1.2.0
-        git clean -fdx && git reset --hard
-        ./bootstrap
-        /relax/bin/couchdb_config.sh && /relax/bin/couchdb_build.sh
-
-A few minutes later, the release binaries should be made available.
+Glazier prints out minimal instructions to transfer the logs and other files
+to a release directory of your choice. I typically use this when building
+from git to keep track of snapshots, and different erlang or couch build
+configurations.

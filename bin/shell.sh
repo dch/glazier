@@ -22,7 +22,7 @@ PATH=$ERL_TOP/release/win32/erts-$ERTS_VSN/bin:$ERL_TOP/bootstrap/bin:$ERL_TOP/e
 
 # then MSVC9 binaries using the new junction points
 ###PATH=$PATH:/cygdrive/c/PROGRA~2/MICROS~1.0/Common7/IDE:/cygdrive/c/PROGRA~2/MICROS~1.0/VC/BIN:/cygdrive/c/PROGRA~2/MICROS~1.0/Common7/Tools:/cygdrive/c/PROGRA~2/MICROS~1.0/VC/VCPACK~1
-PATH=$PATH:`/usr/bin/cygpath $OPT`/vc/Common7/IDE:`/usr/bin/cygpath $OPT`/VC/VC/BIN:`/usr/bin/cygpath $OPT`/VC/Common7/Tools`/usr/bin/cygpath $OPT`/VC/VC/vcPackages
+PATH=$PATH:/relax/vc/Common7/IDE:/relax/VC/VC/BIN:/relax/VC/Common7/Tools/relax/VC/VC/vcPackages
 
 #### then .Net framework which we need to have clean manifests and SxS for Win7 x64
 PATH=$PATH:/cygdrive/c/WINDOWS/Microsoft.NET/Framework:/cygdrive/c/Microsoft.NET/Framework/v4.0.30319:/cygdrive/c/Microsoft.NET/Framework/v3.5
@@ -30,21 +30,21 @@ PATH=$PATH:/cygdrive/c/WINDOWS/Microsoft.NET/Framework:/cygdrive/c/Microsoft.NET
 # then SDKs
 ###PATH=$PATH:/cygdrive/c/PROGRA~1/MICROS~1/Windows/v7.0/bin
 ###PATH=$PATH:/cygdrive/c/PROGRA~1/MICROS~1/Windows/v6.0A/bin
-PATH=$PATH:`/usr/bin/cygpath $OPT`/SDK/bin:`/usr/bin/cygpath $OPT`/SDK/bin/x64
+PATH=$PATH:/relax/SDK/bin:/relax/SDK/bin/x64
 
 # some additional tools in SDK
 # C:\Program Files\Microsoft Windows Performance Toolkit;
 # C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\NETFX 4.0 Tools;
-PATH=$PATH:/cygdrive/c/Program\ Files/Microsoft\ Windows\ Performance\ Toolkit:`/usr/bin/cygpath $OPT`/SDK/bin/NETFX\ 4.0\ Tools
+PATH=$PATH:/cygdrive/c/Program\ Files/Microsoft\ Windows\ Performance\ Toolkit:/relax/SDK/bin/NETFX\ 4.0\ Tools
 
 # then erlang and couchdb build helper scripts
-PATH=$PATH:/cygdrive/c/openssl/bin:/cygdrive/c/opt/nsis:/cygdrive/c/opt/inno5
+PATH=$PATH:/cygdrive/c/openssl/bin:/cygdrive/c/relax/nsis:/cygdrive/c/relax/inno5
 
 # then cygwin tools
 PATH=$PATH:/usr/local/bin:/usr/bin:/bin
 
 # then glazier tools
-PATH=$PATH:`/usr/bin/cygpath $RELAX`/bin:`/usr/bin/cygpath $RELAX`/bits
+PATH=$PATH:/relax/bin:/relax/bits
 
 # then windows
 PATH=$PATH:`/usr/bin/cygpath $WINDIR`/system32:`/usr/bin/cygpath $WINDIR`:`/usr/bin/cygpath $WINDIR`/System32/Wbem:`/usr/bin/cygpath $WINDIR`/system32/WindowsPowerShell/v1.0

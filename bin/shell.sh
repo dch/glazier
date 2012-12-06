@@ -81,7 +81,7 @@ echo current path:
 echo $PATH | /bin/sed 's/:/\n/g'
 echo
 echo please check the toolkit paths point to Microsoft versions:
-which mc; which lc; which cl; which link; which mt
+which mc lc cl link mt rc
 echo
 
 echo Ready to build Erlang and CouchDB using Erlang $ERTS_VSN OTP $OTP_VER in $ERL_TOP

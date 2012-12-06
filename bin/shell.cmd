@@ -44,31 +44,27 @@ set LIB=%LIB%;%SSL_PATH%\lib;%CURL_PATH%\lib;%ICU_PATH%\lib;%ZLIB_PATH%\lib;
 ::check which version of erlang setup we want
 :: choice.exe exists on all windows platforms since MSDOS but not on XP
 echo select:
-echo       3 for R14b03
+echo       3 for R15b03-1
 echo       4 for R14b04
-echo       5 for R15B
+echo       A for R16A
+echo       B for R16B
 echo       1 for R15b01
 set /p choice=or 0 to exit to the shell.
 :: then get to unix goodness as fast as possible
 if /i "%choice%"=="0" goto win_shell
 ::::if /i "%choice%"=="2" goto R......
-if /i "%choice%"=="3" goto R14B03
+if /i "%choice%"=="3" goto R15B03-1
 if /i "%choice%"=="4" goto R14B04
-if /i "%choice%"=="5" goto R15B
+if /i "%choice%"=="A" goto R16A
+if /i "%choice%"=="B" goto R16B
 if /i "%choice%"=="1" goto R15B01
 :: else
 goto eof
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:R14B03
-set ERTS_VSN=5.8.4
-set OTP_REL=R14B03
-goto unix_shell
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:R15B
-set ERTS_VSN=5.9
-set OTP_REL=R15B
+:R15B03-1
+set ERTS_VSN=5.9.3
+set OTP_REL=R15B03
 goto unix_shell
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

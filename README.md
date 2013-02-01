@@ -312,7 +312,7 @@ Launch the `SDK prompt` again, and start cygwin again using
 start `SDK prompt`, shell (4) for R14B04.
 
     cd /relax/bits
-    wget http://pypi.python.org/packages/2.6/s/setuptools/setuptools-0.6c11-py2.6.egg#md5=bfa92100bd772d5a213eedd356d64086
+    wget http://pypi.python.org/packages/2.6/s/setuptools/setuptools-0.6c11-py2.6.egg
     sh setuptools-0.6c11-py2.6.egg
     easy_install sphinx docutils pygments
     # check its working

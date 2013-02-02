@@ -269,7 +269,7 @@ Overall, the desired order for your $PATH is:
 - Usual Windows folders `%windir%;%windir%\system32` etc
 - Various settings form the `otp_build` script
 
-More details are at [erlang INSTALL-Win32.md on github](http://github.com/erlang/otp/blob/dev/INSTALL-WIN32.md)
+More details are at [erlang INSTALL-Win32.md on github](https://github.com/erlang/otp/blob/master/HOWTO/INSTALL-WIN32.md)
 
 ## Unpack Erlang/OTP
 

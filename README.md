@@ -56,9 +56,9 @@ hey its still marginally easier.
 [Chocolatey]: http://chocolatey.org/
 [NuGet]: http://nuget.org/
 
-# Install Packages with Chocolatey
+# Pre-requisites
 
-## clean installs
+## Clean Package Installs with Chocolatey
 
 These packages install silently, without intervention. Cut and paste them
 into a command prompt, leave it running, and open another one for the next
@@ -73,7 +73,7 @@ section.
     cinst nasm
     cinst InnoSetup
 
-## Optional but useful
+## Optional but Useful Packages
 
     cinst sysinternals
     cinst dependencywalker
@@ -138,35 +138,29 @@ Confirm you have:
         - help2man
         - curl
 
-Then advance & install!
 
-# Setting up the kit
+## Update AutoConf Archives
 
-	git clone git://github.com/dch/glazier.git c:\relax
-	pushd c:\relax && path=c:\relax\bin;%PATH%;
-	aria2c.exe --force-sequential=false --max-connection-per-server=5 --check-certificate=false --auto-file-renaming=false --input-file=downloads.md --max-concurrent-downloads=5 --dir=bits --save-session=bits/a2session.txt
+Start a new cygwin shell:
 
-# set up links
+    cd /cygdrive/c/relax/bits
+    wget http://ftpmirror.gnu.org/autoconf-archive/autoconf-archive-2012.09.08.tar.gz
+    tar zxf autoconf-archive-2012.09.08.tar.gz
+    cd autoconf-archive-2012.09.08
+    ./configure --prefix=/usr && make && make install
 
-	pushd c:\relax && rd SDK VC nasm inno5 nsis strawberry
-	mklink /j c:\relax\SDK "C:\Program Files\Microsoft SDKs\Windows\v7.1"
-	mklink /j c:\relax\VC "C:\Program Files (x86)\Microsoft Visual Studio 10.0"
-	mklink /j nasm "c:\Program Files (x86)\nasm"
-	mklink /j c:\relax\inno5 "c:\Program Files (x86)\Inno Setup 5"
-	mklink /j c:\relax\nsis "c:\Program Files\NSIS"
+## Install Python easy_install and Sphinx for Documentation Builds
 
-	:: these ones are for the picky software packagers
-	mklink /j c:\cygwin\relax c:\relax
-	mklink /j c:\openssl c:\relax\openssl
+Still within cygwin:
 
-# set up vars
+    cd /relax/bits
+    wget http://pypi.python.org/packages/2.6/s/setuptools/setuptools-0.6c11-py2.6.egg
+    sh setuptools-0.6c11-py2.6.egg
+    easy_install sphinx docutils pygments
+    # check its working
+    sphinx-build -h
 
-	setx RELAX c:\relax
-	set RELAX=c:\relax
-
-Close all open command prompts. Now!!
-
-# make a new prompt
+## make a new prompt
 
 Make a new shortcut on the desktop, targeted at
 `cmd.exe /E:ON /V:ON /T:0E /K "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x86 /release`
@@ -194,21 +188,50 @@ Stop here if it's not *identical*. Not Visual Studio 11.0. Not SDK v8.0a,
 or 7.0, or 7.0a, or any other satanic god-forsaken combination not listed here.
 Seriously. Identical.
 
-# Build wxWidgets
+## Set up convenience Links
+
+	mkdir c:\relax\bits
+        pushd c:\relax && rd SDK VC nasm inno5 nsis strawberry
+	mklink /j c:\relax\SDK "C:\Program Files\Microsoft SDKs\Windows\v7.1"
+	mklink /j c:\relax\VC "C:\Program Files (x86)\Microsoft Visual Studio 10.0"
+	mklink /j nasm "c:\Program Files (x86)\nasm"
+	mklink /j c:\relax\inno5 "c:\Program Files (x86)\Inno Setup 5"
+	mklink /j c:\relax\nsis "c:\Program Files\NSIS"
+
+	:: these ones are for the picky software packagers
+	mklink /j c:\cygwin\relax c:\relax
+	mklink /j c:\openssl c:\relax\openssl
+
+## Set Environment Variables
+
+	setx RELAX c:\relax
+	set RELAX=c:\relax
+
+Close all open command prompts. Now!!
+
+# Building CouchDB Pre-requisites
+
+## Setting up the glazier build kit
+
+	git clone git://github.com/dch/glazier.git c:\relax
+	pushd c:\relax && path=c:\relax\bin;%PATH%;
+	aria2c.exe --force-sequential=false --max-connection-per-server=5 --check-certificate=false --auto-file-renaming=false --input-file=downloads.md --max-concurrent-downloads=5 --dir=bits --save-session=bits/a2session.txt
+
+## Build wxWidgets
 
 Open a new SDK prompt. Check that it has `/x86 /Release Build` in the title bar.
 
 	pushd %RELAX%\bin && build_wx.cmd
 
-# Build OpenSSL
+## Build OpenSSL
 
 	pushd %RELAX%\bin && build_openssl.cmd
 
-# Build ICU
+## Build ICU
 
 	pushd %RELAX%\bin && build_icu.cmd
 
-# Start a UNIX-friendly shell
+## Start a UNIX-friendly shell
 
 Our goal is to get the path set up in this order:
 
@@ -248,24 +271,24 @@ Overall, the desired order for your $PATH is:
 
 More details are at [erlang INSTALL-Win32.md on github](http://github.com/erlang/otp/blob/dev/INSTALL-WIN32.md)
 
-# Unpack Erlang/OTP
+## Unpack Erlang/OTP
 
 	cd .. && tar xzf /relax/bits/otp_src_R14B04.tar.gz
 	cd $ERL_TOP
 	cp /relax/SDK/Redist/VC/vcredist_x86.exe /cygdrive/c/werl/
 	cp /relax/SDK/Redist/VC/vcredist_x86.exe /cygdrive/c/relax/
 
-# Configure and Build Erlang/OTP
+## Configure and Build Erlang/OTP
 
 	echo "skipping gs" > lib/gs/SKIP
 	echo "skipping ic" > lib/ic/SKIP
 	echo "skipping jinterface" > lib/jinterface/SKIP
 	erl_config.sh && erl_build.sh
 
-# Spidermonkey
+## Spidermonkey
 
-Spidermonkey needs to be compiled with the Mozilla Build chain. This requires special and careful incantations.
-Launch your `SDK prompt` again.
+Spidermonkey needs to be compiled with the Mozilla Build chain. This
+requires special and careful incantations. Launch your `SDK prompt` again.
 
     color
     call c:\mozilla-build\start-msvc10.bat
@@ -296,29 +319,7 @@ VS2012 + SDK7.1 installed side by side. It seems that having both of
 these installed breaks compilation of js-185. If you're building with
 the SDK 7.1 alone this is not required.
 
-# Update AutoConf Archives
-
-Launch the `SDK prompt` again, and start cygwin again using
-`c:\relax\bin\shell`. Pick (4) to be configured for OTP R14B04.
-
-    cd /relax/bits
-    wget http://ftpmirror.gnu.org/autoconf-archive/autoconf-archive-2012.09.08.tar.gz
-    tar zxf autoconf-archive-2012.09.08.tar.gz
-    cd autoconf-archive-2012.09.08
-    ./configure --prefix=/usr && make && make install
-
-# Install Python easy_install and Sphinx for Documentation Builds
-
-start `SDK prompt`, shell (4) for R14B04.
-
-    cd /relax/bits
-    wget http://pypi.python.org/packages/2.6/s/setuptools/setuptools-0.6c11-py2.6.egg
-    sh setuptools-0.6c11-py2.6.egg
-    easy_install sphinx docutils pygments
-    # check its working
-    sphinx-build -h
-
-# CouchDB
+## Building CouchDB itself
 
 start `SDK prompt`, shell (4) for R14B04.
 

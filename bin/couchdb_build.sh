@@ -28,7 +28,7 @@ tar cvzf $COUCH_TOP/build_pdbs-logs.tar.gz \
 echo DONE.
 echo to move build files to release area run the following:
 echo PATCH=_otp_$OTP_REL.exe
-echo DEST=/relax/release/CouchDB/Snapshots/`date +%Y%m%d`
+echo DEST=/cygdrive/c/jenkins/release/CouchDB/Snapshots/`date +%Y%m%d`
 echo pushd $COUCH_TOP/etc/windows/
 echo rename .exe \$PATCH setup-couchdb-*
 echo WINCOUCH=\`ls -1 setup-*.exe\`

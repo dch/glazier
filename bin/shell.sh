@@ -87,4 +87,14 @@ echo
 echo Ready to build Erlang and CouchDB using Erlang $ERTS_VSN OTP $OTP_VER in $ERL_TOP
 echo Time to Relax.
 
-bash -i
+if [ -z "$BUILD_WITH_JENKINS" ] ; then
+  bash -i
+else
+	cd $WORKSPACE
+	git clean -fdx
+	git reset --hard
+	./bootstrap
+	/relax/bin/couchdb_config.sh
+	/relax/bin/couchdb_build.sh
+fi
+

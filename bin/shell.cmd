@@ -17,6 +17,11 @@ if not defined CURL_PATH set CURL_PATH=%RELAX%\curl
 if not defined ZLIB_PATH set ZLIB_PATH=%RELAX%\zlib
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: haul in MSVC compiler configuration
+:: TODO remove dependency on x86 flag
+call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x86 /release
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: LIB and INCLUDE are preset by Windows SDK and/or Visual C++ shells
 :: however VC++ uses LIB & INCLUDE and SDK uses Lib & Include. In Cygwin
 :: these are *NOT* the same but when we shell out to CL.exe and LINK.exe
@@ -38,8 +43,14 @@ set LIBPATH=%LIBPATH%;%SSL_PATH%\lib;%CURL_PATH%\lib;%ICU_PATH%\lib;
 set LIB=%LIB%;%SSL_PATH%\lib;%CURL_PATH%\lib;%ICU_PATH%\lib;
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-::check which version of erlang setup we want
+:: check which version of erlang setup we want
+:: pick up from jenkins if required
+if not defined BUILD_WITH_JENKINS goto select
+if not defined OTP_REL goto select
+goto %OTP_REL%
+:: no default, so let's ask the user instead!
 :: choice.exe exists on all windows platforms since MSDOS but not on XP
+:select
 echo select:
 echo       3 for R15b03-1
 echo       4 for R14b04

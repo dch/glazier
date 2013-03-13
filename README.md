@@ -309,7 +309,7 @@ requires special and careful incantations. Launch your `SDK prompt` again.
     tar xzf bits/js185-1.0.0.tar.gz
     cd /c/relax/js-1.8.5/js/src
     autoconf-2.13
-    ./configure --enable-static --enable-shared-js --enable-debug --enable-debug-symbols
+    ./configure --enable-static --enable-shared-js --enable-debug-symbols
     make
     make check # optional, takes a while, check-date-format-tofte.js fails
     exit

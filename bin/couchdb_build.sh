@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 COUCH_TOP=`pwd`
 export COUCH_TOP
 

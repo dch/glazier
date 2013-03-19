@@ -1,7 +1,14 @@
 #!/bin/sh
+set -e
 COUCH_TOP=`pwd`
 export COUCH_TOP
 export RELAX=`cygpath $RELAX`
+
+if [ ! -e "$COUCH_TOP/configure" ]
+then
+    echo ============= COUCHDB_CONFIG BOOTSTRAP ====================
+    ./bootstrap 2>&1 | tee $COUCH_TOP/build_configure.txt
+fi
 
 echo ============= COUCHDB_CONFIG CONFIGURE ===================
 ./configure \
@@ -15,7 +22,7 @@ echo ============= COUCHDB_CONFIG CONFIGURE ===================
 --disable-init \
 --disable-launchd \
 #--with-win32-curl=$COUCH_TOP/../curl \
-2>&1 | tee $COUCH_TOP/build_configure.txt
+2>&1 | tee -a $COUCH_TOP/build_configure.txt
 
 echo ============= COUCHDB_CONFIG CONFIGURE ===================
 echo DONE. | tee -a $COUCH_TOP/build_configure.txt

@@ -31,8 +31,8 @@ call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x86 /release
 :: werldir for building erlang
 
 if not defined RELAX set RELAX=c:\relax
-if not defined WERLDIR set WERLDIR=c:\werl
-setx WERLDIR %WERLDIR% > NUL:
+if not defined WERL_DIR set WERL_DIR=c:\werl
+setx WERL_DIR %WERL_DIR% > NUL:
 setx RELAX %RELAX% > NUL:
 
 set LIB=%RELAX%\VC\VC\lib;%RELAX%\SDK\lib;%LIB%
@@ -54,9 +54,9 @@ goto %OTP_REL%
 echo select:
 echo       3 for R15b03-1
 echo       4 for R14b04
-echo       A for R16A
+::echo       A for R16A
 echo       B for R16B
-echo       1 for R15b01
+echo       1 for R16B01
 set /p choice=or 0 to exit to the shell.
 :: then get to unix goodness as fast as possible
 if /i "%choice%"=="0" goto win_shell
@@ -65,7 +65,7 @@ if /i "%choice%"=="3" goto R15B03-1
 if /i "%choice%"=="4" goto R14B04
 if /i "%choice%"=="A" goto R16A
 if /i "%choice%"=="B" goto R16B
-if /i "%choice%"=="1" goto R15B01
+if /i "%choice%"=="1" goto R16B01
 :: else
 goto eof
 
@@ -76,9 +76,9 @@ set OTP_REL=R15B03-1
 goto unix_shell
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:R15B01
-set ERTS_VSN=5.9.1
-set OTP_REL=R15B01
+:R16B01
+set ERTS_VSN=5.10.2
+set OTP_REL=R16B01
 goto unix_shell
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -87,12 +87,19 @@ set ERTS_VSN=5.8.5
 set OTP_REL=R14B04
 goto unix_shell
 
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:R16B
+set ERTS_VSN=5.10.1
+set OTP_REL=R16B
+goto unix_shell
+
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :unix_shell
 color
 title Building in %ERL_TOP% with OTP %OTP_REL% and Erlang v%ERTS_VSN%
 pushd %WERL%\
-for /f "usebackq" %%i in (`c:\cygwin\bin\cygpath.exe %WERLDIR%`) do @set WERL_PATH=%%i
+for /f "usebackq" %%i in (`c:\cygwin\bin\cygpath.exe %WERL_DIR%`) do @set WERL_PATH=%%i
 set ERL_TOP=%WERL_PATH%/otp_src_%OTP_REL%
 c:\cygwin\bin\bash %relax%\bin\shell.sh
 goto eof

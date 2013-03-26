@@ -1,2 +1,3 @@
-robocopy c:\relax\release\otp_src_R14B03 c:\relax\otp_src_R14B03 -mir -log:NUL: 
-robocopy c:\relax\release\otp_src_R14B04 c:\relax\otp_src_R14B04 -mir -log:NUL: 
+if not defined WERL_SRC  set WERL_SRC=c:\relax\werl
+if not defined WERL_DIR  set WERL_DIR=c:\jenkins\workspace\werl
+robocopy %WERL_SRC% %WERL_DIR% -mir -log:NUL: -r:0 -w:0

@@ -72,7 +72,6 @@ export OVERRIDE_TARGET CC CXX AR RANLIB OVERRIDE_CONFIG_CACHE_STATIC OVERRIDE_CO
 
 # ensure we have an ERL_TOP to go to
 mkdir -p $ERL_TOP > /dev/null 2>&1
-pushd $ERL_TOP
 
 # this shouldn't change anything really
 ### eval `./otp_build env_win32`
@@ -88,9 +87,10 @@ echo Ready to build Erlang and CouchDB using Erlang $ERTS_VSN OTP $OTP_VER in $E
 echo Time to Relax.
 
 if [ -z "$BUILD_WITH_JENKINS" ] ; then
+  pushd $ERL_TOP
   bash -i
 else
-	cd $WORKSPACE
+	echo Working directory is: `pwd`
 	git clean -fdx
 	git reset --hard
 	./bootstrap

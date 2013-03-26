@@ -98,7 +98,6 @@ goto unix_shell
 :unix_shell
 color
 title Building in %ERL_TOP% with OTP %OTP_REL% and Erlang v%ERTS_VSN%
-pushd %WERL%\
 for /f "usebackq" %%i in (`c:\cygwin\bin\cygpath.exe %WERL_DIR%`) do @set WERL_PATH=%%i
 set ERL_TOP=%WERL_PATH%/otp_src_%OTP_REL%
 c:\cygwin\bin\bash %relax%\bin\shell.sh

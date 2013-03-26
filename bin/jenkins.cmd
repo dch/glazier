@@ -1,4 +1,7 @@
 @echo off
+:: This script must run with elevated (admin/uac) permissions for the
+:: cp -p stage in couchdb autotools script to complete successfully.
+
 :: tell other glazier scripts to run automated
 :: builds instead of usual interactive mode
 set BUILD_WITH_JENKINS=1
@@ -21,12 +24,25 @@ robocopy %WERL_SRC% %WERL_DIR% -mir -log:NUL: -r:0 -w:0
 :: expect crash and burn for the moment
 
 :: this allows you to run the jenkins build interactively TODO HACKHACKHACK
-if not defined WORKSPACE set WORKSPACE=c:\jenkins\workspace\Apache-CouchDB-Windows-master\label\Windows-8-x64\
+if not defined WORKSPACE set WORKSPACE=c:\jenkins\workspace\Apache-CouchDB-Windows\
 
-:: This script must run with elevated (admin/uac) permissions for the
-:: cp -p stage in couchdb autotools script to complete successfully.
+echo ============= JENKINS CONFIG ===============
+echo Working Directory:
+cd
+set BUILD
+set GIT
+set JENKINS_HOME
+set JENKINS_URL
+set JOB
+set NODE
+set OTP
+set PATH
+set WERL
+set WORKSPACE
+echo ============= JENKINS CONFIG ===============
 
 call c:\relax\bin\shell.cmd
 :: and relax
 
 :: output when all is well, ends up in /etc/windows/ for better or for worse!
+xz

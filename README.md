@@ -45,7 +45,8 @@ While any 64-bit Windows will likely do, I use specifically:
 - Install the [NuGet Package Manager](http://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c)
 - Install [Chocolatey]:
 
-	@powershell -NoProfile -ExecutionPolicy unrestricted -Command "iex ((new-object net.webclient).DownloadString('https://raw.github.com/chocolatey/chocolatey/master/chocolateyInstall/InstallChocolatey.ps1'))" && SET PATH=%PATH%;%systemdrive%\chocolatey\bin
+    	    @powershell -NoProfile -ExecutionPolicy unrestricted -Command "iex ((new-object net.webclient).DownloadString('https://raw.github.com/chocolatey/chocolatey/master/chocolateyInstall/InstallChocolatey.ps1'))" && SET PATH=%PATH%;%systemdrive%\chocolatey\bin
+
 - Apply Windows Updates and Reboot until Done.
 
 Typically here I shutdown & snapshot my VM as past this point its going to

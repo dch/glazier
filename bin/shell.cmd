@@ -52,22 +52,33 @@ goto %OTP_REL%
 :: choice.exe exists on all windows platforms since MSDOS but not on XP
 :select
 echo select:
-echo       3 for R15b03-1
 echo       4 for R14b04
-::echo       A for R16A
-echo       B for R16B
-echo       1 for R16B01
+echo       3 for R15b03-1
+echo       1 for R16b01
+echo       2 for R16b02
+echo       A for R17A
+echo       B for R17B
+echo       7 for R17B01
+
 set /p choice=or 0 to exit to the shell.
 :: then get to unix goodness as fast as possible
 if /i "%choice%"=="0" goto win_shell
 ::::if /i "%choice%"=="2" goto R......
 if /i "%choice%"=="3" goto R15B03-1
 if /i "%choice%"=="4" goto R14B04
-if /i "%choice%"=="A" goto R16A
-if /i "%choice%"=="B" goto R16B
+if /i "%choice%"=="A" goto R17A
+if /i "%choice%"=="B" goto R17B
+if /i "%choice%"=="2" goto R16B02
 if /i "%choice%"=="1" goto R16B01
+if /i "%choice%"=="7" goto R17
 :: else
 goto eof
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:R14B04
+set ERTS_VSN=5.8.5
+set OTP_REL=R14B04
+goto unix_shell
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :R15B03-1
@@ -82,16 +93,15 @@ set OTP_REL=R16B01
 goto unix_shell
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:R14B04
-set ERTS_VSN=5.8.5
-set OTP_REL=R14B04
+:R16B02
+set ERTS_VSN=5.10.3
+set OTP_REL=R16B02
 goto unix_shell
 
-
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:R16B
-set ERTS_VSN=5.10.1
-set OTP_REL=R16B
+:R16B03
+set ERTS_VSN=5.10.4
+set OTP_REL=R16B03
 goto unix_shell
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

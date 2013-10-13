@@ -325,6 +325,7 @@ the SDK 7.1 alone this is not required.
 start `SDK prompt`, shell (4) for R14B04.
 
     cd /relax && git clone http://git-wip-us.apache.org/repos/asf/couchdb.git
+    cd /relax/couchdb
     git checkout --track origin/1.3.x ## or suitable tag here
     git clean -fdx && git reset --hard
     ./bootstrap && couchdb_config.sh && couchdb_build.sh

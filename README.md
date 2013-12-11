@@ -89,9 +89,9 @@ section.
 
 ## Cygwin
 
-Download and run [Cygwin Setup](http://cygwin.com/setup.exe)
+Download and run *32-bit* [Cygwin Setup](http://cygwin.com/setup-x86.exe)
 
-Confirm you have:
+Select the following, in addition to the defaults:
 
         ARCHIVE/
         - p7zip
@@ -102,8 +102,6 @@ Confirm you have:
         - bison
         - gcc-core
         - gcc-g++
-        - gcc4-core
-        - gcc4-g++
         - gdb
         - git
         - libtool
@@ -126,7 +124,7 @@ Confirm you have:
         UTILS/
         - file
         - gnupg
-        - rename
+        - renameutils
         - socat
         - time
         - tree
@@ -135,8 +133,10 @@ Confirm you have:
         WEB/
         - wget
 
-        Ensure you DON'T have:
+        *Ensure you DON'T have*:
+        DEVEL/
         - help2man
+        NET/
         - curl
 
 
@@ -144,38 +144,40 @@ Confirm you have:
 
 Start a new cygwin shell:
 
+    mkdir -p /cygdrive/c/relax/bits
     cd /cygdrive/c/relax/bits
-    wget http://ftpmirror.gnu.org/autoconf-archive/autoconf-archive-2012.09.08.tar.gz
-    tar zxf autoconf-archive-2012.09.08.tar.gz
-    cd autoconf-archive-2012.09.08
+    wget http://ftpmirror.gnu.org/autoconf-archive/autoconf-archive-2013.11.01.tar.gz
+    tar zxf autoconf-archive-2013.11.01.tar.gz
+    cd autoconf-archive-2013.11.01
     ./configure --prefix=/usr && make && make install
 
-## Install Python easy_install and Sphinx for Documentation Builds
+## Install Python easy_install, pip and Sphinx for Documentation Builds
 
 Still within cygwin:
 
-    cd /relax/bits
-    wget http://pypi.python.org/packages/2.6/s/setuptools/setuptools-0.6c11-py2.6.egg
-    sh setuptools-0.6c11-py2.6.egg
-    easy_install sphinx docutils pygments
+    cd /cygdrive/c/relax/bits
+    echo "--ca-directory=/usr/ssl/certs" > ~/.wgetrc
+    wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py -O - | python
+    wget https://raw.github.com/pypa/pip/master/contrib/get-pip.py -O - | python
+    pip install sphinx docutils pygments
     # check its working
     sphinx-build -h
 
 ## make a new prompt
 
 Make a new shortcut on the desktop, targeted at
-`cmd.exe /E:ON /V:ON /T:0E /K "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x86 /release`
+`cmd.exe /E:ON /V:ON /T:0E /K "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x86 /release && color 1f`
 and I suggest you pin it to the start menu. We'll use this all the time,
 referred to as `the SDK prompt`. Right-click on the icon, click the `advanced`
 button, and tick the `Run as Administrator` button. We do need this so that
 `cp -P` works within autotools on Windows8.
 
-When you launch one, the text will be an unreadable green. Type `color` to
-fix it. Color takes parameters if you hate yellow. Borland users will like
-`color 1f`. Let's confirm we have the right bits with
-`echo %RELAX% && where cl mc mt link lc rc nmake`:
+If you don't like white-on-blue, type `color` to fix it.
+Color takes parameters if you hate yellow. 
 
-	c:\relax
+Let's confirm we have the right bits with
+`where cl mc mt link lc rc nmake`:
+
 	C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\cl.exe
 	C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\MC.Exe
 	C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\mt.exe
@@ -191,8 +193,8 @@ Seriously. Identical.
 
 ## Set up convenience Links
 
-	mkdir c:\relax\bits
-        pushd c:\relax && rd SDK VC nasm inno5 nsis strawberry
+        pushd c:\relax
+        rd SDK VC nasm inno5 nsis strawberry
 	mklink /j c:\relax\SDK "C:\Program Files\Microsoft SDKs\Windows\v7.1"
 	mklink /j c:\relax\VC "C:\Program Files (x86)\Microsoft Visual Studio 10.0"
 	mklink /j nasm "c:\Program Files (x86)\nasm"

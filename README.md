@@ -42,7 +42,8 @@ While any 64-bit Windows will likely do, I use specifically:
 - reboot and run updates
 - Install [Windows SDK 7.1](http://www.microsoft.com/download/en/confirmation.aspx?id=8279)
 - Optionally, Install `Visual Studio 2012 Ultimate` via the web installer for a nice UI & debugger interface
-- Install the [NuGet Package Manager](http://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c)
+- If you installed VS 2012, install the [NuGet Package Manager](http://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c)
+- Install the [VS 2010 SP1 compiler pack for Windows SDK 7.1](http://www.microsoft.com/en-us/download/details.aspx?id=4422) (*mandatory*)
 - Install [Chocolatey]:
 
     	    @powershell -NoProfile -ExecutionPolicy unrestricted -Command "iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))" && SET PATH=%PATH%;%systemdrive%\chocolatey\bin
@@ -210,19 +211,21 @@ Seriously. Identical.
 	setx RELAX c:\relax
 	set RELAX=c:\relax
 
-Close all open command prompts. Now!!
+Close all open command prompts. Now we're ready to go!
 
 # Building CouchDB Pre-requisites
 
 ## Setting up the glazier build kit
 
-	git clone git://github.com/dch/glazier.git c:\relax
-	pushd c:\relax && path=c:\relax\bin;%PATH%;
-	aria2c.exe --force-sequential=false --max-connection-per-server=5 --check-certificate=false --auto-file-renaming=false --input-file=downloads.md --max-concurrent-downloads=5 --dir=bits --save-session=bits/a2session.txt
+	pushd c:\relax
+	git clone git://github.com/dch/glazier.git
+	mklink /j c:\relax\bin c:\relax\glazier\bin
+	path=c:\relax\bin;%PATH%;
+	aria2c.exe --force-sequential=false --max-connection-per-server=5 --check-certificate=false --auto-file-renaming=false --input-file=glazier/downloads.md --max-concurrent-downloads=5 --dir=bits --save-session=bits/a2session.txt
 
 ## Build wxWidgets
 
-Open a new SDK prompt. Check that it has `/x86 /Release Build` in the title bar.
+Open a new SDK prompt. Check that it has `x86 Release Build Environment` in the title bar.
 
 	pushd %RELAX%\bin && build_wx.cmd
 

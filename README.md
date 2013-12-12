@@ -27,7 +27,7 @@ time faffing around getting dependencies right. I want to make this as easy as
 
 Here's the general approach:
 
-- 64-bit Windows + 64-bit SDK 7.1 + optionally Visual Studio 2012
+- 64-bit Windows + 64-bit SDK 7.1 + Visual Studio 2012
 - chocolatey packages for remaining dev tool dependencies
 - Cygwin latest development tools
 
@@ -42,11 +42,11 @@ While any 64-bit Windows will likely do, I use specifically:
 - reboot and run updates
 - Install [Windows SDK 7.1](http://www.microsoft.com/download/en/confirmation.aspx?id=8279)
 - Install [Visual Studio 2012 Express](http://www.microsoft.com/en-ca/download/details.aspx?id=34673)
-- Install the [NuGet Package Manager](http://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c)
 - Install [Chocolatey]:
 
     	    @powershell -NoProfile -ExecutionPolicy unrestricted -Command "iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))" && SET PATH=%PATH%;%systemdrive%\chocolatey\bin
 
+- (optional) Install the [NuGet Package Manager](http://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c)
 - Apply Windows Updates and Reboot until no more updates appear.
 
 Typically here I shutdown & snapshot my VM as past this point its going to
@@ -164,17 +164,18 @@ Still within cygwin:
     # check its working
     sphinx-build -h
 
-## make a new prompt
+## Make a new prompt shortcut
 
 Make a new shortcut on the desktop, targeted at
-`cmd.exe /E:ON /V:ON /T:1F /K "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x86 /release && color 1f`
-and I suggest you pin it to the start menu. We'll use this all the time,
+
+    cmd.exe /E:ON /V:ON /T:1F /K "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x86 /release && color 1f
+    
+I suggest you pin it to the Start menu. We'll use this all the time,
 referred to as `the SDK prompt`. Right-click on the icon, click the `advanced`
 button, and tick the `Run as Administrator` button. We do need this so that
 `cp -P` works within autotools on Windows8.
 
-If you don't like white-on-blue, type `color` to fix it.
-Color takes parameters if you hate yellow. 
+If you don't like white-on-blue, type `color` to fix it. It takes parameters.
 
 Let's confirm we have the right bits with
 `where cl mc mt link lc rc nmake`:
@@ -188,11 +189,9 @@ Let's confirm we have the right bits with
 	C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\RC.Exe
 	C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\nmake.exe
 
-Stop here if it's not *identical*. Not Visual Studio 11.0. Not SDK v8.0a,
-or 7.0, or 7.0a, or any other satanic god-forsaken combination not listed here.
-Seriously. Identical.
+Stop here if your results are not *identical*.
 
-*NOTE*: A recent MS .NET 4 update broke the ICU build process. To fix, rename
+*NOTE*: A recent MS .NET 4 security update broke the ICU build process. To fix, rename
 the broken SDK version of `cvtres.exe` to get it out of the path:
 
         copy "C:\Windows\Microsoft.NET\Framework\v4.0.30319\cvtres.exe" "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\BIN\cvtresold.exe"
@@ -243,9 +242,16 @@ Open a new SDK prompt. Check that it has `x86 Release Build Environment` in the 
 
 	pushd %RELAX%\bin && build_icu.cmd
 
-## Start a UNIX-friendly shell
+## Start a UNIX-friendly shell with MS compilers
 
-Our goal is to get the path set up in this order:
+The short version:
+
+1. Start your `SDK prompt` as above
+2. Launch a cygwin erl-ified shell via `c:\relax\bin\shell.cmd`
+3. Select R14B04 unless you know what you are doing!
+4. Skip down to the next section ("Unpack Erlang/OTP")
+
+The long version: our goal is to get the path set up in this order:
 
 1. erlang and couchdb build helper scripts
 2. Microsoft VC compiler, linker, etc from Windows SDK
@@ -254,11 +260,6 @@ Our goal is to get the path set up in this order:
 
 It seems this is a challenge for most environments, so `glazier` just
 assumes you're using [chocolatey] and takes care of the rest.
-
-- start your `SDK prompt` as above
-- launch a cygwin erl-ified shell via `c:\relax\bin\shell.cmd`
-- select R14B04 unless you know what you are doing
-- go to next section to compile Erlang/OTP
 
 Alternatively, you can launch your own cmd prompt, and ensure that your system
 path is correct first in the win32 side before starting cygwin. Once in cygwin
@@ -302,7 +303,6 @@ More details are at [erlang INSTALL-Win32.md on github](https://github.com/erlan
 Spidermonkey needs to be compiled with the Mozilla Build chain. This
 requires special and careful incantations. Launch your `SDK prompt` again.
 
-    color
     call c:\mozilla-build\start-msvc10.bat
     which cl link
     # /c/Program Files (x86)/Microsoft Visual Studio 10.0/VC/Bin/cl.exe
@@ -329,11 +329,12 @@ requires special and careful incantations. Launch your `SDK prompt` again.
 Note: the above PATH and LIB hacks are a workaround for having both
 VS2012 + SDK7.1 installed side by side. It seems that having both of
 these installed breaks compilation of js-185. If you're building with
-the SDK 7.1 alone this is not required.
+the SDK 7.1 alone this is not required, but it's recommended to
+follow the steps above anyway for safety.
 
 ## Building CouchDB itself
 
-start `SDK prompt`, shell (4) for R14B04.
+start `SDK prompt`, then shell.cmd, option (4) for R14B04.
 
     cd /relax && git clone http://git-wip-us.apache.org/repos/asf/couchdb.git
     cd /relax/couchdb

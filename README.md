@@ -41,14 +41,13 @@ While any 64-bit Windows will likely do, I use specifically:
 - Install the full [Microsoft .Net Framework 4](http://www.microsoft.com/en-us/download/details.aspx?id=17851)
 - reboot and run updates
 - Install [Windows SDK 7.1](http://www.microsoft.com/download/en/confirmation.aspx?id=8279)
-- Optionally, Install `Visual Studio 2012 Ultimate` via the web installer for a nice UI & debugger interface
-- If you installed VS 2012, install the [NuGet Package Manager](http://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c)
-- Install the [VS 2010 SP1 compiler pack for Windows SDK 7.1](http://www.microsoft.com/en-us/download/details.aspx?id=4422) (*mandatory*)
+- Install [Visual Studio 2012 Express](http://www.microsoft.com/en-ca/download/details.aspx?id=34673)
+- Install the [NuGet Package Manager](http://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c)
 - Install [Chocolatey]:
 
     	    @powershell -NoProfile -ExecutionPolicy unrestricted -Command "iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))" && SET PATH=%PATH%;%systemdrive%\chocolatey\bin
 
-- Apply Windows Updates and Reboot until Done.
+- Apply Windows Updates and Reboot until no more updates appear.
 
 Typically here I shutdown & snapshot my VM as past this point its going to
 evolve a lot over time. Many of the downstream chocolatey packages still
@@ -108,7 +107,7 @@ Select the following, in addition to the defaults:
         - libtool
         - make
         - patchutils
-        - pkgconfig
+        - pkg-config
         - readline
 
         EDITORS/
@@ -145,6 +144,7 @@ Select the following, in addition to the defaults:
 
 Start a new cygwin shell:
 
+    git config --global core.autocrlf false
     mkdir -p /cygdrive/c/relax/bits
     cd /cygdrive/c/relax/bits
     wget http://ftpmirror.gnu.org/autoconf-archive/autoconf-archive-2013.11.01.tar.gz
@@ -167,7 +167,7 @@ Still within cygwin:
 ## make a new prompt
 
 Make a new shortcut on the desktop, targeted at
-`cmd.exe /E:ON /V:ON /T:0E /K "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x86 /release && color 1f`
+`cmd.exe /E:ON /V:ON /T:1F /K "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x86 /release && color 1f`
 and I suggest you pin it to the start menu. We'll use this all the time,
 referred to as `the SDK prompt`. Right-click on the icon, click the `advanced`
 button, and tick the `Run as Administrator` button. We do need this so that
@@ -192,10 +192,15 @@ Stop here if it's not *identical*. Not Visual Studio 11.0. Not SDK v8.0a,
 or 7.0, or 7.0a, or any other satanic god-forsaken combination not listed here.
 Seriously. Identical.
 
-## Set up convenience Links
+*NOTE*: A recent MS .NET 4 update broke the ICU build process. To fix, rename
+the broken SDK version of `cvtres.exe` to get it out of the path:
+
+        copy "C:\Windows\Microsoft.NET\Framework\v4.0.30319\cvtres.exe" "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\BIN\cvtresold.exe"
+
+## Set up required convenience links
 
         pushd c:\relax
-        rd SDK VC nasm inno5 nsis strawberry
+        rd /s/q SDK VC nasm inno5 nsis strawberry
 	mklink /j c:\relax\SDK "C:\Program Files\Microsoft SDKs\Windows\v7.1"
 	mklink /j c:\relax\VC "C:\Program Files (x86)\Microsoft Visual Studio 10.0"
 	mklink /j nasm "c:\Program Files (x86)\nasm"
@@ -218,6 +223,7 @@ Close all open command prompts. Now we're ready to go!
 ## Setting up the glazier build kit
 
 	pushd c:\relax
+        git config --global core.autocrlf false
 	git clone git://github.com/dch/glazier.git
 	mklink /j c:\relax\bin c:\relax\glazier\bin
 	path=c:\relax\bin;%PATH%;

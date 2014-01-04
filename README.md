@@ -198,8 +198,8 @@ the broken SDK version of `cvtres.exe` to get it out of the path:
 
 ## Set up required convenience links
 
-        pushd c:\relax
-        rd /s/q SDK VC nasm inno5 nsis strawberry
+    pushd c:\relax
+    rd /s/q SDK VC nasm inno5 nsis strawberry
 	mklink /j c:\relax\SDK "C:\Program Files\Microsoft SDKs\Windows\v7.1"
 	mklink /j c:\relax\VC "C:\Program Files (x86)\Microsoft Visual Studio 10.0"
 	mklink /j nasm "c:\Program Files (x86)\nasm"
@@ -222,7 +222,7 @@ Close all open command prompts. Now we're ready to go!
 ## Setting up the glazier build kit
 
 	pushd c:\relax
-        git config --global core.autocrlf false
+    git config --global core.autocrlf false
 	git clone git://github.com/dch/glazier.git
 	mklink /j c:\relax\bin c:\relax\glazier\bin
 	path=c:\relax\bin;%PATH%;
@@ -331,6 +331,11 @@ VS2012 + SDK7.1 installed side by side. It seems that having both of
 these installed breaks compilation of js-185. If you're building with
 the SDK 7.1 alone this is not required, but it's recommended to
 follow the steps above anyway for safety.
+
+Note: start-mssvc10.bat may fail saying it cannot find the VS10 Common Tools. To fix this add a string value
+registry entry for computer\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\Sxs\VS7\10.0 of
+“C:\Program Files (x86)\Microsoft Visual Studio 10.0\” (without the quotes).
+There should be an existing 11.0 value that you can copy and modify.
 
 ## Building CouchDB itself
 

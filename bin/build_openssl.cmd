@@ -17,25 +17,24 @@ setx SSL_PATH %ssl_path%
 if exist "%ssl_path%" rd /s/q "%ssl_path%"
 :: set up a softlink for openssl as Erlang seems to dumb to find it
 if not exist c:\openssl mklink /j c:\openssl "%relax%\openssl"
+if not exist c:\OpenSSL-Win64 mklink /j c:\OpenSSL-Win64 "%relax%\openssl"
 if defined openssl_ver rd /s/q %relax%\%openssl_ver%
 7z x "%TEMP%\openssl-*.tar" -o%relax%\ -y
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 pushd %relax%\%openssl_ver%
-perl Configure VC-WIN32 --prefix=%ssl_path%
-call ms\do_nasm
+perl Configure VC-WIN64A --prefix=%ssl_path%
+call ms\do_win64a
+nmake -f ms\nt.mak clean
 nmake -f ms\nt.mak
 nmake -f ms\nt.mak test
 nmake -f ms\nt.mak install
 
-:: from Erlang/OTP R14B03 onwards, OpenSSL is compiled in statically
-:: this may need  adding enable-static-engine and using target nt.mak
-:: but currently there seems to be an upstream bug to catch first...
-::perl Configure VC-WIN32 --prefix=%RELAX%\openssl enable-static-engine
-::call ms\do_nasm
-::nmake -f ms\nt.mak
-::nmake -f ms\nt.mak test
-::nmake -f ms\nt.mak install
+:: You may be surprised: the 64bit artefacts are indeed output in the
+:: out32* sub-directories and bear names ending *32.dll. Fact is the
+:: 64 bit compile target is so far an incremental change over the legacy
+:: 32bit windows target. Numerous compile flags are still labelled "32"
+:: although those do apply to both 32 and 64bit targets. 
 
 popd
 endlocal

@@ -15,8 +15,7 @@ a consistent, repeatable build environment.
 # Base Requirements
 
 - 64-bit Windows 7 or 8.1. *As of CouchDB 2.0 we only support a 64-bit build of CouchDB*.
-  - We like 64-bit Windows 7 or 8.1 Enterprise N (missing Media Player, etc.) from MSDN.
-- [Microsoft .NET Framework 4](http://www.microsoft.com/en-us/download/details.aspx?id=17851)
+  - We like 64-bit Windows 7, 8.1 or 10 Enterprise N (missing Media Player, etc.) from MSDN.
 - If prompted, reboot after installing the .NET framework.
 - [Visual Studio 2013 x64 Community Edition](https://www.visualstudio.com/en-us/news/vs2013-community-vs.aspx)
 - [Chocolatey](https://chocolatey.org). From an *administrative* __cmd.exe__ command prompt:
@@ -36,7 +35,7 @@ These packages install silently, without intervention. Cut and paste them
 into a command prompt, leave it running, and open another one for the next
 section.
 
-    cinst -y git 7zip.commandline MozillaBuild nasm cyg-get wixtoolset python aria2
+    cinst -y git 7zip.commandline StrawberryPerl nasm cyg-get wixtoolset python aria2
     cyg-get p7zip autoconf binutils bison gcc-code gcc-g++ gdb git libtool make patchutils pkg-config readline file renameutils socat time tree util-linux wget
     c:\tools\python\scripts\pip install sphinx docutils pygments
 
@@ -108,7 +107,7 @@ Open a `Couch SDK Prompt`:
 
 ## Build 64-bit libcurl
 
-    cd %RELAX\bin && build_curl.cmd
+    cd %RELAX%\bin && build_curl.cmd
 
 ## Build 64-bit ICU
 
@@ -141,7 +140,8 @@ For more detail on why this is necessary, see
 
 ## Build Spidermonkey JavaScript 1.8.5
 
-Spidermonkey needs to be compiled with the Mozilla Build chain. 
+Spidermonkey needs to be compiled with the Mozilla Build chain. Fetch the latest version from
+https://wiki.mozilla.org/MozillaBuild and install to c:\mozilla-build.
 To build it with VS2013 requires a few patches.
 
 Start by launching a fresh `SDK prompt`.
@@ -182,8 +182,8 @@ Select `Erlang 17.5` and `w for a Windows prompt`.
     powershell .\configure.ps1 -WithCurl
     :: build and run tests, to be moved into NMakefile
     rebar compile
-    copy src\couch\priv\couchjs bin
-    python dev\run -q --with-admin-party-please python tests\javascript\run
+    copy src\couch\priv\couchjs.exe bin
+    python dev\run -q --with-admin-party-please python test\javascript\run
 
 This will produce a working CouchDB installation inside
 `$ERL_TOP/release/win32` that you can run directly, and also a full

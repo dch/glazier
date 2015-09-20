@@ -41,6 +41,9 @@ section.
 
 *Note: Do NOT install curl or help2man inside CygWin!*
 
+## Mozilla build
+Fetch the latest Mozilla Build version from
+https://wiki.mozilla.org/MozillaBuild and install to c:\mozilla-build.
 
 ## Make a new prompt shortcut
 
@@ -140,8 +143,7 @@ For more detail on why this is necessary, see
 
 ## Build Spidermonkey JavaScript 1.8.5
 
-Spidermonkey needs to be compiled with the Mozilla Build chain. Fetch the latest version from
-https://wiki.mozilla.org/MozillaBuild and install to c:\mozilla-build.
+Spidermonkey needs to be compiled with the Mozilla Build chain.
 To build it with VS2013 requires a few patches.
 
 Start by launching a fresh `SDK prompt`.

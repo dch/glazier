@@ -58,7 +58,7 @@ echo       1 for R16b01
 echo       2 for R16b02
 echo       A for R17A
 echo       B for R17B
-echo       7 for R17B01
+echo       8 for 18.1
 
 set /p choice=or 0 to exit to the shell.
 :: then get to unix goodness as fast as possible
@@ -70,9 +70,15 @@ if /i "%choice%"=="A" goto R17A
 if /i "%choice%"=="B" goto R17B
 if /i "%choice%"=="2" goto R16B02
 if /i "%choice%"=="1" goto R16B01
-if /i "%choice%"=="7" goto R17
+if /i "%choice%"=="8" goto OTP18
 :: else
 goto eof
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:OTP18
+set ERTS_VSN=7.1
+set OTP_REL=18.1
+goto unix_shell
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :R14B04

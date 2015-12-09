@@ -7,11 +7,12 @@ http://prdownloads.sourceforge.net/wxwindows/wxMSW-2.8.12.zip
 http://download.microsoft.com/download/1/6/5/165255E7-1014-4D0A-B094-B6A430A6BFFC/vcredist_x86.exe
 ################################################################################
 ### OpenSSL and libcURL
-http://www.openssl.org/source/openssl-0.9.8r.tar.gz
+http://openssl.org/source/openssl-1.0.2e.tar.gz
 ################################################################################
 ### bits required to build erlang
 http://www.erlang.org/download/otp_src_R15B03-1.tar.gz
 http://www.erlang.org/download/otp_src_R14B04.tar.gz
+http://www.erlang.org/download/otp_src_18.1.tar.gz
 ################################################################################
 # bits required to build couch
 http://curl.haxx.se/download/curl-7.23.1.zip

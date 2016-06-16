@@ -17,7 +17,7 @@ a consistent, repeatable build environment.
 - 64-bit Windows 7 or 8.1. *As of CouchDB 2.0 we only support a 64-bit build of CouchDB*.
   - We like 64-bit Windows 7, 8.1 or 10 Enterprise N (missing Media Player, etc.) from MSDN.
 - If prompted, reboot after installing the .NET framework.
-- [Visual Studio 2013 x64 Community Edition](https://www.visualstudio.com/en-us/news/vs2013-community-vs.aspx)
+- [Visual Studio 2013 x64 Community Edition](https://www.visualstudio.com/en-us/news/vs2013-community-vs.aspx) installed on the *C: drive*
 - [Chocolatey](https://chocolatey.org). From an *administrative* __cmd.exe__ command prompt:
 
 ```
@@ -36,8 +36,11 @@ into a command prompt, leave it running, and open another one for the next
 section.
 
     cinst -y git 7zip.commandline StrawberryPerl nasm cyg-get wixtoolset python aria2
+ 
+*NOTE*: There is a bug presently in the Chocolatey cygwin package. After the `cinst` above, download the cygwin installer from https://cygwin.com/, rename the installer to cygwinsetup.exe, and move the installer to `C:\tools\cygwin`. This will enable the cyg-get line below.
+
     cyg-get p7zip autoconf binutils bison gcc-code gcc-g++ gdb git libtool make patchutils pkg-config readline file renameutils socat time tree util-linux wget
-    c:\tools\python\scripts\pip install sphinx docutils pygments
+    C:\ProgramData\chocolatey\lib\python3\tools\Scripts\pip install sphinx docutils pygments
 
 *Note: Do NOT install curl or help2man inside CygWin!*
 
@@ -81,7 +84,7 @@ assistance.
     rd /s/q SDK VC nasm inno5 nsis strawberry
 	mklink /j c:\relax\SDK "c:\Program Files (x86)\Windows Kits\8.1"
 	mklink /j c:\relax\VC "C:\Program Files (x86)\Microsoft Visual Studio 12.0"
-	mklink /j nasm "c:\Program Files (x86)\nasm"
+	mklink /j nasm "c:\Program Files\NASM"
 	:: this one is for the picky software packagers
 	mklink /j c:\openssl c:\relax\openssl
     :: environment variable for future scripts

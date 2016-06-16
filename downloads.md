@@ -8,7 +8,7 @@ http://download.microsoft.com/download/2/E/6/2E61CFA4-993B-4DD4-91DA-3737CD5CD6E
 http://openssl.org/source/openssl-1.0.2e.tar.gz
 ################################################################################
 ### libcurl
-http://curl.haxx.se/download/curl-7.44.0.zip
+https://curl.haxx.se/download/curl-7.49.1.zip
 ################################################################################
 ### Erlang
 http://www.erlang.org/download/otp_src_17.5.tar.gz

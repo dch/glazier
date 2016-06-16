@@ -76,7 +76,6 @@ goto shell_select
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :shell_select
 for /f "usebackq" %%i in (`c:\tools\cygwin\bin\cygpath.exe %WERL_DIR%`) do @set WERL_PATH=%%i
-set ERL_TOP=%WERL_PATH%/otp_src_%OTP_REL%
 
 echo Select a shell:
 echo       w for Windows prompt (default)
@@ -90,6 +89,7 @@ if /i "%choice%"=="p" goto ps_shell
 goto :win_shell
 
 :unix_shell
+set ERL_TOP=%WERL_PATH%/otp_src_%OTP_REL%
 color
 title Building in %ERL_TOP% with OTP %OTP_REL% and Erlang v%ERTS_VSN%
 c:\tools\cygwin\bin\bash %relax%\bin\shell.sh
@@ -97,6 +97,7 @@ goto eof
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :win_shell
+set ERL_TOP=%WERL_DIR%\otp_src_%OTP_REL%
 echo Type exit to stop relaxing.
 title On the couch. Type exit to stop relaxing.
 :: Need these things on the path to build/run CouchDB

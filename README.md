@@ -188,7 +188,7 @@ Select `Erlang 17.5` and `w for a Windows prompt`.
     :: build and run tests, to be moved into NMakefile
     rebar compile
     copy src\couch\priv\couchjs.exe bin
-    python dev\run -q --with-admin-party-please python test\javascript\run
+    python dev\run -n1 --with-admin-party-please python test\javascript\run
 
 This will produce a working CouchDB installation inside
 `$ERL_TOP/release/win32` that you can run directly, and also a full

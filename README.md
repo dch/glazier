@@ -184,39 +184,41 @@ Select `Erlang 17.5` and `w for a Windows prompt`.
     # optional, use suitable tag here
     # git checkout --track origin/2.0.x
     git clean -fdx && git reset --hard
-    powershell .\configure.ps1 -WithCurl
-    :: build and run tests, to be moved into NMakefile
-    rebar compile
-    copy src\couch\priv\couchjs.exe bin
-    python dev\run -n1 --with-admin-party-please python test\javascript\run
+    powershell -ExecutionPolicy Bypass .\configure.ps1 -WithCurl
+    make -f Makefile.win check
 
-This will produce a working CouchDB installation inside
-`$ERL_TOP/release/win32` that you can run directly, and also a full
-installer inside `$COUCH_TOP/etc/windows/` to transfer to other
-systems, without the build chain dependencies.
+This will build a development version of CouchDB runnable via
 
-Glazier prints out minimal instructions to transfer the logs and other files
-to a release directory of your choice. I typically use this when building
-from git to keep track of snapshots, and different erlang or couch build
-configurations.
+    python dev\run <-n1> <--with-admin-party-please>
 
+TODO: Fix make release 
+
+To build a self-contained CouchDB installation (also known as an Erlang
+_release_), after running the above use:
+
+    make -f Makefile.win release
+
+## Installer
+
+The installer is built using WiX and creates a full Windows .msi installer
+package. The installer optionalkl sets up CouchDB running as a Windows Service.
+
+TODO: Complete installer work
 
 # Appendix
 
 ## Why Glazier?
 
-I first got involved with CouchDB around 0.7. Only having a low-spec Windows
-PC to develop on, and no CouchDB Cloud provider being available, I tried
-to build CouchDB myself. It was hard going, and most of the frustration was
+@dch first got involved with CouchDB around 0.7. Only having a low-spec Windows
+PC to develop on, and no CouchDB Cloud provider being available, he tried
+to build CouchDB himself. It was hard going, and most of the frustration was
 trying to get the core Erlang environment set up and compiling without needing
-to buy Microsoft's expensive but excellent Visual Studio tools myself. Once
-Erlang was working I found many of the pre-requisite modules such as cURL,
+to buy Microsoft's expensive but excellent Visual Studio tools. Once
+Erlang was working he found many of the pre-requisite modules such as cURL,
 Zlib, OpenSSL, Mozilla's SpiderMonkey JavaScript engine, and IBM's ICU were
 not available at a consistent compiler and VC runtime release.
 
-There is a branch of glazier that was used to build each CouchDB release.
-I'm in the process of migrating a large portion of the setup scripts to
-use [Chocolatey] for installing pre-requisites.
+There is a branch of glazier that has been used to build each CouchDB release.
 
 ## UNIX-friendly shell details
 

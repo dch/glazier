@@ -25,8 +25,8 @@ if not defined ZLIB_PATH set ZLIB_PATH=%RELAX%\zlib
 :: relax for couchdb
 :: werldir for building erlang
 
-if not defined RELAX setx RELAX c:\relax > NUL:
-if not defined RELAX set RELAX=c:\relax
+if not defined RELAX setx RELAX e:\relax > NUL:
+if not defined RELAX set RELAX=e:\relax
 if not defined WERL_DIR setx WERL_DIR c:\werl > NUL:
 if not defined WERL_DIR set WERL_DIR=c:\werl
 
@@ -101,7 +101,7 @@ set ERL_TOP=%WERL_DIR%\otp_src_%OTP_REL%
 echo Type exit to stop relaxing.
 title On the couch. Type exit to stop relaxing.
 :: Need these things on the path to build/run CouchDB
-set PATH=%ERL_TOP%\release\win32\erts-%ERTS_VSN%\bin;%ERL_TOP%\bootstrap\bin;%ERL_TOP%\erts\etc\win32\cygwin_tools\vc;%ERL_TOP%\erts\etc\win32\cygwin_tools;c:\relax\bin;%PATH%;%ICU_PATH%\bin64;C:\Relax\js-1.8.5\js\src\dist\bin;C:\relax\curl\lib
+set PATH=%ERL_TOP%\release\win32\erts-%ERTS_VSN%\bin;%ERL_TOP%\bootstrap\bin;%ERL_TOP%\erts\etc\win32\cygwin_tools\vc;%ERL_TOP%\erts\etc\win32\cygwin_tools;%RELAX%\bin;%PATH%;%ICU_PATH%\bin64;%RELAX%\js-1.8.5\js\src\dist\bin;%RELAX%\curl\lib;c:\ProgramData\chocolatey\lib\python3\tools\Scripts;C:\Program Files\nodejs
 cmd.exe /k
 goto eof
 
@@ -109,7 +109,7 @@ goto eof
 :ps_shell
 echo Type exit to stop relaxing.
 title On the couch. Type exit to stop relaxing.
-set PATH=%ERL_TOP%\release\win32\erts-%ERTS_VSN%\bin;%ERL_TOP%\bootstrap\bin;%ERL_TOP%\erts\etc\win32\cygwin_tools\vc;%ERL_TOP%\erts\etc\win32\cygwin_tools;c:\relax\bin;%PATH%;%ICU_PATH%\bin64;C:\Relax\js-1.8.5\js\src\dist\bin;C:\relax\curl\lib
+set PATH=%ERL_TOP%\release\win32\erts-%ERTS_VSN%\bin;%ERL_TOP%\bootstrap\bin;%ERL_TOP%\erts\etc\win32\cygwin_tools\vc;%ERL_TOP%\erts\etc\win32\cygwin_tools;c:\relax\bin;%PATH%;%ICU_PATH%\bin64;C:\Relax\js-1.8.5\js\src\dist\bin;C:\relax\curl\lib;c:\ProgramData\chocolatey\lib\python3\tools\Scripts;C:\Program Files\nodejs
 powershell
 goto eof
 

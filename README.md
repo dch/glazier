@@ -35,7 +35,7 @@ These packages install silently, without intervention. Cut and paste them
 into a command prompt, leave it running, and open another one for the next
 section.
 
-    cinst -y git 7zip.commandline StrawberryPerl nasm cyg-get wixtoolset python aria2
+    cinst -y git 7zip.commandline StrawberryPerl nasm cyg-get wixtoolset python aria2 nodejs.install
  
 *NOTE*: There is a bug presently in the Chocolatey cygwin package. After the `cinst` above, download the cygwin installer from https://cygwin.com/, rename the installer to cygwinsetup.exe, and move the installer to `C:\tools\cygwin`. This will enable the cyg-get line below.
 
@@ -190,8 +190,6 @@ Select `Erlang 17.5` and `w for a Windows prompt`.
 This will build a development version of CouchDB runnable via
 
     python dev\run <-n1> <--with-admin-party-please>
-
-TODO: Fix make release 
 
 To build a self-contained CouchDB installation (also known as an Erlang
 _release_), after running the above use:

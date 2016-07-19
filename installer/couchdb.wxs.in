@@ -103,6 +103,8 @@
 		    
 		<!--Installer prefs-->
         <WixVariable Id="WixUILicenseRtf" Value="LICENSE.rtf" />
+        <WixVariable Id="WixUIBannerBmp" Value="..\bits\couchdb-banner.bmp" />
+        <WixVariable Id="WixUIDialogBmp" Value="..\bits\couchdb-dialog.bmp" />
 		<Property Id="WIXUI_INSTALLDIR"
 			Value="APPLICATIONFOLDER" />
 		<Property Id="CA_EXCEPTION" Value="None" />

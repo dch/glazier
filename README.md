@@ -35,7 +35,7 @@ These packages install silently, without intervention. Cut and paste them
 into a command prompt, leave it running, and open another one for the next
 section.
 
-    cinst -y git 7zip.commandline StrawberryPerl nasm cyg-get wixtoolset python aria2 nodejs.install
+    cinst -y git 7zip.commandline StrawberryPerl nasm cyg-get wixtoolset python aria2 nodejs.install nssm
  
 *NOTE*: There is a bug presently in the Chocolatey cygwin package. After the `cinst` above, download the cygwin installer from https://cygwin.com/, rename the installer to cygwinsetup.exe, and move the installer to `C:\tools\cygwin`. This will enable the cyg-get line below.
 
@@ -196,12 +196,10 @@ _release_), after running the above use:
 
     make -f Makefile.win release
 
-## Installer
+To build an installer using WiX to creates a full Windows .msi:
 
-The installer is built using WiX and creates a full Windows .msi installer
-package. The installer optionalkl sets up CouchDB running as a Windows Service.
-
-TODO: Complete installer work
+    cd \relax\glazier
+    bin\build_installer.cmd
 
 # Appendix
 

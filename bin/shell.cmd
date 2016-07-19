@@ -101,7 +101,7 @@ set ERL_TOP=%WERL_DIR%\otp_src_%OTP_REL%
 echo Type exit to stop relaxing.
 title On the couch. Type exit to stop relaxing.
 :: Need these things on the path to build/run CouchDB
-set PATH=%ERL_TOP%\release\win32\erts-%ERTS_VSN%\bin;%ERL_TOP%\bootstrap\bin;%ERL_TOP%\erts\etc\win32\cygwin_tools\vc;%ERL_TOP%\erts\etc\win32\cygwin_tools;%RELAX%\bin;%PATH%;%ICU_PATH%\bin64;%RELAX%\js-1.8.5\js\src\dist\bin;%RELAX%\curl\lib;c:\ProgramData\chocolatey\lib\python3\tools\Scripts;C:\Program Files\nodejs
+set PATH=%ERL_TOP%\release\win32\erts-%ERTS_VSN%\bin;%ERL_TOP%\bootstrap\bin;%ERL_TOP%\erts\etc\win32\cygwin_tools\vc;%ERL_TOP%\erts\etc\win32\cygwin_tools;%RELAX%\bin;%PATH%;%ICU_PATH%\bin64;%RELAX%\js-1.8.5\js\src\dist\bin;%RELAX%\curl\lib;c:\ProgramData\chocolatey\lib\python3\tools\Scripts;C:\Program Files\nodejs;C:\Program Files (x86)\WiX Toolset v3.10\bin
 cmd.exe /k
 goto eof
 
@@ -109,7 +109,7 @@ goto eof
 :ps_shell
 echo Type exit to stop relaxing.
 title On the couch. Type exit to stop relaxing.
-set PATH=%ERL_TOP%\release\win32\erts-%ERTS_VSN%\bin;%ERL_TOP%\bootstrap\bin;%ERL_TOP%\erts\etc\win32\cygwin_tools\vc;%ERL_TOP%\erts\etc\win32\cygwin_tools;c:\relax\bin;%PATH%;%ICU_PATH%\bin64;C:\Relax\js-1.8.5\js\src\dist\bin;C:\relax\curl\lib;c:\ProgramData\chocolatey\lib\python3\tools\Scripts;C:\Program Files\nodejs
+set PATH=%ERL_TOP%\release\win32\erts-%ERTS_VSN%\bin;%ERL_TOP%\bootstrap\bin;%ERL_TOP%\erts\etc\win32\cygwin_tools\vc;%ERL_TOP%\erts\etc\win32\cygwin_tools;c:\relax\bin;%PATH%;%ICU_PATH%\bin64;C:\Relax\js-1.8.5\js\src\dist\bin;C:\relax\curl\lib;c:\ProgramData\chocolatey\lib\python3\tools\Scripts;C:\Program Files\nodejs;C:\Program Files (x86)\WiX Toolset v3.10\bin
 powershell
 goto eof
 

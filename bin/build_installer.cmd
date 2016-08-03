@@ -40,12 +40,17 @@ xcopy %ICU_PATH%\bin64\icu*.dll %COUCHDB%\bin /Y >NUL 2>&1
 xcopy %RELAX%\js-1.8.5\js\src\dist\bin\*.dll %COUCHDB%\bin /Y >NUL 2>&1
 copy %RELAX%\curl\lib\libcurl.dll %COUCHDB%\bin /Y >NUL 2>&1
 
+:: add nssm so we can create/delete the Windows service
+copy C:\ProgramData\chocolatey\lib\NSSM\Tools\nssm-2.24\win64\nssm.exe %COUCHDB%\bin /Y >NUL 2>&1
 
 :: update version number
 :: commented out because WiX insists on a #.#.#.# number format and there's
 :: no guarantee that's what we'll see
 copy couchdb.wxs.in couchdb.wxs >NUL 2>&1
 :: cscript //NoLogo %GLAZIER%\bin\sed.vbs s/####VERSION####/%APP_VSN% < couchdb.wxs.in >couchdb.wxs
+copy %COUCHDB%\etc\default.ini .
+echo file = ./var/log/couchdb.log >>default.ini
+cscript //NoLogo %GLAZIER%\bin\sed.vbs s/stderr/file < default.ini >%COUCHDB%\etc\default.ini
 
 :: Package CouchDB as a fragment
 :: WiX skips empty directories, so we create a dummy logfile

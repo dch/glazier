@@ -17,3 +17,4 @@ bits/a2session.txt
 installer/couchdb.wxs
 installer/couchdbfiles.wxs
 build_*.txt
+installer/default.ini

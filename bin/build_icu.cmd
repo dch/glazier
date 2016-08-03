@@ -9,7 +9,9 @@ setx ICU_PATH %icu_path%
 if exist "%icu_path%" rd /s/q %icu_path%
 7z x "%relax%\bits\icu4c-*src.zip" -o%relax% -y
 pushd %icu_path%
-msbuild /m /p:Configuration=Release /p:Platform=Win32 /v:m /clp:summary %icu_path%\source\allinone\allinone.sln 
+:: ICU is set up for MSVS 2010, this upgrades it to 2013 support
+devenv.com %icu_path%\source\allinone\allinone.sln /Upgrade
+devenv.com %icu_path%\source\allinone\allinone.sln /Build "Release|x64"
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :eof
 endlocal

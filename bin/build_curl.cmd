@@ -1,15 +1,13 @@
 ::setlocal
-path=%path%;%opt%\cmake\bin;c:\mozilla-build\7zip;%relax%\openssl\bin;
+path=%path%;%relax%\openssl\bin;
 
 for %%i in ("%relax%\bits\curl-*.zip") do set curl_ver=%%~ni
 setx CURL_VER %curl_ver%
-set CURL_SRC=%RELAX%\%curl_ver%
+set CURL_VER=%curl_ver%
 setx CURL_SRC %curl_src%
-set CURL_PATH=%relax%\curl
+set CURL_SRC=%RELAX%\%curl_ver%
 setx CURL_PATH %curl_path%
-
-:: settings for CMake
-set install=%curl_path%
+set CURL_PATH=%relax%\curl
 
 if not defined SSL_PATH echo OpenSSL not built && goto eof
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -30,8 +28,13 @@ set INCLUDE=%INCLUDE%;%SSL_PATH%\include;%SSL_PATH%\include\openssl;
 set LIBPATH=%LIBPATH%;%SSL_PATH%\lib;
 set LIB=%LIB%;%SSL_PATH%\lib;
 pushd %curl_src%
-:: same makefile works for vc9 heh heh
-nmake VC=vc10 vc-ssl
+:: this make target works for vc2013
+:: there is no 64-bit DLL target, so we do it here ourselves
+nmake VC=VC12 VC12
+cd lib
+nmake /f Makefile.VC12 MACHINE=x64 cfg=release-dll
+cd ..\src
+nmake /f Makefile.VC12 MACHINE=x64 cfg=release-dll
 popd
 :: make this specific curl version available to CouchDB build script
 mklink /d %curl_path% %curl_src%
